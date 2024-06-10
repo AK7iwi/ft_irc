@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 13:11:58 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:59:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 class Client 
 {
 	public:
-		// Client();
-		// ~Client();
+		Client();
+		~Client();
 
 	private:
     

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 12:52:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:39:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 #define UTILS_HPP
 
 #include "Server.hpp"
+#include <csignal>
+
+
+/* Signal handler */
+
+void	signal_handler(int signal);
+
+/* Parse arguments */
 
 void	parse_arg(int argc, char **argv);
 

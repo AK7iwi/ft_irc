@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 13:01:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 15:02:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ class Server
 		Server(uint16_t port, std::string const &password);
 		~Server();
 
-    
+
+		
+
+
 	private:
 		uint16_t _port;
     	std::string _password;

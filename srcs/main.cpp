@@ -6,19 +6,29 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 13:05:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:54:35 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
+// bool signal_g = false;
+
 int	main(int argc, char **argv)
 {
+	/* Catch the signals */
+	
+	std::signal(SIGINT, signal_handler); //ctrl + c
+    // std::signal(SIGQUIT, signal_handler); //ctrl + / 
+	
 	try
 	{
 		parse_arg(argc, argv);
 		Server IRC(std::atoi(argv[1]), argv[2]);
-			
+		
+		while (true) // tmp
+			std::cout << "Server OK" << std::endl;
+		
 	}
 	catch (std::exception const &e)
 	{std::cerr << e.what() << std::endl;}

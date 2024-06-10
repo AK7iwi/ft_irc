@@ -6,15 +6,27 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 13:08:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 14:46:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
+/* Signal handler */
 
-/*Singal handler*/
-
+void	signal_handler(int signal) 
+{
+    if (signal == SIGINT) 
+	{
+        std::cout << "Caught SIGINT (Ctrl+C), shutting down..." << std::endl;
+        exit(EXIT_SUCCESS);
+    } 
+	else if (signal == SIGQUIT) 
+	{
+        std::cout << "Caught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
+        exit(EXIT_SUCCESS);
+    }
+}
 
 /* Parse the argument */
 
