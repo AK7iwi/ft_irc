@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 15:02:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:08:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdint.h>
+#include <cstring>
+#include <netinet/in.h>
 
 class Server 
 {
@@ -25,12 +27,17 @@ class Server
 		~Server();
 
 
-		
-
+		void	init_server();
 
 	private:
-		uint16_t _port;
-    	std::string _password;
+		uint16_t 			_port;
+    	std::string 		_password;
+		
+		struct sockaddr_in6	_server_addr;
+		
+		/* Init struct address*/
+		
+		void	init_address_structures();
     
 };
 
