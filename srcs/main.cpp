@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 16:58:05 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/11 16:10:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,12 @@ int	main(int argc, char **argv)
 		parse_arg(argc, argv);
 		Server IRC(std::atoi(argv[1]), argv[2]);
 		
+		std::cout << "Initialization of the server..." << std::endl;
 		IRC.init_server();
-
-		// while (true) // tmp
-		// 	std::cout << "Server OK" << std::endl;
-		
+		std::cout << "The server is initialized..." << std::endl;
+		std::cout << "Lunch of the server..." << std::endl;
+		IRC.run();
+		std::cout << "Server closed..." << std::endl;
 	}
 	catch (std::exception const &e)
 	{std::cerr << e.what() << std::endl;}

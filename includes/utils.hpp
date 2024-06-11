@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 14:39:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/11 14:55:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include "Server.hpp"
 #include <csignal>
-
 
 /* Signal handler */
 
