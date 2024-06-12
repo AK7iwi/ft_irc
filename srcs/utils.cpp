@@ -6,11 +6,23 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/10 17:18:05 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/12 00:30:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+
+std::vector<std::string> split(std::string const &str, char delimiter) 
+{
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token; 
+
+    while (std::getline(ss, token, delimiter))
+        tokens.push_back(token);
+
+    return (tokens);
+}
 
 /* Signal handler */
 
@@ -18,12 +30,12 @@ void	signal_handler(int signal)
 {
     if (signal == SIGINT) 
 	{
-        std::cout << "Caught SIGINT (Ctrl+C), shutting down..." << std::endl;
+        std::cout << "\nCaught SIGINT (Ctrl+C), shutting down..." << std::endl;
         exit(EXIT_SUCCESS);
     } 
-	else if (signal == SIGQUIT) 
+	else if (signal == SIGQUIT) //doesn't work
 	{
-        std::cout << "Caught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
+        std::cout << "\nCaught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
         exit(EXIT_SUCCESS);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/11 16:10:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/12 17:26:31 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ int	main(int argc, char **argv)
 		std::cout << "Initialization of the server..." << std::endl;
 		IRC.init_server();
 		std::cout << "The server is initialized..." << std::endl;
-		std::cout << "Lunch of the server..." << std::endl;
-		IRC.run();
+		std::cout << "Server launch..." << std::endl;
+		while (true)
+			IRC.run();
 		std::cout << "Server closed..." << std::endl;
 	}
 	catch (std::exception const &e)

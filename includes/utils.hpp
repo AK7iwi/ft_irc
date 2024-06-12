@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/11 14:55:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:02:55 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 #include "Server.hpp"
 #include <csignal>
+#include <iostream>
+#include <vector>
+#include <sstream>
+
+/* String method */
+
+std::vector<std::string> split(std::string const &str, char delimiter);
 
 /* Signal handler */
 
