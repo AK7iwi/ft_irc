@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/12 17:26:31 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/13 14:49:58 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ int	main(int argc, char **argv)
 		std::cout << "Server launch..." << std::endl;
 		while (true)
 			IRC.run();
-		std::cout << "Server closed..." << std::endl;
 	}
 	catch (std::exception const &e)
 	{std::cerr << e.what() << std::endl;}
 
+	std::cout << "Server closed..." << std::endl;
+	
 	return (EXIT_SUCCESS);
 	
 }

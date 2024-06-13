@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/12 18:22:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/13 18:02:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@ Server::~Server()
 	if (_server_socket != -1)
 		close(_server_socket);
 
-	// for (size_t i = 0; i < _fds.size(); ++i)
-    //     close(_fds[i].fd);
-    // _fds.clear();
+	for (size_t i = 0; i < _fds.size(); ++i)
+        close(_fds[i].fd);
+    _fds.clear();
 }
 
 void Server::handle_clients(int client_socket)
 {
-	// static std::map<int , std::string> clients;
 	char buffer[BUFFER_MAX];
-	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, MSG_DONTWAIT);
-
+	std::string	tmp_buffer;
+	
+	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0); //check recv flag
     if (valread == -1 && errno != EWOULDBLOCK)
 		return ; // Socket closed or error occurred + add error msg
 	else if (valread == -1)
@@ -41,48 +41,31 @@ void Server::handle_clients(int client_socket)
 		return ; // client is leaving must close
 	
 	buffer[valread] = '\0';
+
+	tmp_buffer = _clients[client_socket]->get_buffer();
+	tmp_buffer =+ buffer;
+
+	// std::cout << "TMPbuff:" << tmp_buffer << std::endl;
 	
-	// clients[client_socket] += buffer;
+	// if (buffer < BUFFER_MAX)
+	// 	_clients[client_socket] += buffer;
+	// else 
 
-	// std::string command(buffer);
-	// std::cout << "command:\n " << command;
 
-    std::vector<std::string> cmd_splited = split(command, '\n');
-	// for (std::vector<std::string >::iterator it = cmd_splited.begin(); it != cmd_splited.end(); ++it)
-	// 	std::cout << *it;
+	/* Replace buffer by tmp_buffer */
+    // std::vector<std::string> command = split(buffer, '\n');
 	
-	std::cout << "cmd_splited[0]: " << cmd_splited[0] << std::endl;
-	// cmd_splited[0].erase(cmd_splited[0].find_last_not_of(" \n\r\t")+1);
-	// if (cmd_splited[0] == "CAP LS")
-	// 	std::cout << "CAP LS OK" << std::endl;
+	// command[0].erase(command[0].find_last_not_of(" \n\r\t")+1);
+	// std::cout << command[0] << std::endl;
+	// command[1].erase(command[1].find_last_not_of(" \n\r\t")+1);
+	// std::cout << command[1] << std::endl;
+	// command[2].erase(command[2].find_last_not_of(" \n\r\t")+1);
+	// std::cout << command[2] << std::endl;
+	// command[3].erase(command[3].find_last_not_of(" \n\r\t")+1);
+	// std::cout << command[3] << std::endl;
 
-	std::cout << "cmd_splited[1]: " << cmd_splited[1] << std::endl;
-	// cmd_splited[1].erase(cmd_splited[1].find_last_not_of(" \n\r\t")+1);
-	// if (cmd_splited[1] == "PASS")
-	// 	std::cout << "PASS OK" << std::endl;
-
-	// std::cout << "cmd_splited[2]:" << cmd_splited[2] << std::endl;
-	// cmd_splited[2].erase(cmd_splited[2].find_last_not_of(" \n\r\t")+1);
-	// if (cmd_splited[2] == "NICK")
-	// 	std::cout << "NICK OK" << std::endl;
-
-	// std::cout << "cmd_splited[3]:" << cmd_splited[3] << std::endl;
-	// cmd_splited[3].erase(cmd_splited[3].find_last_not_of(" \n\r\t")+1);
-	// if (cmd_splited[3] == "USER LS")
-	// 	std::cout << "USER OK" << std::endl;
-
-	// std::cout << "cmd_splited[1]size:" << cmd_splited[1].size() << std::endl;
-	// std::cout << "PASS1: " << pass_string[0] << std::endl;
-	// std::vector<std::string> pass_string = split(cmd_splited[1], ' ');
-	// std::cout << "PASS2: " << pass_string[1] << std::endl;
-	
-	// std::vector<std::string> nick_string = split(cmd_splited[2], ' ');
-	// std::cout << "NICK1: " << nick_string[0] << std::endl;
-	// std::cout << "NICK2: " << nick_string[1] << std::endl;
-
-	// std::vector<std::string> user_string = split(cmd_splited[3], ' ');
-	// std::cout << "USER1: " << user_string[0] << std::endl;
-	// std::cout << "USER2: " << user_string[1] << std::endl;
+	// if (command[0] == "CAP LS")
+	// 	std::cout << "Trop cool mon reuf" << std::endl;
 }
 
 void Server::handle_new_connections()
@@ -91,6 +74,7 @@ void Server::handle_new_connections()
 	memset(&client_addr, 0, sizeof(client_addr));
 	socklen_t client_len = sizeof(client_addr);
     int	client_socket = accept(_server_socket, (struct sockaddr *)&client_addr, &client_len);
+	std::cout << "client socket:" << client_socket << std::endl;
     if (client_socket == -1)
 	{
         std::cout << "Error: accept() function failed" << std::endl;
@@ -102,26 +86,23 @@ void Server::handle_new_connections()
     client_fd.events = POLLIN;
 	client_fd.revents = 0;
     _fds.push_back(client_fd);
-
-	// Client new_client(client_socket, client_addr);
-	// _clients.push_back(new_client);
+ 
+	_clients[client_socket] = new Client(client_socket, client_addr);
+	std::cout << "get_socket test:" << _clients[client_socket]->get_socket() << std::endl;
 }
 
 /* Run method that loop */
 
 void Server::run()
 {
-	//readapt this fct for fds_active, not iter with _fds[i]
-	
-	ssize_t fds_active = poll(&_fds[0], _fds.size(), -1);
-	if (fds_active == -1)
-		throw (std::runtime_error("Error: poll() function failed"));
+	if (poll(&_fds[0], _fds.size(), -1) == -1)
+		throw (std::runtime_error("Error: poll() function failed, nobody listen to you"));
 
 	if (_fds[0].revents & POLLIN)
         handle_new_connections();
 	else
 	{
-		for (ssize_t i = 1; i < fds_active; ++i) 
+		for (size_t i = 1; i < _fds.size(); ++i) 
             if (_fds[i].revents & POLLIN)
 				handle_clients(_fds[i].fd);
 	}
@@ -133,7 +114,7 @@ void Server::init_server()
 {
 	_server_socket = socket(AF_INET6, SOCK_STREAM, 0);
     if (_server_socket == -1)
-		throw (std::runtime_error("Error creating socket"));
+		throw (std::runtime_error("Error creating socket, even the server don't want to talk to you"));
 
 	int opt = 1;
     if (setsockopt(_server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
