@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/13 17:35:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:24:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ class Server
 		void	init_server();
 
 	private:
-
 		/////////////////// Member variable ///////////////////
 		
 		/* Port and password */
@@ -68,6 +67,10 @@ class Server
 		void	handle_clients(int client_cocket);
 		void	handle_new_connections();
 		
+		/////////////////// Utils methods from Server///////////////
+		
+		/*Remove client method*/
+		void	remove_client(int client_socket);
 		/* Init struct address*/
 		void	init_address_structures();
     

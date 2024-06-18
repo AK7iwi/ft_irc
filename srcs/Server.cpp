@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/13 18:02:30 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:39:36 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@ Server::~Server()
 	if (_server_socket != -1)
 		close(_server_socket);
 
-	for (size_t i = 0; i < _fds.size(); ++i)
-        close(_fds[i].fd);
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it)
+        close(it->fd);
     _fds.clear();
+
+	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+        delete (it->second); 
+    _clients.clear(); 
 }
 
 void Server::handle_clients(int client_socket)
@@ -38,14 +42,17 @@ void Server::handle_clients(int client_socket)
 	else if (valread == -1)
 		return ; // couldnt read anything on this tick
 	else if (valread == 0)
+	{
+		remove_client(client_socket);
 		return ; // client is leaving must close
+	}
 	
 	buffer[valread] = '\0';
 
 	tmp_buffer = _clients[client_socket]->get_buffer();
 	tmp_buffer =+ buffer;
 
-	// std::cout << "TMPbuff:" << tmp_buffer << std::endl;
+	std::cout << "TMPbuff:\n" << tmp_buffer << std::endl;
 	
 	// if (buffer < BUFFER_MAX)
 	// 	_clients[client_socket] += buffer;
@@ -131,14 +138,4 @@ void Server::init_server()
     server_fd.events = POLLIN;
 	server_fd.revents = 0;
     _fds.push_back(server_fd);
-}
-
-/* Init struct address*/
-
-void Server::init_address_structures()
-{
-    memset(&_server_addr, 0, sizeof(_server_addr));
-    _server_addr.sin6_family = AF_INET6;
-    _server_addr.sin6_port = htons(_port);
-    _server_addr.sin6_addr = in6addr_any;
 }
