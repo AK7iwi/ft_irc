@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/18 15:39:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:29:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void Server::handle_clients(int client_socket)
 	else if (valread == 0)
 	{
 		remove_client(client_socket);
-		return ; // client is leaving must close
+		return ;
 	}
 	
 	buffer[valread] = '\0';
@@ -52,25 +52,31 @@ void Server::handle_clients(int client_socket)
 	tmp_buffer = _clients[client_socket]->get_buffer();
 	tmp_buffer =+ buffer;
 
-	std::cout << "TMPbuff:\n" << tmp_buffer << std::endl;
+	// std::cout << "TMPbuff:\n" << tmp_buffer << std::endl;
 	
-	// if (buffer < BUFFER_MAX)
-	// 	_clients[client_socket] += buffer;
-	// else 
-
-
-	/* Replace buffer by tmp_buffer */
-    // std::vector<std::string> command = split(buffer, '\n');
+    std::vector<std::string> command = split(tmp_buffer, '\n');
 	
-	// command[0].erase(command[0].find_last_not_of(" \n\r\t")+1);
-	// std::cout << command[0] << std::endl;
-	// command[1].erase(command[1].find_last_not_of(" \n\r\t")+1);
-	// std::cout << command[1] << std::endl;
-	// command[2].erase(command[2].find_last_not_of(" \n\r\t")+1);
-	// std::cout << command[2] << std::endl;
-	// command[3].erase(command[3].find_last_not_of(" \n\r\t")+1);
-	// std::cout << command[3] << std::endl;
-
+	//Parse OK but find a more elegant way
+	if (command.size() > 0)
+	{
+		command[0].erase(command[0].find_last_not_of(" \n\r\t")+1);
+		std::cout << command[0] << std::endl;
+	}
+	if (command.size() > 1)
+	{
+		command[1].erase(command[1].find_last_not_of(" \n\r\t")+1);
+		std::cout << command[1] << std::endl;
+	}
+	if (command.size() > 2)
+	{
+		command[2].erase(command[2].find_last_not_of(" \n\r\t")+1);
+		std::cout << command[2] << std::endl;
+	}
+	if (command.size() > 3)
+	{
+		command[3].erase(command[3].find_last_not_of(" \n\r\t")+1);
+		std::cout << command[3] << std::endl;
+	}
 	// if (command[0] == "CAP LS")
 	// 	std::cout << "Trop cool mon reuf" << std::endl;
 }
@@ -81,7 +87,6 @@ void Server::handle_new_connections()
 	memset(&client_addr, 0, sizeof(client_addr));
 	socklen_t client_len = sizeof(client_addr);
     int	client_socket = accept(_server_socket, (struct sockaddr *)&client_addr, &client_len);
-	std::cout << "client socket:" << client_socket << std::endl;
     if (client_socket == -1)
 	{
         std::cout << "Error: accept() function failed" << std::endl;
@@ -95,7 +100,6 @@ void Server::handle_new_connections()
     _fds.push_back(client_fd);
  
 	_clients[client_socket] = new Client(client_socket, client_addr);
-	std::cout << "get_socket test:" << _clients[client_socket]->get_socket() << std::endl;
 }
 
 /* Run method that loop */

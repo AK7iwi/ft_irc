@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/18 15:47:24 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:12:02 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void Server::remove_client(int client_socket)
         _clients.erase(it);
     }
 
-	std::cout << "Bouge de la" << std::endl;
+	// std::cout << "Bouge de la" << _clients[client_socket]->get_nickname <<std::endl;
+	std::cout << "Bouge de la " << client_socket << std::endl;
 }
 
 
