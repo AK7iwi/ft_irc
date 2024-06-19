@@ -3,6 +3,7 @@ RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror -I./includes -std=c++98 
 NAME 			= ircserv
 SRCS			= srcs/main.cpp srcs/Server.cpp srcs/Client.cpp srcs/utils.cpp \
+					srcs/commands/pass.cpp \
 
 OBJS 			= $(SRCS:.cpp=.o)
 

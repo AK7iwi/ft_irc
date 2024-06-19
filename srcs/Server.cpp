@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/18 16:29:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/19 17:07:24 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,31 @@ Server::~Server()
     _clients.clear(); 
 }
 
+void Server::handle_commands(std::string &command)
+{
+	command.erase(command.find_last_not_of(" \n\r\t")+1);
+	const char* command_char = command.c_str();
+	std::vector<std::string> s_command = split(command_char, ' ');
+
+	if (s_command[0] == "PASS")	
+		pass(s_command[1]);
+	
+	else if (s_command[0] == "NICK")
+		std::cout << "AAAAAAAA" << std::endl;
+
+	else if (s_command[0] == "USER")
+		std::cout << "D" << std::endl;
+
+	else 
+		std::cout << "Unknow command" << std::endl;
+	
+}
+
 void Server::handle_clients(int client_socket)
 {
+
+	std::cout << "Handle client nb :" << client_socket << std::endl << std::endl;
+	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
 	
@@ -42,43 +65,18 @@ void Server::handle_clients(int client_socket)
 	else if (valread == -1)
 		return ; // couldnt read anything on this tick
 	else if (valread == 0)
-	{
-		remove_client(client_socket);
-		return ;
-	}
+		return (remove_client(client_socket));
 	
 	buffer[valread] = '\0';
 
-	tmp_buffer = _clients[client_socket]->get_buffer();
 	tmp_buffer =+ buffer;
 
-	// std::cout << "TMPbuff:\n" << tmp_buffer << std::endl;
-	
-    std::vector<std::string> command = split(tmp_buffer, '\n');
-	
-	//Parse OK but find a more elegant way
-	if (command.size() > 0)
-	{
-		command[0].erase(command[0].find_last_not_of(" \n\r\t")+1);
-		std::cout << command[0] << std::endl;
-	}
-	if (command.size() > 1)
-	{
-		command[1].erase(command[1].find_last_not_of(" \n\r\t")+1);
-		std::cout << command[1] << std::endl;
-	}
-	if (command.size() > 2)
-	{
-		command[2].erase(command[2].find_last_not_of(" \n\r\t")+1);
-		std::cout << command[2] << std::endl;
-	}
-	if (command.size() > 3)
-	{
-		command[3].erase(command[3].find_last_not_of(" \n\r\t")+1);
-		std::cout << command[3] << std::endl;
-	}
-	// if (command[0] == "CAP LS")
-	// 	std::cout << "Trop cool mon reuf" << std::endl;
+    std::vector<std::string> commands = split(tmp_buffer, '\n');
+	uint8_t len_command = commands.size();
+	for (uint8_t i = 0; i < len_command; ++i)
+		handle_commands(commands[i]);
+
+	std::cout << std::endl;
 }
 
 void Server::handle_new_connections()
@@ -89,9 +87,9 @@ void Server::handle_new_connections()
     int	client_socket = accept(_server_socket, (struct sockaddr *)&client_addr, &client_len);
     if (client_socket == -1)
 	{
-        std::cout << "Error: accept() function failed" << std::endl;
+		std::cout << "Error: accept() function failed" << std::endl;
         return ;
-    }
+	}
 
 	struct pollfd client_fd;
     client_fd.fd = client_socket;

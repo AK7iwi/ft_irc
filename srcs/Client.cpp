@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/13 17:17:04 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/19 15:43:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,4 @@ Client::~Client() {}
 
 int  				Client::get_socket()	const	{return (_socket_fd);}
 sockaddr_in6 const&	Client::get_address()	const	{return (_client_addr);}
-std::string  const&	Client::get_buffer()	const	{return (_buffer);}
+// std::string  const&	Client::get_buffer()	const	{return (_buffer);}

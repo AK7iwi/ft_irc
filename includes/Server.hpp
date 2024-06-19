@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/18 15:24:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:56:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,12 @@ class Server
 		std::map<int, Client*> 		_clients;
 		
 		//////////////////// Methods ////////////////////////////
+		
+		/* Commands */
+		void 	pass(std::string &command);
+		
+		/* Handle commands */
+		void 	handle_commands(std::string &command);
 		
 		/* Handle client method */
 		void	handle_clients(int client_cocket);
