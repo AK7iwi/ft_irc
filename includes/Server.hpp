@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/19 16:56:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 03:48:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,13 @@ class Server
 	private:
 		/////////////////// Member variable ///////////////////
 		
-		/* Port and password */
+		/* Server infos */
 		uint16_t 					_port;
     	std::string					_password;
+		std::string					_networkname;
+		std::string					_servername;
+		std::string					_version;
+		std::string             	_start_time;
 		
 		/* Struct for init server */
 		struct sockaddr_in6			_server_addr;
@@ -64,10 +68,12 @@ class Server
 		//////////////////// Methods ////////////////////////////
 		
 		/* Commands */
-		void 	pass(std::string &command);
+		void 	user(int client_socket, std::string &client);
+		void 	nick(int client_socket, std::string &nick);
+		void 	pass(int client_socket, std::string &command);
 		
 		/* Handle commands */
-		void 	handle_commands(std::string &command);
+		void 	handle_commands(int client_socket, std::string &command);
 		
 		/* Handle client method */
 		void	handle_clients(int client_cocket);
@@ -75,9 +81,11 @@ class Server
 		
 		/////////////////// Utils methods from Server///////////////
 		
-		/*Remove client method*/
+		/* Send response to the client */
+		void	send_reply(int client_socket, uint16_t rpl); 
+		/* Remove client method */
 		void	remove_client(int client_socket);
-		/* Init struct address*/
+		/* Init struct address */
 		void	init_address_structures();
     
 };

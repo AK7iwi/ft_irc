@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/18 16:12:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/19 19:59:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void Server::remove_client(int client_socket)
 {
-    close(client_socket); ///close a int???
+    close(client_socket);
 
 	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
 	{
@@ -35,7 +35,6 @@ void Server::remove_client(int client_socket)
 	// std::cout << "Bouge de la" << _clients[client_socket]->get_nickname <<std::endl;
 	std::cout << "Bouge de la " << client_socket << std::endl;
 }
-
 
 std::vector<std::string> split(std::string const &str, char delimiter) 
 {

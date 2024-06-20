@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/19 17:07:24 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 03:47:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,20 @@
 
 Server::Server(uint16_t port, std::string const &password) : 
     _port(port),
-    _password(password)
-{init_address_structures();}
+    _password(password),
+	_networkname(""),
+	_servername(""),
+	_version("-5")
+{
+	time_t  now = time(0);
+    tm      *ltm = localtime(&now);
+    char    date[32];
+
+    strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", ltm);
+    _start_time = std::string(date);
+	
+	init_address_structures();
+}
 
 Server::~Server() 
 {
@@ -31,24 +43,18 @@ Server::~Server()
     _clients.clear(); 
 }
 
-void Server::handle_commands(std::string &command)
+void Server::handle_commands(int client_socket, std::string &command)
 {
 	command.erase(command.find_last_not_of(" \n\r\t")+1);
 	const char* command_char = command.c_str();
 	std::vector<std::string> s_command = split(command_char, ' ');
 
 	if (s_command[0] == "PASS")	
-		pass(s_command[1]);
-	
+		pass(client_socket, s_command[1]);
 	else if (s_command[0] == "NICK")
-		std::cout << "AAAAAAAA" << std::endl;
-
-	else if (s_command[0] == "USER")
-		std::cout << "D" << std::endl;
-
-	else 
-		std::cout << "Unknow command" << std::endl;
-	
+		nick(client_socket, s_command[1]);
+	else if (s_command[0] == "client")
+		user(client_socket, s_command[1]);
 }
 
 void Server::handle_clients(int client_socket)
@@ -74,7 +80,7 @@ void Server::handle_clients(int client_socket)
     std::vector<std::string> commands = split(tmp_buffer, '\n');
 	uint8_t len_command = commands.size();
 	for (uint8_t i = 0; i < len_command; ++i)
-		handle_commands(commands[i]);
+		handle_commands(client_socket, commands[i]);
 
 	std::cout << std::endl;
 }

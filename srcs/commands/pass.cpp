@@ -6,16 +6,16 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:12 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/19 17:07:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 03:47:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-
-void Server::pass(std::string &password)
-{
-	std::cout << "Enter into pass fct" << std::endl;
-	if (password != _password)
-		std::cout << "RPL" << std::endl;
+void Server::pass(int client_socket, std::string &password)
+{	
+	if (password == _password)
+		send_reply(client_socket, 1);
+	else
+		send_reply(client_socket, 2);
 }
