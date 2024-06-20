@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 03:48:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 22:20:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 class Client;
 
-# define BUFFER_MAX 4096
+#define BUFFER_MAX	4096
 
 class Server 
 {
@@ -64,29 +64,34 @@ class Server
 
 		/* Map of clients */
 		std::map<int, Client*> 		_clients;
+
+		/* utils member*/
+
+		std::string 				_void_str;
 		
 		//////////////////// Methods ////////////////////////////
 		
 		/* Commands */
-		void 	user(int client_socket, std::string &client);
-		void 	nick(int client_socket, std::string &nick);
-		void 	pass(int client_socket, std::string &command);
+		void 		user(int client_socket, std::string &client);
+		void 		nick(int client_socket, std::string &nick);
+		void 		pass(int client_socket, std::string &command);
 		
 		/* Handle commands */
-		void 	handle_commands(int client_socket, std::string &command);
+		void 		handle_commands(int client_socket, std::string &command);
 		
 		/* Handle client method */
-		void	handle_clients(int client_cocket);
-		void	handle_new_connections();
+		void		handle_clients(int client_cocket);
+		void		handle_new_connections();
 		
 		/////////////////// Utils methods from Server///////////////
 		
 		/* Send response to the client */
-		void	send_reply(int client_socket, uint16_t rpl); 
+		std::string	wich_rpl(int client_socket, uint16_t rpl, std::string &reply_arg);
+		void		send_reply(int client_socket, uint16_t rpl, std::string &reply_arg); 
 		/* Remove client method */
-		void	remove_client(int client_socket);
+		void		remove_client(int client_socket);
 		/* Init struct address */
-		void	init_address_structures();
+		void		init_address_structures();
     
 };
 

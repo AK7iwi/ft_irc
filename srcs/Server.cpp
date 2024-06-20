@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 03:47:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 22:19:32 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 Server::Server(uint16_t port, std::string const &password) : 
     _port(port),
     _password(password),
-	_networkname(""),
-	_servername(""),
-	_version("-5")
+	_networkname("AAAA"),
+	_servername("BBBB"),
+	_version("-5"),
+	_void_str("")
 {
 	time_t  now = time(0);
     tm      *ltm = localtime(&now);
@@ -103,7 +104,7 @@ void Server::handle_new_connections()
 	client_fd.revents = 0;
     _fds.push_back(client_fd);
  
-	_clients[client_socket] = new Client(client_socket, client_addr);
+	_clients[client_socket] = new Client(client_socket);
 }
 
 /* Run method that loop */

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 18:22:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 22:13:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 // {return (":" + _servername + " 004 " + client->get_nickname() + " " + _servername + " " + _version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
 /* 461 */
-std::string	ERR_NEEDMOREPARAMS(Client const *client, const std::vector<std::string> &reply_arg)
-{return (client->get_prefix() + " 461 " + reply_arg[0] + " :Not enough parameters");}
+std::string	ERR_NEEDMOREPARAMS(Client const *client)
+{return (client->get_prefix() + " 461 PASS :Not enough parameters");}
 
 /* 462 */
 std::string	ERR_ALREADYREGISTERED(Client const *client)
@@ -41,28 +41,29 @@ std::string	ERR_PASSWDMISMATCH(Client const *client)
 {return (client->get_prefix() + " 464 :Password incorrect");}
 
 
-std::string wich_rpl(int client_socket, uint16_t rpl)
+std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::string &reply_arg)
 {
 	std::string reply;
+	(void)reply_arg;
 	
 	switch(rpl)
 	{
 
-        // case   1: reply = CREATE_RPL_WELCOME(_users[fd], _networkname, _servername);    break;
-        // case   2: reply = CREATE_RPL_YOURHOST(_users[fd], _servername, _version);       break;
-        // case   3: reply = CREATE_RPL_CREATED(_users[fd], _start_time, _servername);     break;
-        // case   4: reply = CREATE_RPL_MYINFO(_users[fd], _servername, _version);         break;
-        case 461: reply = CREATE_ERR_NEEDMOREPARAMS(_client[client_socket], reply_arg);    break;
-        // case 462: reply = CREATE_ERR_ALREADYREGISTERED(_users[fd]);                     break;
-        case 464: reply = CREATE_ERR_PASSWDMISMATCH(_client[client_socket]);               break;
+        // case   1: reply = RPL_WELCOME(_users[fd], _networkname, _servername);    break;
+        // case   2: reply = RPL_YOURHOST(_users[fd], _servername, _version);       break;
+        // case   3: reply = RPL_CREATED(_users[fd], _start_time, _servername);     break;
+        // case   4: reply = RPL_MYINFO(_users[fd], _servername, _version);         break;
+        case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket]);				break;
+        // case 462: reply = ERR_ALREADYREGISTERED(_users[fd]);                     break;
+        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);               break;
     }
 	
 	return (reply);
 }
 
-void Server::send_reply(int client_socket, uint16_t rpl) 
+void Server::send_reply(int client_socket, uint16_t rpl, std::string &reply_arg) 
 {
-	std::string message = wich_rpl(rpl) + "\r\n";
+	std::string message = wich_rpl(client_socket, rpl, reply_arg) + "\r\n";
 
     if (send(client_socket, message.c_str(), message.length(), 0) == -1)
 		return ;

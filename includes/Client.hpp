@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 18:41:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 21:10:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 class Client 
 {
 	public:
-		Client(int socket_fd, sockaddr_in6 const &client_addr);
+		Client(int socket_fd);
 		~Client();
  				
 		/* Getter */
 		int 					get_socket()	const;
-		sockaddr_in6	const	&get_address()	const;
 		std::string 	const	&get_nickname() const;
 		std::string 	const	&get_username() const;
 		std::string 	const	&get_realname() const;
@@ -38,7 +37,6 @@ class Client
 
 	private:
 		int				_socket_fd;
-    	sockaddr_in6	_client_addr;
 		std::string 	_nickname;
 		std::string 	_username;
 		std::string 	_realname;

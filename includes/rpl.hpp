@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 18:20:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/20 21:50:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,10 @@ class Server;
 class Client;
 
 /* 461 */
-std::string	ERR_NEEDMOREPARAMS(Client const *client, const std::vector<std::string> &reply_arg);
+std::string	ERR_NEEDMOREPARAMS(Client const *client);
 /* 462 */
 std::string	ERR_ALREADYREGISTERED(Client const *client);
 /* 464 */
 std::string	ERR_PASSWDMISMATCH(Client const *client);
-
-std::string wich_rpl(int client_socket, uint16_t rpl);
 
 #endif /* RPL_HPP */
