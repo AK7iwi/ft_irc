@@ -6,11 +6,32 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 00:06:22 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:19:21 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+static bool is_running = true;
+
+/* Signal handler */
+
+void	signal_handler(int signal) 
+{
+    if (signal == SIGINT) 
+	{
+		is_running = false;
+        std::cout << "\nCaught SIGINT (Ctrl+C), shutting down..." << std::endl;
+		std::cout << "Server closed..." << std::endl;
+		
+    } 
+	else if (signal == SIGQUIT) //doesn't work
+	{
+		is_running = false;
+        std::cout << "\nCaught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
+		std::cout << "Server closed..." << std::endl;
+    }
+}
 
 int	main(int argc, char **argv)
 {
@@ -28,7 +49,7 @@ int	main(int argc, char **argv)
 		IRC.init_server();
 		std::cout << "The server is initialized..." << std::endl;
 		std::cout << "Server launch..." << std::endl;
-		while (true)
+		while (is_running)
 			IRC.run();
 	}
 	catch (std::exception const &e)

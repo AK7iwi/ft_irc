@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/19 19:59:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:19:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void Server::remove_client(int client_socket)
 {
     close(client_socket);
 
-	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
+	for (std::vector<struct pollfd>::iterator it = _fds.begin() + 1; it != _fds.end(); it++) 
 	{
         if (it->fd == client_socket)
 		{
@@ -24,16 +24,11 @@ void Server::remove_client(int client_socket)
             break;
         }
     }
+	
+	delete (_clients[client_socket]);
+    _clients.erase(_clients.find(client_socket));
 
-    std::map<int, Client*>::iterator it = _clients.find(client_socket);
-    if (it != _clients.end()) 
-	{
-        delete (it->second);
-        _clients.erase(it);
-    }
-
-	// std::cout << "Bouge de la" << _clients[client_socket]->get_nickname <<std::endl;
-	std::cout << "Bouge de la " << client_socket << std::endl;
+	std::cout << "Bouge de la " << _clients[client_socket]->get_nickname() << std::endl;
 }
 
 std::vector<std::string> split(std::string const &str, char delimiter) 
@@ -72,22 +67,4 @@ void	parse_arg(int argc, char **argv)
 	std::string password = argv[2];
     if (password.length() < 6)
 		throw (std::invalid_argument("Error: Password cannot have less than 6 char"));
-}
-
-/* Signal handler */
-
-void	signal_handler(int signal) 
-{
-    if (signal == SIGINT) 
-	{
-        std::cout << "\nCaught SIGINT (Ctrl+C), shutting down..." << std::endl;
-		std::cout << "Server closed..." << std::endl;
-        exit(EXIT_SUCCESS);
-    } 
-	else if (signal == SIGQUIT) //doesn't work
-	{
-        std::cout << "\nCaught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
-		std::cout << "Server closed..." << std::endl;
-        exit(EXIT_SUCCESS);
-    }
 }

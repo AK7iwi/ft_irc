@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 22:19:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:10:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ Server::~Server()
 	if (_server_socket != -1)
 		close(_server_socket);
 
-	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it)
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
         close(it->fd);
     _fds.clear();
 
-	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); ++it)
+	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
         delete (it->second); 
     _clients.clear(); 
 }
