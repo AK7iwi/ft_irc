@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/21 14:10:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:43:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ Server::Server(uint16_t port, std::string const &password) :
 
 Server::~Server() 
 {
+	//check if needed?? in the next loop for I think
 	if (_server_socket != -1)
 		close(_server_socket);
 
+	
 	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
         close(it->fd);
     _fds.clear();
@@ -61,6 +63,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 void Server::handle_clients(int client_socket)
 {
 
+	//better log with get_nickname()
 	std::cout << "Handle client nb :" << client_socket << std::endl << std::endl;
 	
 	char buffer[BUFFER_MAX];
@@ -112,7 +115,7 @@ void Server::handle_new_connections()
 void Server::run()
 {
 	if (poll(&_fds[0], _fds.size(), -1) == -1)
-		throw (std::runtime_error("Error: poll() function failed, nobody listen to you"));
+		throw (std::runtime_error("Nobody listen to you"));
 
 	if (_fds[0].revents & POLLIN)
         handle_new_connections();
@@ -130,7 +133,7 @@ void Server::init_server()
 {
 	_server_socket = socket(AF_INET6, SOCK_STREAM, 0);
     if (_server_socket == -1)
-		throw (std::runtime_error("Error creating socket, even the server don't want to talk to you"));
+		throw (std::runtime_error("Error creating socket, even the server doesn't want to talk to you"));
 
 	int opt = 1;
     if (setsockopt(_server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)

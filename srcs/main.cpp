@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/21 14:19:21 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:40:45 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	signal_handler(int signal)
 		is_running = false;
         std::cout << "\nCaught SIGINT (Ctrl+C), shutting down..." << std::endl;
 		std::cout << "Server closed..." << std::endl;
-		
     } 
 	else if (signal == SIGQUIT) //doesn't work
 	{
@@ -49,7 +48,7 @@ int	main(int argc, char **argv)
 		IRC.init_server();
 		std::cout << "The server is initialized..." << std::endl;
 		std::cout << "Server launch..." << std::endl;
-		while (is_running)
+		while (true)
 			IRC.run();
 	}
 	catch (std::exception const &e)

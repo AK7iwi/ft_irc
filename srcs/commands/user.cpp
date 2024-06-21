@@ -14,7 +14,7 @@
 
 void Server::user(int client_socket, std::string &client)
 {
-	std::cout << "Enter into client fct" << std::endl;
+	std::cout << "Enter into user fct" << std::endl;
 	(void)client_socket;
 	(void)client;
 	// if (password != _password)
