@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/21 14:43:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/23 16:57:08 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 
 void Server::handle_clients(int client_socket)
 {
-
-	//better log with get_nickname()
-	std::cout << "Handle client nb :" << client_socket << std::endl << std::endl;
+	std::cout << "Handle client: " << _clients[client_socket]->get_nickname() << std::endl << std::endl;
 	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
