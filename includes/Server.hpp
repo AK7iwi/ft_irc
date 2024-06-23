@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 22:20:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/23 18:01:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ class Server
 		/////////////////// Utils methods from Server///////////////
 		
 		/* Send response to the client */
-		std::string	wich_rpl(int client_socket, uint16_t rpl, std::string &reply_arg);
-		void		send_reply(int client_socket, uint16_t rpl, std::string &reply_arg); 
+		std::string	wich_rpl(int client_socket, uint16_t rpl);
+		void		send_reply(int client_socket, uint16_t rpl); 
 		/* Remove client method */
 		void		remove_client(int client_socket);
 		/* Init struct address */

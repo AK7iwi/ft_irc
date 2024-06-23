@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 22:13:28 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/23 18:01:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,27 @@ std::string	ERR_PASSWDMISMATCH(Client const *client)
 {return (client->get_prefix() + " 464 :Password incorrect");}
 
 
-std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::string &reply_arg)
+std::string Server::wich_rpl(int client_socket, uint16_t rpl)
 {
 	std::string reply;
-	(void)reply_arg;
 	
-	switch(rpl)
+	switch (rpl)
 	{
-
         // case   1: reply = RPL_WELCOME(_users[fd], _networkname, _servername);    break;
         // case   2: reply = RPL_YOURHOST(_users[fd], _servername, _version);       break;
         // case   3: reply = RPL_CREATED(_users[fd], _start_time, _servername);     break;
         // case   4: reply = RPL_MYINFO(_users[fd], _servername, _version);         break;
         case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket]);				break;
-        // case 462: reply = ERR_ALREADYREGISTERED(_users[fd]);                     break;
+        case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           break;
         case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);               break;
     }
 	
 	return (reply);
 }
 
-void Server::send_reply(int client_socket, uint16_t rpl, std::string &reply_arg) 
+void Server::send_reply(int client_socket, uint16_t rpl) 
 {
-	std::string message = wich_rpl(client_socket, rpl, reply_arg) + "\r\n";
+	std::string message = wich_rpl(client_socket, rpl) + "\r\n";
 
     if (send(client_socket, message.c_str(), message.length(), 0) == -1)
 		return ;
