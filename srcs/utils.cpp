@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/23 17:20:28 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:13:53 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void Server::remove_client(int client_socket)
     //     _clients.erase(it);
     // }
 
-	// delete (_clients[client_socket]);
-    // _clients.erase(_clients.find(client_socket));
+	delete (_clients[client_socket]);
+    _clients.erase(_clients.find(client_socket));
 
 }
 

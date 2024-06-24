@@ -6,31 +6,29 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:12 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/23 18:03:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:20:38 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void Server::pass(int client_socket, std::string &password)
+void	Server::pass(int client_socket, std::vector<std::string> &s_command)
 {	
-	// std::cout << "password: " << password << std::endl;
-	if (password.empty() == 0)
+	if (s_command.size() != 2)
 	{
 		std::cout << "111111111111" << std::endl;
-		// send_reply(client_socket, 461);
+		return (send_reply(client_socket, 461));
 	}
-	else if (_clients[client_socket]->get_nickname() != "DEFAULT")
+	else if (_clients[client_socket]->get_nickname() != "DEFAULT") //to test
 	{
 		std::cout << "22222222" << std::endl;
-		// send_reply(client_socket, 462);
-		
+		return (send_reply(client_socket, 462));
 	}
-	else if (password != _password)
+	else if (s_command[1] != _password)
 	{
 		std::cout << "333333333" << std::endl;
-		// send_reply(client_socket, 464);	
-		
+		return (send_reply(client_socket, 464));	
 	}
-	// std::cout << "ouiiiiiii" << std::endl;
+
+	std::cout << "Password OK" << std::endl;
 }

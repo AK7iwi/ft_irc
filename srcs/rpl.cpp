@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/23 18:01:28 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:40:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ std::string	ERR_ALREADYREGISTERED(Client const *client)
 std::string	ERR_PASSWDMISMATCH(Client const *client)
 {return (client->get_prefix() + " 464 :Password incorrect");}
 
-
 std::string Server::wich_rpl(int client_socket, uint16_t rpl)
 {
 	std::string reply;
@@ -53,7 +52,7 @@ std::string Server::wich_rpl(int client_socket, uint16_t rpl)
         // case   4: reply = RPL_MYINFO(_users[fd], _servername, _version);         break;
         case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket]);				break;
         case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           break;
-        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);               break;
+        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);				break;
     }
 	
 	return (reply);

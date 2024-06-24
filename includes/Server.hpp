@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/23 18:01:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/24 16:20:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ class Server
 		//////////////////// Methods ////////////////////////////
 		
 		/* Commands */
-		void 		user(int client_socket, std::string &client);
-		void 		nick(int client_socket, std::string &nick);
-		void 		pass(int client_socket, std::string &command);
+		void 		user(int client_socket, std::vector<std::string> &s_command);
+		void 		nick(int client_socket, std::vector<std::string> &s_command);
+		void		pass(int client_socket, std::vector<std::string> &s_command);
 		
 		/* Handle commands */
 		void 		handle_commands(int client_socket, std::string &command);
