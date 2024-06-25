@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 12:31:04 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:00:40 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,9 @@ void Server::handle_commands(int client_socket, std::string &command)
 	std::vector<std::string> s_command = split(command_char, ' ');
 
 	if (s_command.empty())
-    {
-        std::cerr << "Error: command split resulted in an empty vector" << std::endl;
-        return;
-    }
+		return;
 	
-	std::cout << "command[0]: " << command[0] << std::endl;
-	std::cout << "command[1]: " << command[1] << std::endl;
-	
-	if (s_command[0] == "PASS")		
+	if (s_command[0] == "PASS")
 		pass(client_socket, s_command);
 	else if (s_command[0] == "NICK")
 		nick(client_socket, s_command);
@@ -95,8 +89,6 @@ void Server::handle_clients(int client_socket)
 		return (remove_client(client_socket));
 	
 	buffer[valread] = '\0';
-
-	std::cout << "buffer: \n" << buffer << std::endl;
 	
 	tmp_buffer += buffer;
 	

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/24 17:13:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 14:00:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ class Client
 		std::string 	const	&get_realname() const;
 		std::string 	const	&get_hostname() const;
 		std::string		const 	&get_prefix()	const;
-		std::string		const 	&get_buffer()	const;
+		// std::string		const 	&get_buffer()	const;
 
 		/* Setter */
 
 		void					set_prefix();
-		void					set_buffer(std::string &tmp_buffer); 
+		// void					set_buffer(std::string &tmp_buffer); 
 
 	private:
 		int				_socket_fd;
@@ -44,7 +44,7 @@ class Client
 		std::string 	_realname;
 		std::string 	_hostname;
 		std::string 	_prefix;
-		std::string 	_buffer;
+		// std::string 	_buffer;
 };
 
 #endif /* CLIENT_HPP */
