@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/24 18:26:04 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:31:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,20 @@ Server::~Server()
 
 void Server::handle_commands(int client_socket, std::string &command)
 {
-	command.erase(command.find_last_not_of(" \n\r\t")+1);
+	command.erase(command.find_last_not_of(" \n\r\t") + 1);
 	const char* command_char = command.c_str();
 	std::vector<std::string> s_command = split(command_char, ' ');
 
-	if (s_command[0] == "PASS")	
+	if (s_command.empty())
+    {
+        std::cerr << "Error: command split resulted in an empty vector" << std::endl;
+        return;
+    }
+	
+	std::cout << "command[0]: " << command[0] << std::endl;
+	std::cout << "command[1]: " << command[1] << std::endl;
+	
+	if (s_command[0] == "PASS")		
 		pass(client_socket, s_command);
 	else if (s_command[0] == "NICK")
 		nick(client_socket, s_command);
@@ -68,8 +77,6 @@ void Server::handle_clients(int client_socket)
 	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
-	std::string	tmp_buffer2 = "";
-	static int j = 0;
 	
 	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0); //check recv flag
     if (valread == -1 && errno != EWOULDBLOCK)
@@ -89,22 +96,15 @@ void Server::handle_clients(int client_socket)
 	
 	buffer[valread] = '\0';
 
+	std::cout << "buffer: \n" << buffer << std::endl;
+	
 	tmp_buffer += buffer;
 	
-	_clients[client_socket]->set_buffer(tmp_buffer);
-	// std::cout << "tmp_buffer[" << j << "]: " << tmp_buffer << std::endl;
-	// std::cout << "tmp_buffer2[" << j << "]: " << tmp_buffer2 << std::endl;
-	// std::cout << "get_buffer[" << j << "]: " <<_clients[client_socket]->get_buffer() << std::endl; 
-	
-    std::vector<std::string> commands = split(_clients[client_socket]->get_buffer(), '\n');
-	uint8_t len_command = commands.size();
+    std::vector<std::string> commands = split(tmp_buffer, '\n');
+	uint8_t	len_command = commands.size();
 	for (uint8_t i = 0; i < len_command; i++)
-	{
-		// std::cout << "i: " << i << std::endl;
 		handle_commands(client_socket, commands[i]);
-	}
-	_clients[client_socket]->set_buffer(tmp_buffer2);
-	j++;
+
 	std::cout << std::endl;
 }
 
