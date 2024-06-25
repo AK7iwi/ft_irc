@@ -6,11 +6,18 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/24 14:13:53 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:43:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+
+bool contains_invalid_chars(std::string const &str)
+{
+    for (size_t i = 0; i < str.size(); ++i)
+        return (str[i] == '#' || str[i] == ':' || str[i] == '&' || str[i] == '=' || isspace(str[i]));
+    return (false);
+}
 
 void Server::remove_client(int client_socket)
 {
@@ -27,16 +34,8 @@ void Server::remove_client(int client_socket)
         }
     }
 
-    // std::map<int, Client*>::iterator it = _clients.find(client_socket);
-    // if (it != _clients.end()) 
-	// {
-    //     delete (it->second);
-    //     _clients.erase(it);
-    // }
-
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
-
 }
 
 std::vector<std::string> split(std::string const &str, char delimiter) 

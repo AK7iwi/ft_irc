@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/24 16:20:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 17:05:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ class Server
 		Server(uint16_t port, std::string const &password);
 		~Server();
 		
-		// bool 	is_running;
-		
-		void	run();
-		void	init_server();
+		/* Main loop */
+		void		run();
+
+		/* Init the Server */
+		void		init_server();
 
 	private:
 		/////////////////// Member variable ///////////////////
@@ -64,12 +65,12 @@ class Server
 
 		/* Map of clients */
 		std::map<int, Client*> 		_clients;
-
-		/* utils member*/
-
-		std::string 				_void_str;
 		
 		//////////////////// Methods ////////////////////////////
+		
+		/* Send response to the client */
+		std::string	wich_rpl(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
+		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
 		void 		user(int client_socket, std::vector<std::string> &s_command);
@@ -85,14 +86,10 @@ class Server
 		
 		/////////////////// Utils methods from Server///////////////
 		
-		/* Send response to the client */
-		std::string	wich_rpl(int client_socket, uint16_t rpl);
-		void		send_reply(int client_socket, uint16_t rpl); 
 		/* Remove client method */
 		void		remove_client(int client_socket);
 		/* Init struct address */
 		void		init_address_structures();
-    
 };
 
 #endif /* SERVER_HPP */

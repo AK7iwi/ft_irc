@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/24 15:40:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:33:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@
 // std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version) 
 // {return (":" + _servername + " 004 " + client->get_nickname() + " " + _servername + " " + _version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
+/* 431 */
+std::string	ERR_NONICKNAMEGIVEN(Client const *client) 
+{return (client->get_prefix() + " 431 :No nickname given");}
+
+/* 432 */
+std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick)
+{return (client->get_prefix() + " 432 " + nick + " :Erroneus nickname");}
+
+/* 433 */
+std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick)
+{return (client->get_prefix() + " 433 " + nick + " :Nickname is already in use");}
+
 /* 461 */
 std::string	ERR_NEEDMOREPARAMS(Client const *client)
 {return (client->get_prefix() + " 461 PASS :Not enough parameters");}
@@ -40,27 +52,31 @@ std::string	ERR_ALREADYREGISTERED(Client const *client)
 std::string	ERR_PASSWDMISMATCH(Client const *client)
 {return (client->get_prefix() + " 464 :Password incorrect");}
 
-std::string Server::wich_rpl(int client_socket, uint16_t rpl)
+std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
 	std::string reply;
 	
 	switch (rpl)
 	{
-        // case   1: reply = RPL_WELCOME(_users[fd], _networkname, _servername);    break;
-        // case   2: reply = RPL_YOURHOST(_users[fd], _servername, _version);       break;
-        // case   3: reply = RPL_CREATED(_users[fd], _start_time, _servername);     break;
-        // case   4: reply = RPL_MYINFO(_users[fd], _servername, _version);         break;
-        case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket]);				break;
-        case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           break;
-        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);				break;
+        // case   1: reply = RPL_WELCOME(_client[client_socket], _networkname, _servername);    break;
+        // case   2: reply = RPL_YOURHOST(_client[client_socket], _servername, _version);       break;
+        // case   3: reply = RPL_CREATED(_client[client_socket], _start_time, _servername);     break;
+        // case   4: reply = RPL_MYINFO(_client[client_socket], _servername, _version);         break;
+
+		case 431: reply = ERR_NONICKNAMEGIVEN(_clients[client_socket]);						break;
+        case 432: reply = ERR_ERRONEUSNICKNAME(_clients[client_socket], reply_arg[0]);		break;
+        case 433: reply = ERR_NICKNAMEINUSE(_clients[client_socket], reply_arg[0]);			break;
+        case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket]);						break;
+        case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           		break;
+        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);						break;
     }
 	
 	return (reply);
 }
 
-void Server::send_reply(int client_socket, uint16_t rpl) 
+void Server::send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const  &reply_arg) 
 {
-	std::string message = wich_rpl(client_socket, rpl) + "\r\n";
+	std::string message = wich_rpl(client_socket, rpl, reply_arg) + "\r\n";
 
     if (send(client_socket, message.c_str(), message.length(), 0) == -1)
 		return ;

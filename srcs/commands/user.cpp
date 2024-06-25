@@ -14,9 +14,6 @@
 
 void Server::user(int client_socket,  std::vector<std::string> &s_command)
 {
-	std::cout << "Enter into user fct" << std::endl;
-	(void)client_socket;
-	(void)s_command;
-	// if (password != _password)
-	// 	std::cout << "RPL" << std::endl;
+	if (s_command.size() != 4)
+		return (send_reply(client_socket, 461, s_command));
 }

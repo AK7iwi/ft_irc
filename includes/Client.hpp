@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 14:00:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 17:12:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,29 @@ class Client
 		~Client();
  				
 		/* Getter */
-		int 					get_socket()	const;
-		std::string 	const	&get_nickname() const;
-		std::string 	const	&get_username() const;
-		std::string 	const	&get_realname() const;
+		
+		int 					get_valid_pass() const;
 		std::string 	const	&get_hostname() const;
+		std::string 	const	&get_realname() const;
+		std::string 	const	&get_username() const;
+		std::string 	const	&get_nickname() const;
 		std::string		const 	&get_prefix()	const;
-		// std::string		const 	&get_buffer()	const;
+		int 					get_socket()	const;
 
 		/* Setter */
-
+		
+		void					set_nickname(std::string const &nickname);
+		void 					set_valid_pass();
 		void					set_prefix();
-		// void					set_buffer(std::string &tmp_buffer); 
 
 	private:
 		int				_socket_fd;
+		std::string 	_prefix;
 		std::string 	_nickname;
 		std::string 	_username;
 		std::string 	_realname;
 		std::string 	_hostname;
-		std::string 	_prefix;
-		// std::string 	_buffer;
+		bool 			_valid_pass;
 };
 
 #endif /* CLIENT_HPP */

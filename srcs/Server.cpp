@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 14:00:40 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/25 16:49:45 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ Server::Server(uint16_t port, std::string const &password) :
     _password(password),
 	_networkname("AAAA"),
 	_servername("BBBB"),
-	_version("-5"),
-	_void_str("")
+	_version("jailbreak 1.33")
 {
 	time_t  now = time(0);
     tm      *ltm = localtime(&now);
@@ -36,7 +35,6 @@ Server::~Server()
 	if (_server_socket != -1)
 		close(_server_socket);
 
-	
 	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
         close(it->fd);
     _fds.clear();
@@ -53,7 +51,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 	std::vector<std::string> s_command = split(command_char, ' ');
 
 	if (s_command.empty())
-		return;
+		return ;
 	
 	if (s_command[0] == "PASS")
 		pass(client_socket, s_command);
@@ -96,8 +94,6 @@ void Server::handle_clients(int client_socket)
 	uint8_t	len_command = commands.size();
 	for (uint8_t i = 0; i < len_command; i++)
 		handle_commands(client_socket, commands[i]);
-
-	std::cout << std::endl;
 }
 
 void Server::handle_new_connections()
