@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 16:49:45 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 13:33:31 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ void Server::handle_commands(int client_socket, std::string &command)
 		nick(client_socket, s_command);
 	else if (s_command[0] == "USER")
 		user(client_socket, s_command);
-	// else
-	// 	std:: cout << "Unknow command" << std::endl;
+	else
+		std:: cout << "Unknow command" << std::endl; //RPL??
 }
 
 void Server::handle_clients(int client_socket)

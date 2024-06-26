@@ -6,16 +6,21 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 15:43:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:23:07 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-bool contains_invalid_chars(std::string const &str)
+bool	contains_invalid_chars(std::string const &nickname)
 {
-    for (size_t i = 0; i < str.size(); ++i)
-        return (str[i] == '#' || str[i] == ':' || str[i] == '&' || str[i] == '=' || isspace(str[i]));
+	if (nickname[0] == '$' || nickname[0] == ':' || nickname[0] == '#')
+		return (true);
+
+	std::string invalid_chars = " ,*?!@.";
+	if (nickname.find_first_of(invalid_chars) != std::string::npos)
+		return (true);
+	
     return (false);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 16:33:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:57:52 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,10 @@ std::string	ERR_NEEDMOREPARAMS(Client const *client);
 std::string	ERR_ALREADYREGISTERED(Client const *client);
 /* 464 */
 std::string	ERR_PASSWDMISMATCH(Client const *client);
+
+/* Personal RPL */
+
+/* 1111 */
+std::string	NEW_NICK(std::vector<std::string> const &reply_arg);
 
 #endif /* RPL_HPP */
