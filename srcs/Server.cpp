@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 13:33:31 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 21:04:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,21 @@ void Server::handle_commands(int client_socket, std::string &command)
 	if (s_command.empty())
 		return ;
 	
-	if (s_command[0] == "PASS")
+	if (s_command[0] == "CAP")
+		std::cout << "CAP LS" << std::endl; //provisional sol
+	else if (s_command[0] == "PASS")
 		pass(client_socket, s_command);
 	else if (s_command[0] == "NICK")
 		nick(client_socket, s_command);
 	else if (s_command[0] == "USER")
 		user(client_socket, s_command);
 	else
-		std:: cout << "Unknow command" << std::endl; //RPL??
+		std:: cout << "Unknow command" << std::endl; //RPL?? (CAP LS handle)
 }
 
 void Server::handle_clients(int client_socket)
 {
-	std::cout << "Handle client: " << _clients[client_socket]->get_nickname() << std::endl << std::endl;
+	// std::cout << "Handle client: " << _clients[client_socket]->get_nickname() << std::endl << std::endl;
 	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
@@ -89,6 +91,8 @@ void Server::handle_clients(int client_socket)
 	buffer[valread] = '\0';
 	
 	tmp_buffer += buffer;
+
+	std::cout << "Buffer: \n" << buffer << std::endl;
 	
     std::vector<std::string> commands = split(tmp_buffer, '\n');
 	uint8_t	len_command = commands.size();

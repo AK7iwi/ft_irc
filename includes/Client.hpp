@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 17:12:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 19:09:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ class Client
 
 		/* Setter */
 		
+		void 					set_hostname(std::string const &hostname);
+		void 					set_realname(std::string const &realname);
+		void 					set_username(std::string const &username);
 		void					set_nickname(std::string const &nickname);
 		void 					set_valid_pass();
 		void					set_prefix();

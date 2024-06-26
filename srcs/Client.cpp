@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 17:12:59 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 19:14:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ int  				Client::get_socket()		const	{return (_socket_fd);}
 
 
 /* Setter method */
-
-void 				Client::set_valid_pass()							{_valid_pass = true;}
+void				Client::set_hostname(std::string const &hostname)	{_hostname = hostname;} 
+void				Client::set_realname(std::string const &realname)	{_realname = realname;} 
+void				Client::set_username(std::string const &username)	{_username = username;} 
 void				Client::set_nickname(std::string const &nickname)	{_nickname = nickname;} 
+void 				Client::set_valid_pass()							{_valid_pass = true;}
 void				Client::set_prefix()								{_prefix = ":" + _nickname + "!" + _username + "@" + _hostname;}
 
 

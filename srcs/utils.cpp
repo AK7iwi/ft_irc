@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 17:23:07 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 20:39:16 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	contains_invalid_chars(std::string const &nickname)
 
 void Server::remove_client(int client_socket)
 {
-	std::cout << "Bouge de la " << _clients[client_socket]->get_nickname() <<std::endl;
+	std::cout << "Taille de la " << _clients[client_socket]->get_nickname() <<std::endl;
 	
     close(client_socket);
 

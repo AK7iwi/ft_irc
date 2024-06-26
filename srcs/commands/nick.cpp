@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 18:05:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/26 20:37:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
-	if (!_clients[client_socket]->get_valid_pass())
+	if (!(_clients[client_socket]->get_valid_pass()))
 	{
 		std::cout << "Met un mot de passe frere\n" << std::endl;
 		return ;
@@ -25,6 +25,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 	if (s_command.size() != 2)
 		return (send_reply(client_socket, 431, reply_arg));
 	
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);
 	
 	if (contains_invalid_chars(s_command[1]))
@@ -34,11 +35,10 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 		if (it->second->get_nickname() == s_command[1]) 
 			return (send_reply(client_socket, 433, reply_arg));
 	
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
-	
-	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
-        if (it->first != client_socket)
-            send_reply(it->first, 1111, reply_arg);
+	if ((_clients[client_socket]->get_nickname() != "DEFAULT") && (_clients[client_socket]->get_username() != "DEFAULT")) //is_register
+		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
+        	if (it->first != client_socket)
+           		send_reply(it->first, 1111, reply_arg);
 
 	_clients[client_socket]->set_nickname(s_command[1]);
 	_clients[client_socket]->set_prefix();
