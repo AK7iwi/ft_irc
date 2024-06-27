@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 17:34:52 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:33:23 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void Server::handle_clients(int client_socket)
 	
 	tmp_buffer += buffer;
 
-	std::cout << "Buffer: \n" << buffer << std::endl;
+	// std::cout << "Buffer: \n" << buffer << std::endl;
 	
     std::vector<std::string> commands = split(tmp_buffer, '\n');
 	uint8_t	len_command = commands.size();

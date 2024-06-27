@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 19:06:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:13:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,14 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 	
 	for (std::vector<std::string>::iterator it = stock_channels_name.begin(); it != stock_channels_name.end(); it++)
 	{
-		for (std::map<int, Channel*>::iterator it2 = _channels.begin(); it != _channels.end(); it++)
+		for (std::map<int, Channel*>::iterator it2 = _channels.begin(); it2 != _channels.end(); it2++)
 		{
-			// if (it2->second->get_chan_name() == *it)  join the channel 
 			std::cout << "*it: " << *it << std::endl;
+			std::cout << "Enter in the loop2" << std::endl;
+			// if (it2->second->get_chan_name() == *it)  join the channel (push_back user to _clients_chan)
+			std::cout << "*it2: " << it2->second->get_chan_name() << std::endl;
 		}
 	}
-
-	//create channel 
+	
+	//create channel (push_back channel in _channels and push_back user to _clients_chan)
 }

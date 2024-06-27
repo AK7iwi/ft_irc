@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 18:39:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/27 20:06:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ class Server
 		std::map<int, Client*> 		_clients;
 
 		/* Map of channels */
-
 		std::map<int, Channel*> 	_channels;
 
 		//////////////////// Methods ////////////////////////////
