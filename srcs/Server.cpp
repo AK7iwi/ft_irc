@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 14:26:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:34:52 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ Server::Server(uint16_t port, std::string const &password) :
 
 Server::~Server() 
 {
-	//check if needed?? in the next loop for I think
-	// if (_server_socket != -1)
-	// 	close(_server_socket);
-
 	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); it++)
         close(it->fd);
     _fds.clear();
@@ -61,6 +57,8 @@ void Server::handle_commands(int client_socket, std::string &command)
 		nick(client_socket, s_command);
 	else if (s_command[0] == "USER")
 		user(client_socket, s_command);
+	else if (s_command[0] == "JOIN")
+		join(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; //RPL
 }
@@ -92,7 +90,7 @@ void Server::handle_clients(int client_socket)
 	
 	tmp_buffer += buffer;
 
-	// std::cout << "Buffer: " << buffer << std::endl;
+	std::cout << "Buffer: \n" << buffer << std::endl;
 	
     std::vector<std::string> commands = split(tmp_buffer, '\n');
 	uint8_t	len_command = commands.size();
@@ -108,7 +106,7 @@ void Server::handle_new_connections()
     int	client_socket = accept(_server_socket, (struct sockaddr *)&client_addr, &client_len);
     if (client_socket == -1)
 	{
-		std::cout << "Error: accept() function failed" << std::endl; //RPL
+		std::cout << "Error: accept() function failed" << std::endl; //throw?
         return ;
 	}
 

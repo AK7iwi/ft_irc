@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 17:05:44 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:39:55 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "utils.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
 #include <iostream>
 #include <stdlib.h>
 #include <stdint.h>
@@ -28,6 +29,8 @@
 #include <netinet/in.h>
 
 class Client;
+class Channel;
+
 
 #define BUFFER_MAX	4096
 
@@ -65,7 +68,11 @@ class Server
 
 		/* Map of clients */
 		std::map<int, Client*> 		_clients;
-		
+
+		/* Map of channels */
+
+		std::map<int, Channel*> 	_channels;
+
 		//////////////////// Methods ////////////////////////////
 		
 		/* Send response to the client */
@@ -73,6 +80,7 @@ class Server
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
+		void		join(int client_socket, std::vector<std::string> &s_command);
 		void 		user(int client_socket, std::vector<std::string> &s_command);
 		void 		nick(int client_socket, std::vector<std::string> &s_command);
 		void		pass(int client_socket, std::vector<std::string> &s_command);

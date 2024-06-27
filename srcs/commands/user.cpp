@@ -54,6 +54,5 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	send_reply(client_socket, 3, reply_arg);
 	send_reply(client_socket, 4, reply_arg);
 
-	std::cout << "get_realname: " << _clients[client_socket]->get_realname() <<std::endl;
 	std::cout << "Bienvenue chez moi " << _clients[client_socket]->get_nickname() <<std::endl; //RPL
 }
