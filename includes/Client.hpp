@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 09:58:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/28 11:32:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,11 @@ class Client
 		Client(int socket_fd);
 		~Client();
 
-		/* Checker*/
-
+		/* Checker */
 		bool 					is_registered() const;
 		bool 					is_valid_pass() const;
 		
 		/* Getter */
-		
 		std::string 	const	&get_realname() const;
 		std::string 	const	&get_hostname() const;
 		std::string 	const	&get_username() const;
@@ -38,7 +36,6 @@ class Client
 		uint16_t				get_socket()	const;
 
 		/* Setter */
-		
 		void 			 		set_register();
 		void 					set_valid_pass();
 		void 					set_realname(std::string const &realname);
@@ -48,6 +45,7 @@ class Client
 		void					set_prefix();
 
 	private:
+		/* Client infos */
 		int				_socket_fd;
 		std::string 	_prefix;
 		std::string 	_nickname;

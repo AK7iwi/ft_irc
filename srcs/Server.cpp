@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 19:33:23 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/28 11:31:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ Server::~Server()
 
 	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
         delete (it->second); 
-    _clients.clear(); 
+    _clients.clear();
+
+	for (std::map<int, Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
+        delete (it->second); 
+    _channels.clear(); 
 }
 
 void Server::handle_commands(int client_socket, std::string &command)

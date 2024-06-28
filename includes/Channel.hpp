@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 20:05:24 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:48:09 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,31 @@
 #define CHANNEL_HPP
 
 #include "Server.hpp"
+#include <map>
+
+class Client;
 
 class Channel 
 {
 	public:
-		Channel();
+		Channel(std::string const &name);
 		~Channel();
 
+		/* Add client method */
+		void	add_client(Client *client);
+		
 		/* Getter methods */
 		std::string 	const	&get_chan_name() const;
-
+		
+		/* Setter methods */
+		void 					set_topic(std::string const &topic);		
+		
 	private:
-		std::string 	_name;
-		std::string 	_topic;
+		std::string 				_name;
+		std::string 				_topic;
+		std::string 				_password;
 
-		// std::map<int, Client*> 		_clients_chan;
-
-
+		std::map<int, Client*> 		_clients_chan;
 };
 
 

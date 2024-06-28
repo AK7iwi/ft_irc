@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 19:04:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/28 11:16:42 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 class Server;
 class Client;
-
 
 /* 001 */
 std::string	RPL_WELCOME(Client const *client, std::string const &networkname, std::string const &servername);
