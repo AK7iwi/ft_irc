@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/28 20:08:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/29 14:19:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		bool found = false;
 		for (std::map<int, Channel*>::iterator it2 = _channels.begin(); it2 != _channels.end(); it2++)
 		{
-			std::cout << "*it: " << *it << std::endl;
-			std::cout << "*it2: " << it2->second->get_chan_name() << std::endl;
-			std::cout << "*it2->first: " << it2->first << std::endl;
 			if (it2->second->get_chan_name() == *it)
 			{
-				std::cout << "Enter in the cond" << std::endl;
+				std::cout << "Enter in an existant chan" << std::endl;
 				it2->second->add_client(_clients[client_socket]);
 				found = true;
 				break ;
@@ -43,16 +40,28 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		if (!found)
 		{
+			std::cout << "New chan" << std::endl;
 			Channel *new_channel = new Channel(*it);
 			new_channel->add_client(_clients[client_socket]);
 			new_channel->set_id(id);
 			std::cout << "id" << id << std::endl;
 			id++;
 			_channels[new_channel->get_id()] = new_channel;
-			std::cout << "New chan" << std::endl;
 		}
 	}
 
+	/* Test for if _channels and __client_chan are filled */
+	std::cout << "Test the channel name:\n" << std::endl;
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{
+		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
+		std::vector<Client*> cpy_client_chan = _channels[i]->get_client_chan();
+		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
+		std::cout << "Client belong to the channel:" << std::endl;
+		for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
+        	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
+	}
+	
 	std::cout << std::endl; 
 	std::cout << "Next join test:\n" << std::endl;
 } 
