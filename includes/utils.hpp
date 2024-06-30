@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/25 14:58:03 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 13:32:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-
-bool 					contains_invalid_chars(std::string const &str);
 
 /* String method */
 

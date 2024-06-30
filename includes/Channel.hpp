@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/29 14:14:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 13:42:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,20 @@ class Channel
 		~Channel();
 
 		/* Add client method */
-		void					add_client(Client *client);
+		void							add_client(Client *client);
+		
+
+		/* Parse method */
 		
 		/* Getter methods */
 		
-		
-		std::vector<Client*> 	const	&get_client_chan() const; //test method
-
-		
-		int 				 	get_id() 			const; //no really needed for now 
-		std::string 	const	&get_chan_name()	const;
+		std::vector<Client*> 	const	&get_client_chan() const; 
+		int 				 			get_id() 			const; //no really needed for now 
+		std::string 			const	&get_chan_name()	const;
 		
 		/* Setter methods */
-		void 					set_id(int id); //no really needed for now 
-		void 					set_topic(std::string const &topic);	
+		void 							set_id(int id); //no really needed for now 
+		void 							set_topic(std::string const &topic);	
 		
 	private:
 		/* Channel infos */

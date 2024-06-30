@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:12 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 14:25:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:42:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	Server::pass(int client_socket, std::vector<std::string> &s_command)
 
 	reply_arg.push_back(s_command[0]);
 	
-	if (s_command.size() != 2)
+	if (s_command.size() != 2) // <
 		return (send_reply(client_socket, 461, reply_arg));
 	else if (_clients[client_socket]->get_nickname() != "DEFAULT")
 		return (send_reply(client_socket, 462, reply_arg));

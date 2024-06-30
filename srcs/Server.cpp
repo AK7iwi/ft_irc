@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/29 10:59:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:29:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,25 @@ Server::~Server()
     _channels.clear(); 
 }
 
+void Server::remove_client(int client_socket)
+{
+	std::cout << "Taille de la " << _clients[client_socket]->get_nickname() <<std::endl;
+	
+    close(client_socket);
+
+	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
+	{
+        if (it->fd == client_socket)
+		{
+            _fds.erase(it);
+            break;
+        }
+    }
+
+	delete (_clients[client_socket]);
+    _clients.erase(_clients.find(client_socket));
+}
+
 void Server::handle_commands(int client_socket, std::string &command)
 {
 	command.erase(command.find_last_not_of(" \n\r\t") + 1);
@@ -53,6 +72,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 	if (s_command.empty())
 		return ;
 	
+	(void)client_socket;
 	if (s_command[0] == "CAP")
 		std::cout << "CAP LS" << std::endl; //provisional sol
 	else if (s_command[0] == "PASS")

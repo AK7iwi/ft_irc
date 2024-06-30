@@ -6,42 +6,13 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 20:39:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 13:36:35 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-bool	contains_invalid_chars(std::string const &nickname)
-{
-	if (nickname[0] == '$' || nickname[0] == ':' || nickname[0] == '#')
-		return (true);
-
-	std::string invalid_chars = " ,*?!@.";
-	if (nickname.find_first_of(invalid_chars) != std::string::npos)
-		return (true);
-	
-    return (false);
-}
-
-void Server::remove_client(int client_socket)
-{
-	std::cout << "Taille de la " << _clients[client_socket]->get_nickname() <<std::endl;
-	
-    close(client_socket);
-
-	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
-	{
-        if (it->fd == client_socket)
-		{
-            _fds.erase(it);
-            break;
-        }
-    }
-
-	delete (_clients[client_socket]);
-    _clients.erase(_clients.find(client_socket));
-}
+/* Split method */
 
 std::vector<std::string> split(std::string const &str, char delimiter) 
 {

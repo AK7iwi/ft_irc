@@ -6,11 +6,23 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 14:25:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/06/30 14:42:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+static	bool	contains_invalid_chars(std::string const &nickname)
+{
+	if (nickname[0] == '$' || nickname[0] == ':' || nickname[0] == '#')
+		return (true);
+
+	std::string invalid_chars = " ,*?!@.";
+	if (nickname.find_first_of(invalid_chars) != std::string::npos)
+		return (true);
+	
+    return (false);
+}
 
 void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
@@ -22,7 +34,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 	
 	std::vector<std::string>    reply_arg;
 	
-	if (s_command.size() != 2)
+	if (s_command.size() != 2) // <
 		return (send_reply(client_socket, 431, reply_arg));
 	
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
