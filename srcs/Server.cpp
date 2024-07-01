@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 16:32:40 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:27:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,11 +153,9 @@ void Server::run()
 	if (_fds[0].revents & POLLIN)
         handle_new_connections();
 	else
-	{
 		for (size_t i = 1; i < _fds.size(); ++i) 
-            if (_fds[i].revents & POLLIN)
+        	if (_fds[i].revents & POLLIN)
 				handle_clients(_fds[i].fd);
-	}
 }
 
 /* Init Server method */

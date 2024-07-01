@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 17:51:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:57:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,45 @@
 
 static bool inline is_valid_prefix(std::string const &potential_new_channels)
 {return (potential_new_channels[0] == '#' || potential_new_channels[0] == '&');}
+
+static std::map<std::string, std::string> create_channel_map(std::vector<std::string> &s_command)
+{
+	std::map<std::string, std::string> channel_key_map;
+	std::vector<std::string> potential_new_channels = split(s_command[1], ',');
+	
+    if (s_command.size() == 3)
+	{
+        std::vector<std::string> v_key = split(s_command[2], ',');
+		size_t len = 0;
+        for (; len < v_key.size() && len < potential_new_channels.size(); ++len)
+		{
+            channel_key_map[potential_new_channels[len]] = v_key[len];
+			std::cout << "Len before: " << len << std::endl;
+		}
+		std::cout << "Len after: " << len << std::endl;
+		for (; len < potential_new_channels.size(); ++len)
+		{
+			channel_key_map[potential_new_channels[len]] = "";	
+		}
+	}
+	else 
+		for (size_t i = 0; i < potential_new_channels.size(); ++i)
+            channel_key_map[potential_new_channels[i]] = "";
+
+	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end();) 
+	{
+		if (!is_valid_prefix(it->first)) 
+		{
+        	std::map<std::string, std::string>::iterator erase_it = it;
+        	++it;
+        	channel_key_map.erase(erase_it);
+    	} 
+		else
+    		++it;
+	}
+	
+	return (channel_key_map);
+;}
 
 void Server::join(int client_socket, std::vector<std::string> &s_command)
 {
@@ -24,25 +63,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 	if (s_command.size() != 2 && s_command.size() != 3)
 		return (send_reply(client_socket, 461, reply_arg));
 
-	std::map<std::string, std::string> channel_key_map;
-    std::vector<std::string> potential_new_channels = split(s_command[1], ',');
-	
-    for (size_t k = 0; k < potential_new_channels.size(); ++k)
-        if (is_valid_prefix(potential_new_channels[k]))
-            channel_key_map[potential_new_channels[k]] = "";
-		else 
-			potential_new_channels.erase(potential_new_channels.begin() + k);
-
-    if (s_command.size() == 3)
-	{
-        std::vector<std::string> v_key = split(s_command[2], ',');
-        for (size_t l = 0; l < v_key.size() && l < potential_new_channels.size(); ++l)
-            channel_key_map[potential_new_channels[l]] = v_key[l];
-	}
-    
-	// test the map
-	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end(); ++it)
-    	std::cout << "Channel: " << it->first << ", Key: " << it->second << std::endl;
+	std::map<std::string, std::string> channel_key_map = create_channel_map(s_command);
 	
 	/* Check if the channel already exist and add client if exist */
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end(); it++)
@@ -77,6 +98,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{
 		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
+		std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
 		std::vector<Client*> cpy_client_chan = _channels[i]->get_client_chan();
 		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
 		std::cout << "Client belong to the channel:" << std::endl;
