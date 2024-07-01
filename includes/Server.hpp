@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/28 19:42:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:25:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ class Server
 		std::string             	_start_time;
 		
 		/* Struct for init server */
-		struct sockaddr_in6			_server_addr;
+		struct sockaddr_in6					_server_addr;
 
 		/* Socket of the server */
-		int 						_server_socket;
+		int 								_server_socket;
 		
 		/* Vector of fds */
-		std::vector<struct pollfd>	_fds;
+		std::vector<struct pollfd>			_fds;
 
 		/* Map of clients */
-		std::map<int, Client*> 		_clients;
+		std::map<int, Client*> 				_clients;
 
 		/* Map of channels */
-		std::map<int, Channel*> 	_channels;
+		std::vector<Channel*>				_channels;
 
 		//////////////////// Methods ////////////////////////////
 		

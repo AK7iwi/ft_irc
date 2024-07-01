@@ -22,9 +22,10 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	}
 
 	std::vector<std::string>    reply_arg;
+	
 	reply_arg.push_back(s_command[0]);
 
-	if (s_command.size() < 5) 
+	if (s_command.size() != 5 && s_command.size() != 6)
 		return (send_reply(client_socket, 461, reply_arg));
 	else if (_clients[client_socket]->is_registered())
     	return (send_reply(client_socket, 462, reply_arg));

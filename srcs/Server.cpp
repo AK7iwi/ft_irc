@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/30 14:29:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/01 16:32:40 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ Server::~Server()
         delete (it->second); 
     _clients.clear();
 
-	for (std::map<int, Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
-        delete (it->second); 
+	for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
+        delete (*it); 
     _channels.clear(); 
 }
 
@@ -61,6 +61,8 @@ void Server::remove_client(int client_socket)
 
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
+
+	//delete from the chan also
 }
 
 void Server::handle_commands(int client_socket, std::string &command)
@@ -72,7 +74,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 	if (s_command.empty())
 		return ;
 	
-	(void)client_socket;
+	// (void)client_socket;
 	if (s_command[0] == "CAP")
 		std::cout << "CAP LS" << std::endl; //provisional sol
 	else if (s_command[0] == "PASS")
@@ -88,9 +90,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 }
 
 void Server::handle_clients(int client_socket)
-{
-	// std::cout << "Handle client: " << _clients[client_socket]->get_nickname() << std::endl << std::endl;
-	
+{	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
 	
@@ -114,7 +114,7 @@ void Server::handle_clients(int client_socket)
 	
 	tmp_buffer += buffer;
 
-	// std::cout << "Buffer: \n" << buffer << std::endl;
+	std::cout << "Buffer: \n" << buffer << std::endl;
 	
     std::vector<std::string> commands = split(tmp_buffer, '\n');
 	uint8_t	len_command = commands.size();
@@ -130,7 +130,7 @@ void Server::handle_new_connections()
     int	client_socket = accept(_server_socket, (struct sockaddr *)&client_addr, &client_len);
     if (client_socket == -1)
 	{
-		std::cout << "Error: accept() function failed" << std::endl; //throw?
+		std::cout << "Error: accept() function failed" << std::endl;
         return ;
 	}
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/27 09:23:21 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:53:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ std::string  const&	Client::get_username()		const	{return (_username);}
 std::string  const&	Client::get_nickname()		const	{return (_nickname);}
 std::string  const&	Client::get_prefix()		const	{return (_prefix);}
 uint16_t  			Client::get_socket()		const	{return (_socket_fd);}
-
 
 /* Setter method */
 
