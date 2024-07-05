@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 19:57:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:22:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,11 @@ static std::map<std::string, std::string> create_channel_map(std::vector<std::st
 	{
         std::vector<std::string> v_key = split(s_command[2], ',');
 		size_t len = 0;
+		
         for (; len < v_key.size() && len < potential_new_channels.size(); ++len)
-		{
             channel_key_map[potential_new_channels[len]] = v_key[len];
-			std::cout << "Len before: " << len << std::endl;
-		}
-		std::cout << "Len after: " << len << std::endl;
 		for (; len < potential_new_channels.size(); ++len)
-		{
 			channel_key_map[potential_new_channels[len]] = "";	
-		}
 	}
 	else 
 		for (size_t i = 0; i < potential_new_channels.size(); ++i)
@@ -43,6 +38,7 @@ static std::map<std::string, std::string> create_channel_map(std::vector<std::st
 	{
 		if (!is_valid_prefix(it->first)) 
 		{
+			//RPL 476 
         	std::map<std::string, std::string>::iterator erase_it = it;
         	++it;
         	channel_key_map.erase(erase_it);
@@ -52,14 +48,14 @@ static std::map<std::string, std::string> create_channel_map(std::vector<std::st
 	}
 	
 	return (channel_key_map);
-;}
+}
 
 void Server::join(int client_socket, std::vector<std::string> &s_command)
 {
 	std::vector<std::string>    reply_arg;
 	
 	reply_arg.push_back(s_command[0]);
-	
+	//RPL 451	
 	if (s_command.size() != 2 && s_command.size() != 3)
 		return (send_reply(client_socket, 461, reply_arg));
 
@@ -77,6 +73,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 				found = true;
 				if (_channels[i]->get_key() != it->second)
 				{
+					//RPL 475
 					std::cout << "Invalid key!!" << std::endl;
 					break ;
 				}
@@ -86,6 +83,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		if (!found)
 		{
+			//RPL 403
 			std::cout << "New chan" << std::endl;
 			Channel *new_channel = new Channel(it->first, it->second);
 			new_channel->add_client(_clients[client_socket]);
@@ -93,19 +91,19 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 	}
 
-	/* Test if _channels and __client_chan are filled */
-	std::cout << "Test the channel name:\n" << std::endl;
-	for (size_t i = 0; i < _channels.size(); ++i)
-	{
-		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
-		std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
-		std::vector<Client*> cpy_client_chan = _channels[i]->get_client_chan();
-		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
-		std::cout << "Client belong to the channel:" << std::endl;
-		for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
-        	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
-	}
+	// /* Test if _channels and __client_chan are filled */
+	// std::cout << "Test the channel name:\n" << std::endl;
+	// for (size_t i = 0; i < _channels.size(); ++i)
+	// {
+	// 	std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
+	// 	std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
+	// 	std::vector<Client*> cpy_client_chan = _channels[i]->get_client_chan();
+	// 	std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
+	// 	std::cout << "Client belong to the channel:" << std::endl;
+	// 	for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
+    //     	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
+	// }
 	
-	std::cout << std::endl; 
-	std::cout << "Next join test:\n" << std::endl;
+	// std::cout << std::endl; 
+	// std::cout << "Next join test:\n" << std::endl;
 } 

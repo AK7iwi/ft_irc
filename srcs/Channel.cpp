@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 15:38:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 13:45:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ Channel::~Channel()
 }
 
 /* Add client method */
-void 							Channel::add_client(Client *client) 			{_clients_chan.push_back(client);}
+void 							Channel::add_client(Client *client)
+{
+	_clients_chan.push_back(client);
+	//RPL 332
+}
 
 /* Getter methods */
 std::string 			const&	Channel::get_key()			const				{return (_key);}

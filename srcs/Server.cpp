@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 18:27:59 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 14:00:12 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void Server::handle_commands(int client_socket, std::string &command)
 	if (s_command.empty())
 		return ;
 	
-	// (void)client_socket;
 	if (s_command[0] == "CAP")
 		std::cout << "CAP LS" << std::endl; //provisional sol
 	else if (s_command[0] == "PASS")

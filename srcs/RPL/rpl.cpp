@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/26 20:05:12 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:22:08 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ std::string	ERR_PASSWDMISMATCH(Client const *client)
 /* Personal RPL */
 
 /* 1111 */
-
 std::string	NEW_NICK(std::vector<std::string> const &reply_arg)
 {return (reply_arg[0] + " NICK " +  reply_arg[1]);}
 
@@ -73,6 +72,7 @@ std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::vector<std::s
 		case 431: reply = ERR_NONICKNAMEGIVEN(_clients[client_socket]);						break;
         case 432: reply = ERR_ERRONEUSNICKNAME(_clients[client_socket], reply_arg[1]);		break;
         case 433: reply = ERR_NICKNAMEINUSE(_clients[client_socket], reply_arg[1]);			break;
+		
         case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket], reply_arg[0]);		break;
         case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           		break;
         case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);						break;

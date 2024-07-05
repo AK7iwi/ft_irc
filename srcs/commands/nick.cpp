@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 13:07:14 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:23:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,15 @@ static	bool	contains_invalid_chars(std::string const &nickname)
 		return (true);
 
 	std::string invalid_chars = " ,*?!@.";
-	if (nickname.find_first_of(invalid_chars) != std::string::npos)
-		return (true);
-	
-    return (false);
+
+	return (nickname.find_first_of(invalid_chars) != std::string::npos);
 }
 
 void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
 	if (!(_clients[client_socket]->is_valid_pass()))
 	{
-		std::cout << "Met un mot de passe frere\n" << std::endl; //RPL
+		std::cout << "Met un mot de passe frere\n" << std::endl; //RPL 451 
 		return ;
 	}
 	
@@ -47,9 +45,9 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 		if (it->second->get_nickname() == s_command[1]) 
 			return (send_reply(client_socket, 433, reply_arg));
 	
-	if ((_clients[client_socket]->get_nickname() != "DEFAULT") && (_clients[client_socket]->get_username() != "DEFAULT")) //is_registered
+	if (_clients[client_socket]->is_registered())
 		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
-        	if (it->first != client_socket) //is_registered
+        	if (it->second->is_registered())
            		send_reply(it->first, 1111, reply_arg);
 
 	_clients[client_socket]->set_nickname(s_command[1]);
