@@ -17,7 +17,7 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	/* Need to set-up a nickname before */
 	if (_clients[client_socket]->get_nickname() == "DEFAULT")
 	{
-		std::cout << "Met un nickname frere\n" << std::endl; //RPL 451
+		std::cout << "Met un nickname frere\n" << std::endl; //RPL 462
 		return ;
 	}
 

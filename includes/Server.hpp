@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/01 16:25:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/07 18:52:39 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ class Server
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
+		std::map<std::string, std::string> create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		void		join(int client_socket, std::vector<std::string> &s_command);
+		
 		void 		user(int client_socket, std::vector<std::string> &s_command);
 		void 		nick(int client_socket, std::vector<std::string> &s_command);
 		void		pass(int client_socket, std::vector<std::string> &s_command);

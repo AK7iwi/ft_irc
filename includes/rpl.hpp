@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/28 11:16:42 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/07 18:58:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,28 @@ std::string	RPL_YOURHOST(Client const *client, std::string const &servername, st
 std::string	RPL_CREATED(Client const *client, std::string const &start_time, std::string const &servername);
 /* 004 */
 std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version);
+/* 332 */
+std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
+/* 403 */
+std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 /* 432 */
 std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick);
 /* 433 */
 std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick);
+/* 451 */
+std::string	ERR_NOTREGISTERED(Client const *client);
 /* 461 */
 std::string	ERR_NEEDMOREPARAMS(Client const *client, std::string const &command);
 /* 462 */
 std::string	ERR_ALREADYREGISTERED(Client const *client);
 /* 464 */
 std::string	ERR_PASSWDMISMATCH(Client const *client);
+/* 475 */
+std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name);
+/* 476 */
+std::string	ERR_BADCHANMASK(std::string const &channel_name);
 
 /* Personal RPL */
 

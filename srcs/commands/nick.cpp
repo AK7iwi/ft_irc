@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/05 15:23:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/05 15:33:12 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
 	if (!(_clients[client_socket]->is_valid_pass()))
 	{
-		std::cout << "Met un mot de passe frere\n" << std::endl; //RPL 451 
+		std::cout << "Met un mot de passe frere\n" << std::endl; //RPL 462
 		return ;
 	}
 	
