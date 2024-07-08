@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/07 18:31:45 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/08 14:37:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "Server.hpp"
 #include <vector>
+
+#define NO_TOPIC "No topic"
 
 class Client;
 

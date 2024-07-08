@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/28 11:32:11 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/08 14:54:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include "Server.hpp"
 #include <iostream>
 #include <netinet/in.h>
+
+#define DEFAULT "DEFAULT"
 
 class Client 
 {
@@ -28,6 +30,8 @@ class Client
 		bool 					is_valid_pass() const;
 		
 		/* Getter */
+		
+		uint8_t					get_nb_chan()	const;
 		std::string 	const	&get_realname() const;
 		std::string 	const	&get_hostname() const;
 		std::string 	const	&get_username() const;
@@ -36,6 +40,7 @@ class Client
 		uint16_t				get_socket()	const;
 
 		/* Setter */
+		void 					set_nb_chan();
 		void 			 		set_register();
 		void 					set_valid_pass();
 		void 					set_realname(std::string const &realname);
@@ -50,10 +55,12 @@ class Client
 		std::string 	_prefix;
 		std::string 	_nickname;
 		std::string 	_username;
-		std::string 	_realname;
 		std::string 	_hostname;
+		std::string 	_realname;
 		bool 			_valid_pass;
 		bool 			_register;
+		uint8_t 		_nb_chan;
+		
 };
 
 #endif /* CLIENT_HPP */

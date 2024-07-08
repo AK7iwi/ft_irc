@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/07 18:52:39 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/08 14:56:24 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@
 #include <poll.h>
 #include <netinet/in.h>
 
-class Client;
-class Channel;
-
 
 #define BUFFER_MAX	4096
+#define CHAN_MAX 5
+#define CLIENT_MAX 5
+
+class Client;
+class Channel;
 
 class Server 
 {

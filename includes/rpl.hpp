@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/07 18:58:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/08 14:58:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ std::string	RPL_MYINFO(Client const *client, std::string const &servername, std:
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
+/* 405 */
+std::string ERR_TOOMANYCHANNELS(Client const *client, std::string const &channel_name);
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 /* 432 */
@@ -47,6 +49,8 @@ std::string	ERR_NEEDMOREPARAMS(Client const *client, std::string const &command)
 std::string	ERR_ALREADYREGISTERED(Client const *client);
 /* 464 */
 std::string	ERR_PASSWDMISMATCH(Client const *client);
+/* 471 */
+std::string	ERR_CHANNELISFULL(Client const *client, std::string const &channel_name);
 /* 475 */
 std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name);
 /* 476 */
