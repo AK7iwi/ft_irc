@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/08 15:32:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/08 17:21:08 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static bool inline is_valid_prefix(std::string const &potential_new_channels)
 
 std::map<std::string, std::string> Server::create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {
-	(void)client_socket;
 	std::map<std::string, std::string> channel_key_map;
 	std::vector<std::string> potential_new_channels = split(s_command[1], ',');
 	
@@ -41,7 +40,7 @@ std::map<std::string, std::string> Server::create_channel_map(int client_socket,
 		{
 			reply_arg.push_back(it->first);
 			send_reply(client_socket, 476, reply_arg);
-			reply_arg.erase(reply_arg.begin() + 1);
+			reply_arg.erase(reply_arg.begin() + 2);
         	std::map<std::string, std::string>::iterator erase_it = it;
         	++it;
         	channel_key_map.erase(erase_it);
@@ -61,6 +60,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		return (send_reply(client_socket, 451, reply_arg));
 	
 	reply_arg.push_back(s_command[0]);
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	
 	if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
@@ -78,14 +78,13 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 			{
 				reply_arg.push_back(it->first);
 				send_reply(client_socket, 405, reply_arg);
-				reply_arg.erase(reply_arg.begin() + 1);
+				reply_arg.erase(reply_arg.begin() + 2);
 				it++;
 			}
 			break ;
 		}
 
 		reply_arg.push_back(it->first);
-		
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
 			if (_channels[i]->get_chan_name() == it->first)
@@ -104,9 +103,9 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 					break;
 				}
 				_channels[i]->add_client(_clients[client_socket]);
+				//RPL 2222 
 				reply_arg.push_back(_channels[i]->get_topic());
 				send_reply(client_socket, 332, reply_arg);
-				// send_reply(client_socket, 333, reply_arg);
 				break ;
 			}
 		}
@@ -117,14 +116,14 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 			
 			Channel *new_channel = new Channel(it->first, it->second);
 			new_channel->add_client(_clients[client_socket]);
+			//RPL 2222 
 			_channels.push_back(new_channel);
 			reply_arg.push_back(new_channel->get_topic());
 			send_reply(client_socket, 403, reply_arg);
 			send_reply(client_socket, 332, reply_arg);
-			// send_reply(client_socket, 333, reply_arg);
 		}
-		reply_arg.erase(reply_arg.begin() + 1);
 		reply_arg.erase(reply_arg.begin() + 2);
+		reply_arg.erase(reply_arg.begin() + 3);
 	}
 
 	/* Test if _channels and __client_chan are filled */
