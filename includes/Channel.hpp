@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/08 14:37:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/09 14:07:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Channel
 		~Channel();
 
 		/* Add client method */
-		void							add_client(Client *client);
+		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
 		std::string				const 	&get_topic()  const;

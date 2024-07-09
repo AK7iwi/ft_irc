@@ -6,11 +6,23 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/08 17:21:08 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:26:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void Server::add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
+{
+	channel->add_client_to_chan(_clients[client_socket]);
+	_clients[client_socket]->set_nb_chan();
+	std::vector <Client*> cpy_client_chan = channel->get_client_chan();
+	for (size_t i = 0; i <  cpy_client_chan.size(); ++i)
+		send_reply(cpy_client_chan[i]->get_socket(), 2222, reply_arg);
+	reply_arg.push_back(channel->get_topic());
+	send_reply(client_socket, 332, reply_arg);
+	reply_arg.erase(reply_arg.begin() + 3);
+}
 
 static bool inline is_valid_prefix(std::string const &potential_new_channels)
 {return (potential_new_channels[0] == '#' || potential_new_channels[0] == '&');}
@@ -33,12 +45,13 @@ std::map<std::string, std::string> Server::create_channel_map(int client_socket,
 	else 
 		for (size_t i = 0; i < potential_new_channels.size(); ++i)
             channel_key_map[potential_new_channels[i]] = "";
-
+	
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end();) 
 	{
 		if (!is_valid_prefix(it->first)) 
 		{
 			reply_arg.push_back(it->first);
+			
 			send_reply(client_socket, 476, reply_arg);
 			reply_arg.erase(reply_arg.begin() + 2);
         	std::map<std::string, std::string>::iterator erase_it = it;
@@ -66,7 +79,7 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 		return (send_reply(client_socket, 461, reply_arg));
 
 	std::map<std::string, std::string> channel_key_map = create_channel_map(client_socket, s_command, reply_arg);
-	
+		
 	/* Check if the channel already exist and add client if exist */
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end(); it++)
 	{
@@ -77,56 +90,53 @@ void Server::join(int client_socket, std::vector<std::string> &s_command)
 			while (it != channel_key_map.end())
 			{
 				reply_arg.push_back(it->first);
+				std::cout << "Ca paaaasse a la 405" << std::endl;
 				send_reply(client_socket, 405, reply_arg);
 				reply_arg.erase(reply_arg.begin() + 2);
 				it++;
 			}
 			break ;
 		}
+		std::cout << "Ca paaaasse apres la 405" << std::endl;
 
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
 			if (_channels[i]->get_chan_name() == it->first)
 			{
-				std::cout << "Existant chan" << std::endl;
+				std::cout << "The channel exist" << std::endl;
 				found = true;
 				if (_channels[i]->get_key() != it->second)
 				{
-					std::cout << "Bad key" << std::endl;
+					std::cout << "The key is wrong" << std::endl;
 					send_reply(client_socket, 475, reply_arg);
 					break ;
 				}
 				else if (_channels[i]->get_client_chan().size() >= CLIENT_MAX)
 				{
+					std::cout << "Ca paaaasse a la 471" << std::endl;
 					send_reply(client_socket, 471, reply_arg);
 					break;
 				}
-				_channels[i]->add_client(_clients[client_socket]);
-				//RPL 2222 
-				reply_arg.push_back(_channels[i]->get_topic());
-				send_reply(client_socket, 332, reply_arg);
+				std::cout << "Ca paaaasse apres la 471" << std::endl;
+				add_client(client_socket, _channels[i], reply_arg);
 				break ;
 			}
 		}
 		
 		if (!found)
 		{
-			std::cout << "New channel" << std::endl;
-			
-			Channel *new_channel = new Channel(it->first, it->second);
-			new_channel->add_client(_clients[client_socket]);
-			//RPL 2222 
-			_channels.push_back(new_channel);
-			reply_arg.push_back(new_channel->get_topic());
+			std::cout << "A new hannel has been created" << std::endl;
 			send_reply(client_socket, 403, reply_arg);
-			send_reply(client_socket, 332, reply_arg);
+			Channel *new_channel = new Channel(it->first, it->second);
+			_channels.push_back(new_channel);
+			add_client(client_socket, new_channel, reply_arg);
 		}
+		
 		reply_arg.erase(reply_arg.begin() + 2);
-		reply_arg.erase(reply_arg.begin() + 3);
 	}
 
-	/* Test if _channels and __client_chan are filled */
+	/* Test if _channels and _client_chan are correctly filled */
 	std::cout << std::endl; 
 	std::cout << "Test the channel name:\n" << std::endl;
 	for (size_t i = 0; i < _channels.size(); ++i)

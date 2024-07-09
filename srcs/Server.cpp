@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/05 14:00:12 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/09 17:20:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 Server::Server(uint16_t port, std::string const &password) : 
     _port(port),
     _password(password),
-	_networkname("AAAA"),
-	_servername("BBBB"),
+	_networkname("Black Market"),
+	_servername("No_Rules"),
 	_version("Jailbreak 1.33")
 {
 	time_t  now = time(0);
@@ -85,7 +85,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 	else if (s_command[0] == "JOIN")
 		join(client_socket, s_command);
 	else
-		std::cout << "Unknow command" << std::endl; //RPL
+		std::cout << "Unknow command" << std::endl; 
 }
 
 void Server::handle_clients(int client_socket)

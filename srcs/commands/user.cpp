@@ -17,7 +17,7 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	/* Need to set-up a nickname before */
 	if (_clients[client_socket]->get_nickname() == "DEFAULT")
 	{
-		std::cout << "Met un nickname frere\n" << std::endl; //RPL 462
+		std::cout << "Met un nickname frere\n" << std::endl;
 		return ;
 	}
 
@@ -41,7 +41,7 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	/*  <realname> should be prefixed with a colon (:) */
 	if (realname[0] != ':') 
 	{
-		std::cout << "You should set the realname with a "":"" before bro, be rigorous please" << std::endl; //RPL
+		std::cout << "You should set the realname with a "":"" before bro, be rigorous please" << std::endl;
 		return ;
 	}
 	realname.erase(0, 1);
