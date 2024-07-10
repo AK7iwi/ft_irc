@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/09 14:07:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/10 16:29:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,18 @@ class Channel
 	public:
 		Channel(std::string const &name, std::string const &key);
 		~Channel();
-
-		/* Add client method */
+		
+		/* Remove client from chan method */
+		void 							remove_from_chan(int client_socket);
+		
+		/* Add client to chan method */
 		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
-		std::string				const 	&get_topic()  const;
-		std::string 			const	&get_key()	const;
-		std::vector<Client*> 	const	&get_client_chan() const; 
-		std::string 			const	&get_chan_name()	const;
+		std::string				const 	&get_topic()  			const;
+		std::string 			const	&get_key()				const;
+		std::vector<Client*> 	const	&get_clients_of_chan()	const; 
+		std::string 			const	&get_chan_name()		const;
 		
 		/* Setter methods */
 		// void 							set_topic(std::string const &topic);	
@@ -45,7 +48,7 @@ class Channel
 		std::string 			_topic;
 
 		/* Vector of clients belong to the channel */
-		std::vector<Client*>	_clients_chan;
+		std::vector<Client*>	_clients_of_chan;
 };
 
 

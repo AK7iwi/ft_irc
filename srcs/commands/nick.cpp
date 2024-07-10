@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/08 17:01:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/10 18:15:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
 	if (!(_clients[client_socket]->is_valid_pass()))
 	{
-		std::cout << "Met un mot de passe frere\n" << std::endl; //RPL 462
+		std::cout << "Met un mot de passe frere\n" << std::endl;
 		return ;
 	}
 	
@@ -53,5 +53,5 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 	_clients[client_socket]->set_nickname(s_command[1]);
 	_clients[client_socket]->set_prefix();
 
-	std::cout << "Your nickname is: " << _clients[client_socket]->get_nickname() << std::endl; //RPL
+	std::cout << "Your nickname is: " << _clients[client_socket]->get_nickname() << std::endl;
 }
