@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 18:24:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 13:39:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class Client
 		Client(int socket_fd);
 		~Client();
 		
-		/* Leave all channels belong to method */
+		/* Leave all channels belong to client method */
 		void							leave_channels();
 
 		/* Add chan */

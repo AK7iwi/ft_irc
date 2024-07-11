@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 18:26:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 14:47:57 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ bool 							Client::is_registered()				const			{return (_register);}
 bool 							Client::is_valid_pass()				const			{return (_valid_pass);}
 
 /* Getter methods */
+
 std::vector<Channel*>	const&	Client::get_channels_of_client() 	const			{return (_channels_of_client);}
 std::string  			const&	Client::get_realname()				const			{return (_realname);}
 std::string  			const&	Client::get_hostname()				const			{return (_hostname);}

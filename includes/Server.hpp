@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/09 14:15:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 08:33:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 
 
 #define BUFFER_MAX	4096
-#define CHAN_MAX 5
 #define CLIENT_MAX 5
 
 class Client;

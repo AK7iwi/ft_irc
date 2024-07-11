@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.cpp                                           :+:      :+:    :+:   */
+/*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:09 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/20 00:23:22 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 13:40:40 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	/* Need to set-up a nickname before */
 	if (_clients[client_socket]->get_nickname() == "DEFAULT")
 	{
-		std::cout << "Met un nickname frere\n" << std::endl;
+		std::cout << "Put a nickname bro\n" << std::endl; //RPL 462
 		return ;
 	}
 
@@ -31,12 +31,12 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
     	return (send_reply(client_socket, 462, reply_arg));
 
 	_clients[client_socket]->set_username(s_command[1]);
-    _clients[client_socket]->set_hostname(s_command[2]);
+    _clients[client_socket]->set_hostname(s_command[3]);
 
 	std::string realname = s_command[4];
 
-	for (size_t i = 5; i < s_command.size(); ++i)
-        realname += " " + s_command[i];
+	if (s_command.size() == 6)
+		realname += " " + s_command[5];
 	
 	/*  <realname> should be prefixed with a colon (:) */
 	if (realname[0] != ':') 
@@ -50,10 +50,11 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
     _clients[client_socket]->set_prefix();
 	_clients[client_socket]->set_register();
 
+	std::cout << "Welcome home " << _clients[client_socket]->get_nickname() <<std::endl;
+
 	send_reply(client_socket, 1, reply_arg);
 	send_reply(client_socket, 2, reply_arg);
 	send_reply(client_socket, 3, reply_arg);
 	send_reply(client_socket, 4, reply_arg);
 
-	std::cout << "Bienvenue chez moi " << _clients[client_socket]->get_nickname() <<std::endl; //RPL
 }

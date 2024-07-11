@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 18:15:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:26:39 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
 	if (!(_clients[client_socket]->is_valid_pass()))
 	{
-		std::cout << "Met un mot de passe frere\n" << std::endl;
+		std::cout << "Put a password bro\n" << std::endl; //RPL 462
 		return ;
 	}
 	
@@ -34,7 +34,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 	
 	if (s_command.size() != 2)
 		return (send_reply(client_socket, 431, reply_arg));
-	
+
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);
 	
@@ -49,9 +49,9 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
         	if (it->second->is_registered())
            		send_reply(it->first, 1111, reply_arg);
-
+	
 	_clients[client_socket]->set_nickname(s_command[1]);
 	_clients[client_socket]->set_prefix();
-
+	
 	std::cout << "Your nickname is: " << _clients[client_socket]->get_nickname() << std::endl;
 }

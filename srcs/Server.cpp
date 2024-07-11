@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 14:49:07 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:02:31 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void Server::remove_client(int client_socket)
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
 
-	//delete from the chan also (leave_channels)
+	//delete from the chan also (leave_channels), test with NAME CMD
 }
 
 void Server::handle_commands(int client_socket, std::string &command)
@@ -74,8 +74,14 @@ void Server::handle_commands(int client_socket, std::string &command)
 	if (s_command.empty())
 		return ;
 	
+	if (s_command[0][0] == '/')
+		s_command[0].erase(0, 1);
+	
+	// std::cout << "s_command[0]: " << s_command[0] << std::endl;
+	// std::cout << "s_command[0][0]: " << s_command[0][0] << std::endl;
+	
 	if (s_command[0] == "CAP")
-		std::cout << "CAP LS" << std::endl; //provisional sol
+		std::cout << "CAP LS" << std::endl;
 	else if (s_command[0] == "PASS")
 		pass(client_socket, s_command);
 	else if (s_command[0] == "NICK")
@@ -93,18 +99,14 @@ void Server::handle_clients(int client_socket)
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
 	
-	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0); //check recv flag
-    if (valread == -1 && errno != EWOULDBLOCK)
+	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
+    if (valread == -1)
 	{
-		std::cout << "valread == -1 && EWOULDBLOCK"	<< std::endl;
-		return ; 
 		// Socket closed or error occurred + add error msg
-	}
-	else if (valread == -1)
-	{
-		std::cout << "valread == -1 " << std::endl;
-		return ;
-		// return ; // couldnt read anything on this tick
+		std::cout << "valread == -1" << std::endl;
+		if (errno != EWOULDBLOCK)
+			std::cout << "EWOULDBLOCK" << std::endl;
+		return ; 
 	}
 	else if (valread == 0)
 		return (remove_client(client_socket));
@@ -138,7 +140,7 @@ void Server::handle_new_connections()
     client_fd.events = POLLIN;
 	client_fd.revents = 0;
     _fds.push_back(client_fd);
- 
+	
 	_clients[client_socket] = new Client(client_socket);
 }
 

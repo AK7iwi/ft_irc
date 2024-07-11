@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/08 17:03:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 11:18:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
 /* 405 */
-std::string ERR_TOOMANYCHANNELS(Client const *client, std::string const &channel_name);
+// std::string ERR_TOOMANYCHANNELS(Client const *client, std::string const &channel_name);
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 /* 432 */
