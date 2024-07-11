@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 08:33:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/11 17:17:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,17 @@ class Server
 
 		//////////////////// Methods ////////////////////////////
 		
+		/* Remove client method */
+		void		remove_client(int client_socket);
+		
 		/* Send response to the client */
 		std::string	wich_rpl(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
-		void 		add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
-		std::map<std::string, std::string> create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void		pong(int client_socket, std::vector<std::string> &s_command);
+		void		ping(int client_socket, std::vector<std::string> &s_command);
 		void		join(int client_socket, std::vector<std::string> &s_command);
-		
 		void 		user(int client_socket, std::vector<std::string> &s_command);
 		void 		nick(int client_socket, std::vector<std::string> &s_command);
 		void		pass(int client_socket, std::vector<std::string> &s_command);
@@ -95,10 +97,12 @@ class Server
 		void		handle_clients(int client_cocket);
 		void		handle_new_connections();
 		
-		/////////////////// Utils methods from Server///////////////
+		/////////////////// Utils methods for Server///////////////
 		
-		/* Remove client method */
-		void		remove_client(int client_socket);
+		/* Join utils */
+		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		
 		/* Init struct address */
 		void		init_address_structures();
 };
