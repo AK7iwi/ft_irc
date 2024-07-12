@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 14:52:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:07:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	channel->add_client_to_chan(_clients[client_socket]);
 	_clients[client_socket]->add_chan_to_client(channel);
 	
+	std::cout << "reply_arg[0]" << reply_arg[0] << std::endl;
+	std::cout << "reply_arg[1]" << reply_arg[1] << std::endl;
+	std::cout << "reply_arg[2]" << reply_arg[2] << std::endl;
+	
 	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
 		send_reply(cpy_clients_of_chan[i]->get_socket(), 2222, reply_arg);
+	
 	reply_arg.push_back(channel->get_topic());
 	send_reply(client_socket, 332, reply_arg);
 	reply_arg.erase(reply_arg.begin() + 3);
@@ -52,7 +57,6 @@ std::map<std::string, std::string>	Server::create_channel_map(int client_socket,
 		if (!is_valid_prefix(it->first)) 
 		{
 			reply_arg.push_back(it->first);
-			
 			send_reply(client_socket, 476, reply_arg);
 			reply_arg.erase(reply_arg.begin() + 2);
         	std::map<std::string, std::string>::iterator erase_it = it;
@@ -90,19 +94,23 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		if (it->first == "#0")
 		{
 			zero = true;
-			_clients[client_socket]->leave_channels();
+			
+			// _clients[client_socket]->get_channels_of_client();
+			//loop to have the chan_name
+			// part(client_socket)
 			//RPL for leaving the chan (PART)
 		}
 		//RPL 405??
-			
+		
+		//if #0 check if there are others channel_name after
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
-			if (_channels[i]->get_chan_name() == it->first)
+			if (it->first == _channels[i]->get_chan_name())
 			{
 				std::cout << "The channel exist" << std::endl;
 				found = true;
-				if (_channels[i]->get_key() != it->second)
+				if (it->second != _channels[i]->get_key())
 				{
 					std::cout << "The key is wrong" << std::endl;
 					send_reply(client_socket, 475, reply_arg);
@@ -128,4 +136,26 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
+	/* Test if _channels and _client_chan are correctly filled */
+	std::cout << std::endl; 
+	std::cout << "Test the channel name from join:\n" << std::endl;
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{
+		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
+		std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
+		std::vector<Client*> cpy_client_chan = _channels[i]->get_clients_of_chan();
+		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
+		std::cout << "Client belong to the channel:" << std::endl;
+		for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
+        	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << "Channels belong to the client:" << std::endl;
+	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+	for (size_t j = 0; j <  cpy.size(); ++j)
+        std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;
+	
+	std::cout << std::endl; 
+	std::cout << "Next join test:\n" << std::endl;
 } 

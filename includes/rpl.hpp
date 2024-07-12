@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 12:20:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:19:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick);
 /* 433 */
 std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick);
+/* 442 */
+std::string	ERR_NOTONCHANNEL(Client const *client,  std::string const &channel_name);
 /* 451 */
 std::string	ERR_NOTREGISTERED(Client const *client);
 /* 461 */
@@ -62,5 +64,7 @@ std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_ni
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name);
 /* 3333 */
 std::string NEW_PING(std::string const &client_prefix);
+/* 4444 */
+std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &message);
 
 #endif /* RPL_HPP */

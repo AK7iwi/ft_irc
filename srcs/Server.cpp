@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 13:08:09 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:43:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void Server::remove_client(int client_socket)
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
 
-	//delete from the chan also (leave_channels), test with NAME CMD
+	//delete from the chan also (leave_channels)
 }
 
 void Server::handle_commands(int client_socket, std::string &command)
@@ -94,6 +94,8 @@ void Server::handle_commands(int client_socket, std::string &command)
 		ping(client_socket, s_command);
 	else if (s_command[0] == "PONG")
 		pong();
+	else if (s_command[0] == "PART")
+		part(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; 
 }
@@ -106,7 +108,6 @@ void Server::handle_clients(int client_socket)
 	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
     if (valread == -1)
 	{
-		// Socket closed or error occurred + add error msg
 		std::cout << "valread == -1" << std::endl;
 		if (errno != EWOULDBLOCK)
 			std::cout << "EWOULDBLOCK" << std::endl;

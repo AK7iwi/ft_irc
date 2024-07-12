@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 14:47:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:23:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,18 @@ Client::Client(int socket_fd) :
 Client::~Client() {}
 
 
-/* Leave all channels belong to method */
+/* Leave channel method */
 
-void	Client::leave_channels() 
+void	Client::leave_channel(Channel *channel) 
 {
 	for (std::vector<Channel*>::iterator it = _channels_of_client.begin(); it != _channels_of_client.end(); it++)
-		(*it)->remove_from_chan(_socket_fd);
-    _channels_of_client.clear(); 
+	{
+		if ((*it) == channel)
+			it = _channels_of_client.erase(it);
+		else 
+			++it;
+	}
 }
-
-/* Remove chan method */
-//if a client leave a channel
 
 /* Add chan method */
 

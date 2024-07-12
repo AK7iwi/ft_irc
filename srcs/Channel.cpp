@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 18:37:38 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 16:05:42 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ void	Channel::remove_from_chan(int client_socket)
 			++it;
 	}
 }
-
-/* Remove client from chan method */
-//kick command 
-
 
 /* Add client to chan method */
 

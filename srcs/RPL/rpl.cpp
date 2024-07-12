@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 12:28:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:39:38 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick)
 std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick)
 {return (client->get_prefix() + " 433 " + nick + " :Nickname is already in use");}
 
+/* 442 */
+std::string	ERR_NOTONCHANNEL(Client const *client, std::string const &channel_name)
+{return (client->get_prefix() + " 442 " + channel_name + " :You're not on that channel");}
+
 /* 451 */
 std::string	ERR_NOTREGISTERED(Client const *client)
 {return (client->get_prefix() + " 451 :You have not registered");}
@@ -86,11 +90,15 @@ std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_ni
 
 /* 2222 */
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name)
-{return (client_prefix + " JOIN " + channel_name + " :" + channel_name + "\r\n");}
+{return (client_prefix + " JOIN " + channel_name + " :" + channel_name);}
 
 /* 3333 */
 std::string NEW_PING(std::string const &client_prefix)
 {return ("PONG " + client_prefix);} 
+
+/* 4444 */
+std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason)
+{return(client_prefix + " PART " + channel_name + " :" + reason);}
 
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
@@ -98,33 +106,36 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 	
 	switch (rpl)
 	{
-        case   1: reply = RPL_WELCOME(client, _networkname, _servername);	break;
-        case   2: reply = RPL_YOURHOST(client, _servername, _version);		break;
-        case   3: reply = RPL_CREATED(client, _start_time, _servername);	break;
-        case   4: reply = RPL_MYINFO(client, _servername, _version);		break;
+        case   1: reply = RPL_WELCOME(client, _networkname, _servername);		break;
+        case   2: reply = RPL_YOURHOST(client, _servername, _version);			break;
+        case   3: reply = RPL_CREATED(client, _start_time, _servername);		break;
+        case   4: reply = RPL_MYINFO(client, _servername, _version);			break;
 
-		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);	break;
+		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);		break;
 		
-		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);			break;
+		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);				break;
 		// case 405: reply = ERR_TOOMANYCHANNELS(_clients[client_socket], reply_arg[2]);		break;
 
-		case 431: reply = ERR_NONICKNAMEGIVEN(client);						break;
-        case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);		break;
-        case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);			break;
+		case 431: reply = ERR_NONICKNAMEGIVEN(client);							break;
+        case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);			break;
+        case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);				break;
+
+		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[1]);				break;
 		
-		case 451: reply = ERR_NOTREGISTERED(client);						break;
+		case 451: reply = ERR_NOTREGISTERED(client);							break;
 		
-        case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);			break;
-        case 462: reply = ERR_ALREADYREGISTERED(client);           			break;
-        case 464: reply = ERR_PASSWDMISMATCH(client);						break;
+        case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);				break;
+        case 462: reply = ERR_ALREADYREGISTERED(client);           				break;
+        case 464: reply = ERR_PASSWDMISMATCH(client);							break;
 		
-		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);			break;
-		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);			break;
-		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);					break;
+		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);				break;
+		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);				break;
+		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);						break;
 		
-		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);			break;
-		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);			break;
-		case 3333: reply = NEW_PING(reply_arg[1]);							break;
+		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);				break;
+		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);				break;
+		case 3333: reply = NEW_PING(reply_arg[1]);								break;
+		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);	break;
     }
 	
 	return (reply);

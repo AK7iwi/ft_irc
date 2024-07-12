@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 12:25:20 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 15:44:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ class Server
 		std::string					_servername;
 		std::string					_version;
 		std::string             	_start_time;
-		
+
 		/* Struct for init server */
 		struct sockaddr_in6					_server_addr;
-
+		
 		/* Socket of the server */
 		int 								_server_socket;
-		
+
 		/* Vector of fds */
 		std::vector<struct pollfd>			_fds;
 
 		/* Map of clients */
 		std::map<int, Client*> 				_clients;
-
+		
 		/* Map of channels */
 		std::vector<Channel*>				_channels;
 
@@ -83,6 +83,7 @@ class Server
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
+		void		part(int client_socket, std::vector<std::string> &s_command);
 		void		pong();
 		void		ping(int client_socket, std::vector<std::string> &s_command);
 		void		join(int client_socket, std::vector<std::string> &s_command);
@@ -98,6 +99,9 @@ class Server
 		void		handle_new_connections();
 		
 		/////////////////// Utils methods for Server///////////////
+		
+		/* Part utils */
+		std::vector<Channel*>				are_channels_valid(int client_socket, std::vector<std::string> &s_command);
 		
 		/* Join utils */
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 13:39:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:36:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ class Client
 		~Client();
 		
 		/* Leave all channels belong to client method */
-		void							leave_channels();
+		void							leave_channel(Channel *channel);
 
 		/* Add chan */
-
 		void 							add_chan_to_client(Channel *channel);
 		
 		/* Checker */
