@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 16:37:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:28:50 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_n
 std::string	ERR_BADCHANMASK(std::string const &channel_name)
 {return ("476 " + channel_name + " :Bad Channel Mask");}
 
-/* Personal RPL */
-
 /* 1111 */
 std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick)
 {return (client_prefix + " NICK " + new_nick);}
@@ -90,38 +88,43 @@ std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_ni
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name)
 {return (client_prefix + " JOIN " + channel_name + " :" + channel_name + "\r\n");}
 
-std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg)
+/* 3333 */
+std::string NEW_PING(std::string const &client_prefix)
+{return ("PONG " + client_prefix);} 
+
+std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
 	std::string reply;
 	
 	switch (rpl)
 	{
-        case   1: reply = RPL_WELCOME(_clients[client_socket], _networkname, _servername);	break;
-        case   2: reply = RPL_YOURHOST(_clients[client_socket], _servername, _version);		break;
-        case   3: reply = RPL_CREATED(_clients[client_socket], _start_time, _servername);	break;
-        case   4: reply = RPL_MYINFO(_clients[client_socket], _servername, _version);		break;
+        case   1: reply = RPL_WELCOME(client, _networkname, _servername);	break;
+        case   2: reply = RPL_YOURHOST(client, _servername, _version);		break;
+        case   3: reply = RPL_CREATED(client, _start_time, _servername);	break;
+        case   4: reply = RPL_MYINFO(client, _servername, _version);		break;
 
-		case 332: reply = RPL_TOPIC(_clients[client_socket], reply_arg[2], reply_arg[3]);	break;
+		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);	break;
 		
-		case 403: reply = ERR_NOSUCHCHANNEL(_clients[client_socket], reply_arg[2]);			break;
+		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);			break;
 		// case 405: reply = ERR_TOOMANYCHANNELS(_clients[client_socket], reply_arg[2]);		break;
 
-		case 431: reply = ERR_NONICKNAMEGIVEN(_clients[client_socket]);						break;
-        case 432: reply = ERR_ERRONEUSNICKNAME(_clients[client_socket], reply_arg[1]);		break;
-        case 433: reply = ERR_NICKNAMEINUSE(_clients[client_socket], reply_arg[1]);			break;
+		case 431: reply = ERR_NONICKNAMEGIVEN(client);						break;
+        case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);		break;
+        case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);			break;
 		
-		case 451: reply = ERR_NOTREGISTERED(_clients[client_socket]);						break;
+		case 451: reply = ERR_NOTREGISTERED(client);						break;
 		
-        case 461: reply = ERR_NEEDMOREPARAMS(_clients[client_socket], reply_arg[0]);		break;
-        case 462: reply = ERR_ALREADYREGISTERED(_clients[client_socket]);           		break;
-        case 464: reply = ERR_PASSWDMISMATCH(_clients[client_socket]);						break;
+        case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);			break;
+        case 462: reply = ERR_ALREADYREGISTERED(client);           			break;
+        case 464: reply = ERR_PASSWDMISMATCH(client);						break;
 		
-		case 471: reply = ERR_CHANNELISFULL(_clients[client_socket], reply_arg[2]);			break;
-		case 475: reply = ERR_BADCHANNELKEY(_clients[client_socket], reply_arg[2]);			break;
-		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);									break;
+		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);			break;
+		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);			break;
+		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);					break;
 		
-		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);							break;
-		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);							break;
+		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);			break;
+		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);			break;
+		case 3333: reply = NEW_PING(reply_arg[1]);							break;
     }
 	
 	return (reply);
@@ -129,7 +132,7 @@ std::string Server::wich_rpl(int client_socket, uint16_t rpl, std::vector<std::s
 
 void Server::send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const  &reply_arg) 
 {
-	std::string message = wich_rpl(client_socket, rpl, reply_arg) + "\r\n";
+	std::string message = wich_rpl(_clients[client_socket], rpl, reply_arg) + "\r\n";
 
     if (send(client_socket, message.c_str(), message.length(), 0) == -1)
 		return ;

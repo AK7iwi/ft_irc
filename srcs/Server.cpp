@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 17:16:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 13:08:09 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ void Server::handle_commands(int client_socket, std::string &command)
 		user(client_socket, s_command);
 	else if (s_command[0] == "JOIN")
 		join(client_socket, s_command);
-	// else if (s_command[0] == "PING")
-	// 	ping(client_socket, s_command);
-	// else if (s_command[0] == "PONG")
-	// 	pong(client_socket, s_command);
+	else if (s_command[0] == "PING")
+		ping(client_socket, s_command);
+	else if (s_command[0] == "PONG")
+		pong();
 	else
 		std::cout << "Unknow command" << std::endl; 
 }

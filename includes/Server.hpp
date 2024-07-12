@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 17:17:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:25:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ class Server
 		void		remove_client(int client_socket);
 		
 		/* Send response to the client */
-		std::string	wich_rpl(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
+		std::string	wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
-		void		pong(int client_socket, std::vector<std::string> &s_command);
+		void		pong();
 		void		ping(int client_socket, std::vector<std::string> &s_command);
 		void		join(int client_socket, std::vector<std::string> &s_command);
 		void 		user(int client_socket, std::vector<std::string> &s_command);

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/30 13:36:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 13:16:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	parse_arg(int argc, char **argv)
 		throw (std::invalid_argument("Usage: ./ircsrv <port> <password>"));
 
 	int port = std::atoi(argv[1]);
-    if (port <= 0 || port > 65535)
+    if (port < 1024 || port > 49551)
 		throw (std::out_of_range("Error: Invalid port number. Please provide a port number between 1 and 65535"));
 
 	std::string password = argv[2];

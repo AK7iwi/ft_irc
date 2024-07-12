@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 11:18:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/12 12:20:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,11 @@ std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_n
 /* 476 */
 std::string	ERR_BADCHANMASK(std::string const &channel_name);
 
-/* Personal RPL */
-
 /* 1111 */
 std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick);
-
 /* 2222 */
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name);
+/* 3333 */
+std::string NEW_PING(std::string const &client_prefix);
 
 #endif /* RPL_HPP */
