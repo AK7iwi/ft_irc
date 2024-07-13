@@ -1,4 +1,4 @@
-/* Test if _channels and _client_chan are correctly filled */
+	/* Test if _channels and _client_chan are correctly filled */
 	std::cout << std::endl; 
 	std::cout << "Test the channel name from JOIN:\n" << std::endl;
 	for (size_t i = 0; i < _channels.size(); ++i)
@@ -13,12 +13,14 @@
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-	for (size_t i = 0; i < _clients.size(); ++i)
+	
+	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
-		std::cout << "Channels belong to the client:" << _clients[i]->get_nickname() << std::endl;
-		std::vector<Channel*> cpy = _clients[i]->get_channels_of_client();
-		for (size_t j = 0; j <  cpy.size(); ++j)
-        std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;	
+		std::cout << "Channels belong to the client " << it->second->get_nickname() << std::endl;
+		std::vector<Channel*> cpy = it->second->get_channels_of_client();
+		for (size_t l = 0; l <  cpy.size(); ++l)
+    		std::cout << "Channel: " << cpy[l]->get_chan_name() << std::endl;
+		std::cout << std::endl;	
 	}
 	
 	std::cout << std::endl; 

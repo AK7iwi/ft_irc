@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 17:48:08 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:37:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ Client::~Client() {}
 
 void	Client::leave_channel(Channel *channel) 
 {
-	for (std::vector<Channel*>::iterator it = _channels_of_client.begin(); it != _channels_of_client.end(); it++)
+	for (std::vector<Channel*>::iterator it = _channels_of_client.begin(); it != _channels_of_client.end();)
 	{
-		if (channel == (*it) )
+		if (channel == (*it))
 			it = _channels_of_client.erase(it);
 		else 
 			++it;

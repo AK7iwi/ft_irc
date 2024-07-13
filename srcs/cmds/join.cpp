@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 18:01:42 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 19:32:25 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	channel->add_client_to_chan(_clients[client_socket]);
 	_clients[client_socket]->add_chan_to_client(channel);
 	
-	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
-	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
-		send_reply(cpy_clients_of_chan[i]->get_socket(), 2222, reply_arg);
+	std::vector <Client*> cpy = channel->get_clients_of_chan();
+	for (size_t i = 0; i <  cpy.size(); ++i)
+		send_reply(cpy[i]->get_socket(), 2222, reply_arg);
 	
 	reply_arg.push_back(channel->get_topic());
 	send_reply(client_socket, 332, reply_arg);
@@ -37,12 +37,9 @@ std::map<std::string, std::string>	Server::create_channel_map(int client_socket,
     if (s_command.size() >= 3)
 	{
         std::vector<std::string> v_key = split(s_command[2], ',');
-		size_t len = 0;
 		
-        for (; len < v_key.size() && len < potential_new_channels.size(); ++len)
-            channel_key_map[potential_new_channels[len]] = v_key[len];
-		for (; len < potential_new_channels.size(); ++len)
-			channel_key_map[potential_new_channels[len]] = "";	
+        for (size_t i = 0; i < potential_new_channels.size(); ++i)
+            channel_key_map[potential_new_channels[i]] = v_key[i];
 	}
 	else 
 		for (size_t i = 0; i < potential_new_channels.size(); ++i)
@@ -90,14 +87,18 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		if (it->first == "#0")
 		{
 			zero = true;
-			
-			// _clients[client_socket]->get_channels_of_client();
-			//loop to have the chan_name
-			// part(client_socket, );
+			std::vector<std::string> channels_name;
+			std::string channels_name_str = "";
+			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+			for (size_t i = 0; i < cpy.size(); ++i)
+				channels_name_str += "," + cpy[i]->get_chan_name();
+			// channels_name_str += ",#0";
+			channels_name.push_back("PART");
+			channels_name.push_back(channels_name_str);
+			part(client_socket, channels_name);
 		}
 		//RPL 405??
 		
-		//if #0 check if there are others channel_name after
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
@@ -131,31 +132,4 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
-	
-	/* Test if _channels and _client_chan are correctly filled */
-	std::cout << std::endl; 
-	std::cout << "Test the channel name from JOIN:\n" << std::endl;
-	for (size_t i = 0; i < _channels.size(); ++i)
-	{
-		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
-		std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
-		std::vector<Client*> cpy_client_chan = _channels[i]->get_clients_of_chan();
-		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
-		std::cout << "Client belong to the channel:" << std::endl;
-		for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
-        	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-	// for (size_t i = 0; i < _clients.size(); ++i)
-	// {
-	// 	std::cout << "Channels belong to the client:" << _clients[i]->get_nickname() << std::endl;
-	// 	std::vector<Channel*> cpy = _clients[i]->get_channels_of_client();
-	// 	for (size_t j = 0; j <  cpy.size(); ++j)
-    //     std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;
-	// 	std::cout << std::endl;
-	// }
-	
-	std::cout << std::endl; 
-	std::cout << "Next join test:\n" << std::endl;
 } 
