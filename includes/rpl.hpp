@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 17:19:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 08:48:14 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,6 @@ std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &chan
 /* 3333 */
 std::string NEW_PING(std::string const &client_prefix);
 /* 4444 */
-std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &message);
+std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason);
 
 #endif /* RPL_HPP */

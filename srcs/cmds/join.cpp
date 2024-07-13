@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 16:07:47 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 08:39:02 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,6 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 {
 	channel->add_client_to_chan(_clients[client_socket]);
 	_clients[client_socket]->add_chan_to_client(channel);
-	
-	std::cout << "reply_arg[0]" << reply_arg[0] << std::endl;
-	std::cout << "reply_arg[1]" << reply_arg[1] << std::endl;
-	std::cout << "reply_arg[2]" << reply_arg[2] << std::endl;
 	
 	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
@@ -136,6 +132,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
+	
 	/* Test if _channels and _client_chan are correctly filled */
 	std::cout << std::endl; 
 	std::cout << "Test the channel name from join:\n" << std::endl;

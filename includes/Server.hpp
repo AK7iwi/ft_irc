@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 15:44:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 09:06:45 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,8 @@ class Server
 		/////////////////// Utils methods for Server///////////////
 		
 		/* Part utils */
-		std::vector<Channel*>				are_channels_valid(int client_socket, std::vector<std::string> &s_command);
-		
+		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		std::string							find_reason(std::vector<std::string> &s_command);
 		/* Join utils */
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
