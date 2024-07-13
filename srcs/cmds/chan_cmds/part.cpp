@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 09:16:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:57:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,16 @@
 void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {
 	channel->remove_from_chan(client_socket);
-	_clients[client_socket]->leave_channel(channel);
+	// _clients[client_socket]->leave_channel(channel);
+	
+	std::cout << "reply_arg[0]:" << reply_arg[0] << std::endl;
+	std::cout << "reply_arg[1]:" << reply_arg[1] << std::endl;
+	std::cout << "reply_arg[2]:" << reply_arg[2] << std::endl;
+	std::cout << "reply_arg[3]:" << reply_arg[3] << std::endl;
 	
 	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
 		send_reply(cpy_clients_of_chan[i]->get_socket(), 4444, reply_arg);
-}
-
-std::string	Server::find_reason(std::vector<std::string> &s_command)
-{
-	std::string reason = "";
-
-    size_t pos = std::string::npos; //0
-
-	std::cout << "First loop: " << std::endl;
-	
-    for (size_t i = 0; i < s_command.size(); ++i) 
-	{
-		std::cout << "s_command[i]: " << s_command[i] << std::endl;
-        if ((pos = s_command[i].find(":")) != std::string::npos) 
-		{
-            reason = s_command[i].substr(pos + 1);
-            s_command[i] = s_command[i].substr(0, pos);
-			
-            for (size_t j = i + 1; j < s_command.size(); ++j)
-                reason += " " + s_command[j];
-			
-            s_command.erase(s_command.begin() + i + 1, s_command.end());
-            break;
-        }
-    }
-
-	std::cout << "Second loop: " << std::endl;
-	for (size_t i = 0; i < s_command.size(); ++i)
-		std::cout << "s_command[i]: " << s_command[i] << std::endl;
-	
-	return (reason);
 }
 
 void	Server::part(int client_socket, std::vector<std::string> &s_command)
@@ -62,22 +36,35 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 	
 	if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
+
+	std::vector<std::string> v_channels = split(s_command[1], ',');
+	std::string reason = "";
 	
-	// std::string reason = find_reason(s_command);
-
-	std::string reason = "oui";
-
+	if (s_command.size() >= 3)
+	{
+		reason = s_command[2];
+		if (reason[0] != ':')
+		{
+			std::cerr << "You should set the reason with a "":"" before bro, be rigorous please" << std::endl;
+			return ;
+		}
+		reason.erase(0, 1);
+		
+		for (size_t i = 3; i < s_command.size(); ++i)
+        reason += " " + s_command[i];
+	}
+	
 	std::cout << "Reason: " << reason << std::endl;
 	
-	for (size_t i = 0; i < s_command.size(); ++i)
+	for (size_t i = 0; i < v_channels.size(); ++i)
 	{	
 		bool chan_found = false;
-		std::cout << "s_command[1]" << s_command[1] << std::endl;
-		reply_arg.push_back(s_command[i]);
+		std::cout << "v_channels: " << v_channels[i] << std::endl;
+		reply_arg.push_back(v_channels[i]);
 		
 		for (size_t j = 0; j < _channels.size(); ++j)
 		{	
-			if (s_command[i] == _channels[j]->get_chan_name())
+			if (v_channels[i] == _channels[j]->get_chan_name())
 			{
 				chan_found = true;
 				bool client_found = false;
@@ -108,4 +95,30 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
+
+	/* Test if _channels and _client_chan are correctly filled */
+	std::cout << std::endl; 
+	std::cout << "Test the channel name from PART:\n" << std::endl;
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{
+		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
+		std::cout << "Chan key: " << _channels[i]->get_key() << std::endl;
+		std::vector<Client*> cpy_client_chan = _channels[i]->get_clients_of_chan();
+		std::cout << "cpy_client_chan.size(): " << cpy_client_chan.size() << std::endl;
+		std::cout << "Client belong to the channel:" << std::endl;
+		for (size_t j = 0; j <  cpy_client_chan.size(); ++j)
+        	std::cout << "Client: " << cpy_client_chan[j]->get_nickname() << std::endl;
+		std::cout << std::endl;
+	}
+	// std::cout << std::endl;
+	// for (size_t i = 0; i < _clients.size(); ++i)
+	// {
+	// 	std::cout << "Channels belong to the client:" << _clients[i]->get_nickname() << std::endl;
+	// 	std::vector<Channel*> cpy = _clients[i]->get_channels_of_client();
+	// 	for (size_t j = 0; j <  cpy.size(); ++j)
+    //     std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;	
+	// }
+	
+	std::cout << std::endl; 
+	std::cout << "Next join test:\n" << std::endl;
 }

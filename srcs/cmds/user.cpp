@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:09 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/11 17:21:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:03:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
     _clients[client_socket]->set_hostname(s_command[3]);
 
 	std::string realname = s_command[4];
-
-	if (s_command.size() == 6)
-		realname += " " + s_command[5];
-	
 	/*  <realname> should be prefixed with a colon (:) */
 	if (realname[0] != ':') 
 	{
@@ -44,6 +40,16 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 		return ;
 	}
 	realname.erase(0, 1);
+
+	if (s_command.size() == 6)
+		realname += " " + s_command[5];
+
+	std::cout << "realname: " << realname << std::endl;
+	if (realname.empty())
+	{
+		std::cout << "You should set a realname with a "":"" before bro, be rigorous please" << std::endl;
+		return ;
+	}
 
 	_clients[client_socket]->set_realname(realname);
     _clients[client_socket]->set_prefix();

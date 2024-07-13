@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 08:39:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:01:42 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::map<std::string, std::string>	Server::create_channel_map(int client_socket,
 	std::map<std::string, std::string> channel_key_map;
 	std::vector<std::string> potential_new_channels = split(s_command[1], ',');
 	
-    if (s_command.size() == 3)
+    if (s_command.size() >= 3)
 	{
         std::vector<std::string> v_key = split(s_command[2], ',');
 		size_t len = 0;
@@ -93,8 +93,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			
 			// _clients[client_socket]->get_channels_of_client();
 			//loop to have the chan_name
-			// part(client_socket)
-			//RPL for leaving the chan (PART)
+			// part(client_socket, );
 		}
 		//RPL 405??
 		
@@ -135,7 +134,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	
 	/* Test if _channels and _client_chan are correctly filled */
 	std::cout << std::endl; 
-	std::cout << "Test the channel name from join:\n" << std::endl;
+	std::cout << "Test the channel name from JOIN:\n" << std::endl;
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{
 		std::cout << "Chan name: " << _channels[i]->get_chan_name() << std::endl;
@@ -148,10 +147,14 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		std::cout << std::endl;
 	}
 	std::cout << std::endl;
-	std::cout << "Channels belong to the client:" << std::endl;
-	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
-	for (size_t j = 0; j <  cpy.size(); ++j)
-        std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;
+	// for (size_t i = 0; i < _clients.size(); ++i)
+	// {
+	// 	std::cout << "Channels belong to the client:" << _clients[i]->get_nickname() << std::endl;
+	// 	std::vector<Channel*> cpy = _clients[i]->get_channels_of_client();
+	// 	for (size_t j = 0; j <  cpy.size(); ++j)
+    //     std::cout << "Channel: " << cpy[j]->get_chan_name() << std::endl;
+	// 	std::cout << std::endl;
+	// }
 	
 	std::cout << std::endl; 
 	std::cout << "Next join test:\n" << std::endl;
