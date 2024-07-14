@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:09 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 17:03:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/14 11:46:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	if (s_command.size() == 6)
 		realname += " " + s_command[5];
 
-	std::cout << "realname: " << realname << std::endl;
-	if (realname.empty())
-	{
-		std::cout << "You should set a realname with a "":"" before bro, be rigorous please" << std::endl;
-		return ;
-	}
+	// std::cout << "realname: " << realname << std::endl;
+	// if (realname.empty())
+	// {
+	// 	std::cout << "You should set a realname with a "":"" before bro, be rigorous please" << std::endl;
+	// 	return ;
+	// }
 
 	_clients[client_socket]->set_realname(realname);
     _clients[client_socket]->set_prefix();
