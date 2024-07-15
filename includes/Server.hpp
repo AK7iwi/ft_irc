@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 16:58:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 13:55:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ class Server
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
+		void		topic(int client_socket, std::vector<std::string> &s_command);
 		void		part(int client_socket, std::vector<std::string> &s_command);
 		void		pong();
 		void		ping(int client_socket, std::vector<std::string> &s_command);

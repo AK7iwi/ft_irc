@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/15 10:49:04 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 12:36:05 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			Channel *new_channel = new Channel(it->first, it->second);
 			add_client(client_socket, new_channel, reply_arg);
 			_channels.push_back(new_channel);
-
 		}
 
 		if (it->first == "#0")
