@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 17:39:38 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:53:39 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);			break;
         case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);				break;
 
-		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[1]);				break;
+		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);				break;
 		
 		case 451: reply = ERR_NOTREGISTERED(client);							break;
 		
