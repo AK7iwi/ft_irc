@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/14 12:26:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 10:49:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,8 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end(); it++)
 	{
 		bool found = false;
-		// bool zero = false;
 		
 		//RPL 405??
-		
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
@@ -116,19 +114,19 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			Channel *new_channel = new Channel(it->first, it->second);
 			add_client(client_socket, new_channel, reply_arg);
 			_channels.push_back(new_channel);
-			
-			if (it->first == "#0")
-			{
-				// zero = true;
-				std::vector<std::string> channels_name;
-				std::string channels_name_str = "";
-				std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
-				for (size_t i = 0; i < cpy.size(); ++i)
-					channels_name_str += "," + cpy[i]->get_chan_name();
-				channels_name.push_back("PART");
-				channels_name.push_back(channels_name_str);
-				part(client_socket, channels_name);
-			}
+
+		}
+
+		if (it->first == "#0")
+		{
+			std::vector<std::string> channels_name;
+			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+			std::string channels_name_str = cpy[0]->get_chan_name();
+			for (size_t i = 1; i < cpy.size(); ++i)
+				channels_name_str += "," + cpy[i]->get_chan_name();
+			channels_name.push_back("PART");
+			channels_name.push_back(channels_name_str);
+			part(client_socket, channels_name);
 		}
 		reply_arg.erase(reply_arg.begin() + 2);
 	}

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/14 12:47:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 10:58:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 						reply_arg.push_back(reason);
 						leave(client_socket, _channels[j], reply_arg);
 						reply_arg.erase(reply_arg.begin() + 3);
-						
 						break;
 					}
 				}
@@ -82,16 +81,8 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 			}
 		}
 		
-		std::cout << "repy_arg[0]: " << reply_arg[0] << std::endl;
-		std::cout << "repy_arg[1]: " << reply_arg[1] << std::endl;
-		std::cout << "repy_arg[2]: " << reply_arg[2] << std::endl;
-		// std::cout << "repy_arg[3]: " << reply_arg[3] << std::endl;
-		
 		if (!chan_found)
-		{
-			std::cout << "Ca passe a la 403" << std::endl;
 			send_reply(client_socket, 403, reply_arg);
-		}
 
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
