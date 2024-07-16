@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 13:37:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:07:45 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void Server::handle_commands(int client_socket, std::string &command)
 		part(client_socket, s_command);
 	else if (s_command[0] == "TOPIC")
 		topic(client_socket, s_command);
+	// else if (s_command[0] == "PRIVMSG")
+	// 	privmsg(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; 
 }

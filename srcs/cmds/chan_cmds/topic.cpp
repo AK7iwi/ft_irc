@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 13:43:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:37:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void 	Server::send_topic(int client_socket, Channel *channel, std::vector<std::s
 	
 	reply_arg.push_back(new_topic);
 	channel->set_topic(new_topic);
-	std::cout << "Topic: " << channel->get_topic() << std::endl;
 	
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i < cpy.size(); ++i)
