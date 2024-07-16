@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/10 16:29:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:21:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "Server.hpp"
 #include <vector>
 
-#define NO_TOPIC "No topic"
+#define NO_TOPIC "No topic is set"
 
 class Client;
 
@@ -39,7 +39,7 @@ class Channel
 		std::string 			const	&get_chan_name()		const;
 		
 		/* Setter methods */
-		// void 							set_topic(std::string const &topic);	
+		void 							set_topic(std::string const &topic);	
 		
 	private:
 		/* Channel infos */

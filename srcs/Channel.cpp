@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 18:03:07 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:21:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,4 @@ std::vector<Client*> 	const&	Channel::get_clients_of_chan()	const			{return (_cl
 std::string  			const&	Channel::get_chan_name()		const			{return (_name);}
 
 /* Setter methods */
-// void 							Channel::set_topic(std::string const &topic)	{_topic = topic;}
+void 							Channel::set_topic(std::string const &topic)	{_topic = topic;}

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/15 16:02:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 10:49:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void Server::remove_client(int client_socket)
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
 
-	//delete from the chan also (leave_channels)
+	//PART from the chan also (leave_channels)
 }
 
 void Server::handle_commands(int client_socket, std::string &command)

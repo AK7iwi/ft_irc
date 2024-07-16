@@ -6,15 +6,20 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/15 16:11:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/15 19:30:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::set_topic()
+void 	Server::send_topic(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {
-	
+	std::cout << "reply_arg[2]: " << reply_arg[2] << std::endl;
+	std::cout << "reply_arg[3]: " << reply_arg[3] << std::endl;
+	(void)client_socket;
+	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
+	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
+		send_reply(cpy_clients_of_chan[i]->get_socket(), 332 , reply_arg);
 }
 
 void	Server::topic(int client_socket, std::vector<std::string> &s_command)
@@ -33,22 +38,18 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	
 	std::string new_topic = "";
 
-	if (s_command.size() >= 3)
+	if (s_command.size() >= 3) //put in send_topic 
 	{
 		new_topic = s_command[2];
-		if (new_topic[0] != ':')
-		{
-			std::cerr << "You should set the reason with a "":"" before bro, be rigorous please" << std::endl;
-			return ;
-		}
-		new_topic.erase(0, 1);
+		if (new_topic[0] == ':')
+			new_topic.erase(0, 1);
 		
 		for (size_t i = 3; i < s_command.size(); ++i)
         	new_topic += " " + s_command[i];
 	}
 
 	bool chan_found = false;
-		
+	
 	for (size_t j = 0; j < _channels.size(); ++j)
 	{	
 		if (s_command[1] == _channels[j]->get_chan_name())
@@ -63,7 +64,7 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 				{
 					client_found = true;
 					reply_arg.push_back(new_topic);
-					set_topic(client_socket, _channels[j], reply_arg);
+					send_topic(client_socket, _channels[j], reply_arg);
 					reply_arg.erase(reply_arg.begin() + 3);
 					break;
 				}
