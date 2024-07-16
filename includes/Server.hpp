@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 10:39:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:33:07 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ class Server
 		/////////////////// Utils methods for Server///////////////
 		
 		/* Topic utils */
-		void 								send_topic(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		void 								send_topic(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Part utils */
-		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg, std::vector<std::string> &s_command);
+		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Join utils */
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);

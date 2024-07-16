@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 10:49:06 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 13:37:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void Server::handle_commands(int client_socket, std::string &command)
 	else if (s_command[0] == "PART")
 		part(client_socket, s_command);
 	else if (s_command[0] == "TOPIC")
-		part(client_socket, s_command);
+		topic(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; 
 }

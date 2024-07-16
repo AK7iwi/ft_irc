@@ -6,13 +6,13 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 10:39:31 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/16 10:57:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg, std::vector<std::string> &s_command)
+void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {	
 	std::string reason = "";
 	
@@ -29,7 +29,6 @@ void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string
 		for (size_t i = 3; i < s_command.size(); ++i)
         	reason += " " + s_command[i];
 	}
-	
 	reply_arg.push_back(reason);
 	
 	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
@@ -85,7 +84,7 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 					if (client_socket == cpy_clients_of_chan[k]->get_socket())
 					{
 						client_found = true;
-						leave(client_socket, _channels[j], reply_arg, s_command);
+						leave(client_socket, _channels[j], s_command, reply_arg);
 						break;
 					}
 				}
