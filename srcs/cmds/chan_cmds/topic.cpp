@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 14:37:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:43:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,17 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	reply_arg.push_back(s_command[1]);
 
 	bool chan_found = false;
-	
 	for (size_t j = 0; j < _channels.size(); ++j)
 	{	
 		if (s_command[1] == _channels[j]->get_chan_name())
 		{
 			chan_found = true;
 			bool client_found = false;
-				
-			std::vector <Client*> cpy_clients_of_chan = _channels[j]->get_clients_of_chan();
-			for (size_t k = 0; k < cpy_clients_of_chan.size(); ++k)
+			
+			std::vector <Client*> cpy = _channels[j]->get_clients_of_chan();
+			for (size_t k = 0; k < cpy.size(); ++k)
 			{	
-				if (client_socket == cpy_clients_of_chan[k]->get_socket())
+				if (client_socket == cpy[k]->get_socket())
 				{
 					client_found = true;
 					send_topic(client_socket, _channels[j], s_command, reply_arg);

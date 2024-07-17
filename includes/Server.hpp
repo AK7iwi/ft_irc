@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 14:48:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:51:13 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,17 @@ class Server
 
 		//////////////////// Methods ////////////////////////////
 		
+		/* Check if the channel exist and the client is in method */
+		bool		is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
 		/* Remove client method */
 		void		remove_client(int client_socket);
-		
 		/* Send response to the client */
 		std::string	wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
 		void 		privmsg(int client_socket, std::vector<std::string> &s_command);
+		void 		kick(int client_socket, std::vector<std::string> &s_command);
 		void		topic(int client_socket, std::vector<std::string> &s_command);
 		void		part(int client_socket, std::vector<std::string> &s_command);
 		void		pong();
@@ -102,10 +104,12 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		
+		/* Kick utils */
+		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Topic utils */
 		void 								send_topic(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Part utils */
-		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 								leave(int client_socket, std::string &v_channel, std::vector<std::string> &reply_arg);
 		/* Join utils */
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);

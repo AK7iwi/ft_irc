@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 13:36:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:14:42 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	{
 		bool found = false;
 		
-		//RPL 405??
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
 		{
@@ -126,6 +125,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			channels_name.push_back(channels_name_str);
 			part(client_socket, channels_name);
 		}
+		
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
 } 

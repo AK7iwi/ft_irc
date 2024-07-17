@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 15:07:45 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/17 17:57:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,44 @@ Server::~Server()
     _channels.clear(); 
 }
 
-void Server::remove_client(int client_socket)
+bool	Server::is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg)
 {
-	std::cout << "Taille de la " << _clients[client_socket]->get_nickname() <<std::endl;
+	bool chan_found = false;
+	
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{	
+		if (channel == _channels[i]->get_chan_name())
+		{
+			chan_found = true;
+			bool client_found = false;
+				
+			std::vector <Client*> cpy = _channels[i]->get_clients_of_chan();
+			for (size_t j = 0; j < cpy.size(); ++j)
+			{	
+				if (client_socket == cpy[j]->get_socket())
+				{
+					client_found = true;
+					break;
+				}
+			}
+				
+			if (!client_found)
+				return (send_reply(client_socket, 442, reply_arg), false);
+			
+			break;
+		}
+	}
+		
+	if (!chan_found)
+		return (send_reply(client_socket, 403, reply_arg), false);
+
+	return (true);
+}
+
+
+void	Server::remove_client(int client_socket)
+{
+	std::cout << "Move fast " << _clients[client_socket]->get_nickname() <<std::endl;
 	
     close(client_socket);
 
@@ -65,7 +100,7 @@ void Server::remove_client(int client_socket)
 	//PART from the chan also (leave_channels)
 }
 
-void Server::handle_commands(int client_socket, std::string &command)
+void	Server::handle_commands(int client_socket, std::string &command)
 {
 	command.erase(command.find_last_not_of(" \n\r\t") + 1);
 	const char* command_char = command.c_str();
@@ -94,13 +129,15 @@ void Server::handle_commands(int client_socket, std::string &command)
 		part(client_socket, s_command);
 	else if (s_command[0] == "TOPIC")
 		topic(client_socket, s_command);
+	// else if (s_command[0] == "KICK")
+	// 	kick(client_socket, s_command);
 	// else if (s_command[0] == "PRIVMSG")
 	// 	privmsg(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; 
 }
 
-void Server::handle_clients(int client_socket)
+void	Server::handle_clients(int client_socket)
 {	
 	char buffer[BUFFER_MAX];
 	std::string	tmp_buffer;
@@ -128,7 +165,7 @@ void Server::handle_clients(int client_socket)
 		handle_commands(client_socket, commands[i]);
 }
 
-void Server::handle_new_connections()
+void	Server::handle_new_connections()
 {
 	struct sockaddr_in6 client_addr;
 	memset(&client_addr, 0, sizeof(client_addr));
@@ -151,7 +188,7 @@ void Server::handle_new_connections()
 
 /* Run method that loop */
 
-void Server::run()
+void	Server::run()
 {
 	if (poll(&_fds[0], _fds.size(), -1) == -1)
 		throw (std::runtime_error("Nobody listen to you"));
@@ -166,7 +203,7 @@ void Server::run()
 
 /* Init Server method */
 
-void Server::init_server()
+void	Server::init_server()
 {
 	_server_socket = socket(AF_INET6, SOCK_STREAM, 0);
     if (_server_socket == -1)

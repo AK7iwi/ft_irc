@@ -6,36 +6,33 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 10:57:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/17 18:03:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
+void 	Server::leave(int client_socket, std::string &v_channel, std::vector<std::string> &reply_arg)
 {	
-	std::string reason = "";
+	Channel *channel = NULL;
 	
-	if (s_command.size() >= 3) 
+	for (size_t i = 0; i < _channels.size(); ++i)
 	{
-		reason = s_command[2];
-		if (reason[0] != ':')
+		if (v_channel == _channels[i]->get_chan_name())
 		{
-			std::cerr << "You should set the reason with a "":"" before bro, be rigorous please" << std::endl;
-			return ;
+			channel = _channels[i]; 
+			break;
 		}
-		reason.erase(0, 1);
-		
-		for (size_t i = 3; i < s_command.size(); ++i)
-        	reason += " " + s_command[i];
 	}
-	reply_arg.push_back(reason);
 	
-	std::vector <Client*> cpy_clients_of_chan = channel->get_clients_of_chan();
-	for (size_t i = 0; i <  cpy_clients_of_chan.size(); ++i)
-		send_reply(cpy_clients_of_chan[i]->get_socket(), 4444, reply_arg);
-
-	reply_arg.erase(reply_arg.begin() + 3);
+	// std::cout << "reply_arg[0]: " << reply_arg[0] << std::endl;
+	// std::cout << "reply_arg[1]: " << reply_arg[1] << std::endl;
+	// std::cout << "reply_arg[2]: " << reply_arg[2] << std::endl;
+	// std::cout << "reply_arg[3]: " << reply_arg[3] << std::endl;
+	
+	std::vector <Client*> cpy = channel->get_clients_of_chan();
+	for (size_t i = 0; i < cpy.size(); ++i)
+		send_reply(cpy[i]->get_socket(), 4444, reply_arg);
 	
 	channel->remove_from_chan(client_socket);
 	_clients[client_socket]->leave_channel(channel);
@@ -64,41 +61,34 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 	else if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
 
-	std::vector<std::string> v_channels = split(s_command[1], ',');	
+	std::vector<std::string> p_channels = split(s_command[1], ',');	
+	std::vector<std::string> valid_channels; 
 	
-	for (size_t i = 0; i < v_channels.size(); ++i)
+	for (size_t i = 0; i < p_channels.size(); ++i)
 	{	
-		bool chan_found = false;
-		reply_arg.push_back(v_channels[i]);
-		
-		for (size_t j = 0; j < _channels.size(); ++j)
-		{	
-			if (v_channels[i] == _channels[j]->get_chan_name())
-			{
-				chan_found = true;
-				bool client_found = false;
-				
-				std::vector <Client*> cpy_clients_of_chan = _channels[j]->get_clients_of_chan();
-				for (size_t k = 0; k < cpy_clients_of_chan.size(); ++k)
-				{	
-					if (client_socket == cpy_clients_of_chan[k]->get_socket())
-					{
-						client_found = true;
-						leave(client_socket, _channels[j], s_command, reply_arg);
-						break;
-					}
-				}
-				
-				if (!client_found)
-					send_reply(client_socket, 442, reply_arg);
-				
-				break;
-			}
-		}
-		
-		if (!chan_found)
-			send_reply(client_socket, 403, reply_arg);
-
-		reply_arg.erase(reply_arg.begin() + 2);
+		reply_arg.push_back(p_channels[i]);
+		if (is_client_in_a_valid_chan(client_socket, p_channels[i], reply_arg))
+			valid_channels.push_back(p_channels[i]);
+		reply_arg.erase(reply_arg.begin() + 2); //bad RPL
 	}
+
+	std::string reason = "";
+	if (s_command.size() >= 3) 
+	{
+		reason = s_command[2];
+		if (reason[0] != ':')
+		{
+			std::cerr << "You should set the reason with a "":"" before bro, be rigorous please" << std::endl;
+			return ;
+		}
+		reason.erase(0, 1);
+		
+		for (size_t i = 3; i < s_command.size(); ++i)
+        	reason += " " + s_command[i];
+	}
+	
+	reply_arg.push_back(reason);
+	for (size_t i = 0; i < valid_channels.size(); ++i)
+		leave(client_socket, valid_channels[i], reply_arg);
+	reply_arg.erase(reply_arg.begin() + 3);
 }
