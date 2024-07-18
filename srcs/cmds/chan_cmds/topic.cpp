@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 14:25:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:18:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static	std::string	create_topic(std::vector<std::string> &s_command)
 	
 	return (new_topic);
 }
+
 void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 {
 	std::vector<std::string>    reply_arg;
@@ -42,10 +43,10 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	
 	reply_arg.push_back(s_command[1]);
 	
-	if (is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg))
+	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
+	if (channel)
 	{
 		std::string new_topic = "";
-		Channel *channel = find_channel(s_command[1]);
 
 		if (s_command.size() == 2)
 		{

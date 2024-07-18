@@ -6,16 +6,14 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 14:16:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:16:03 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::leave(int client_socket, std::string &v_channel, std::vector<std::string> &reply_arg)
+void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {	
-	Channel *channel = find_channel(v_channel);
-	
 	/* Send reply */
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i < cpy.size(); ++i)
@@ -73,7 +71,9 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 	for (size_t i = 0; i < p_channels.size(); ++i)
 	{	
 		reply_arg.push_back(p_channels[i]);
-		if (is_client_in_a_valid_chan(client_socket, p_channels[i], reply_arg))
+		Channel *channel = is_client_in_a_valid_chan(client_socket, p_channels[i], reply_arg);
+	
+		if (channel)
 		{
 			std::string reason = create_reason(s_command);
 			if (reason == ERR_COLON)
@@ -82,7 +82,7 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 				return ;
 			}
 			reply_arg.push_back(reason);
-			leave(client_socket, p_channels[i], reply_arg);
+			leave(client_socket, channel, reply_arg);
 			reply_arg.erase(reply_arg.begin() + 3);
 		}
 		reply_arg.erase(reply_arg.begin() + 2);

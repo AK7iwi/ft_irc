@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/17 17:57:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:17:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,38 +44,23 @@ Server::~Server()
     _channels.clear(); 
 }
 
-bool	Server::is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg)
+Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg)
 {
-	bool chan_found = false;
-	
+	Channel *null_chan = NULL;
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{	
 		if (channel == _channels[i]->get_chan_name())
 		{
-			chan_found = true;
-			bool client_found = false;
-				
 			std::vector <Client*> cpy = _channels[i]->get_clients_of_chan();
 			for (size_t j = 0; j < cpy.size(); ++j)
-			{	
 				if (client_socket == cpy[j]->get_socket())
-				{
-					client_found = true;
-					break;
-				}
-			}
-				
-			if (!client_found)
-				return (send_reply(client_socket, 442, reply_arg), false);
+					return (_channels[i]);
 			
-			break;
+			return (send_reply(client_socket, 442, reply_arg), null_chan);
 		}
 	}
 		
-	if (!chan_found)
-		return (send_reply(client_socket, 403, reply_arg), false);
-
-	return (true);
+	return (send_reply(client_socket, 403, reply_arg), null_chan);
 }
 
 
@@ -129,8 +114,8 @@ void	Server::handle_commands(int client_socket, std::string &command)
 		part(client_socket, s_command);
 	else if (s_command[0] == "TOPIC")
 		topic(client_socket, s_command);
-	// else if (s_command[0] == "KICK")
-	// 	kick(client_socket, s_command);
+	else if (s_command[0] == "KICK")
+		kick(client_socket, s_command);
 	// else if (s_command[0] == "PRIVMSG")
 	// 	privmsg(client_socket, s_command);
 	else

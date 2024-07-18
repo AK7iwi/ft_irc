@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 14:09:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:15:55 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ class Server
 		//////////////////// Methods ////////////////////////////
 		
 		/* Check if the channel exist and the client is in method */
-		bool		is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
+		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
 		/* Remove client method */
 		void		remove_client(int client_socket);
 		/* Send response to the client */
@@ -106,17 +106,15 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		
-		/* Find channel with his name */
-		Channel* 							find_channel(std::string &v_channel);
 		/* Kick utils */
 		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Part utils */
-		void 								leave(int client_socket, std::string &v_channel, std::vector<std::string> &reply_arg);
+		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join utils */
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Init struct address */
-		void		init_address_structures();
+		void								init_address_structures();
 };
 
 #endif /* SERVER_HPP */
