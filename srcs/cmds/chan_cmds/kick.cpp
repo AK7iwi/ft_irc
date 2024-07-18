@@ -6,30 +6,16 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 16:43:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:30:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::kicked(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
+void 	Server::kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {
-	std::string comment = "";
 	
-	if (s_command.size() >= 4) 
-	{
-		comment = s_command[3];
-		if (comment[0] != ':')
-		{
-			std::cerr << "You should set the reason with a "":"" before bro, be rigorous please" << std::endl;
-			return ;
-		}
-		comment.erase(0, 1);
-		
-		for (size_t i = 4; i < s_command.size(); ++i)
-        	comment += " " + s_command[i];
-	}
-	reply_arg.push_back(comment);
+	// reply_arg.push_back(comment);
 	
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy.size(); ++i)
@@ -77,8 +63,13 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
 	if (channel)
 	{
+		std::vector <Client*> cpy = channel->get_clients_of_chan();
+		for (size_t i = 0; i < cpy.size(); ++i)
+			if (s_command[2] == cpy[i]->get_nickname())
+				kicked(client_socket, channel, reply_arg);
 		
+		return (send_reply(client_socket, 441, reply_arg)); 
 	}
 	
-	std::vector<std::string> clients_list = split(s_command[2], ',')
+	// std::vector<std::string> clients_list = split(s_command[2], ',')
 }

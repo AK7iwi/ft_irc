@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 16:15:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:16:13 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ class Server
 		/////////////////// Utils methods for Server///////////////
 		
 		/* Kick utils */
-		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */
 		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join utils */

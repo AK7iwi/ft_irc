@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 16:16:03 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 22:14:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string
 	channel->remove_from_chan(client_socket);
 	_clients[client_socket]->leave_channel(channel);
 
-	/* Delete chan if empty */
+	/* Delete channel if empty */
 	if (!channel->get_clients_of_chan().size())
 	{
 		for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end();)

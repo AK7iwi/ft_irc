@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/17 14:39:09 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 21:23:24 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,6 @@ std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
 {return (client->get_prefix() + " 403 " + channel_name + " :No such channel");}
-
-// /* 405 */
-// std::string ERR_TOOMANYCHANNELS(Client const *client, std::string const &channel_name)
-// {return (client->get_prefix() + " 405 " + channel_name + " :You have joined too many channels");}
 
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client) 
@@ -118,7 +114,6 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);				break;
 		
 		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);						break;
-		// case 405: reply = ERR_TOOMANYCHANNELS(_clients[client_socket], reply_arg[2]);		break;
 
 		case 431: reply = ERR_NONICKNAMEGIVEN(client);									break;
         case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);					break;
