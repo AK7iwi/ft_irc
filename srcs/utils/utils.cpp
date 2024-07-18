@@ -6,11 +6,28 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 13:16:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 13:14:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
+
+/* Find channel with his name */
+
+Channel* Server::find_channel(std::string &v_channel)
+{
+	Channel *channel = NULL; 
+	for (size_t i = 0; i < _channels.size(); ++i)
+	{
+		if (v_channel == _channels[i]->get_chan_name())
+		{
+			channel = _channels[i]; 
+			break;
+		}
+	}
+
+	return (channel);
+}
 
 /* Split method */
 

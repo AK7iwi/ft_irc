@@ -2,7 +2,7 @@ CC				= c++
 RM				= rm -f
 CFLAGS			= -Wall -Wextra -Werror -I./includes -std=c++98 
 NAME 			= ircserv
-SRCS			= srcs/main.cpp srcs/Server.cpp srcs/Client.cpp srcs/Channel.cpp \
+SRCS			= srcs/core/main.cpp srcs/core/Server.cpp srcs/core/Client.cpp srcs/core/Channel.cpp \
 					srcs/cmds/pass.cpp srcs/cmds/nick.cpp srcs/cmds/user.cpp \
 					srcs/cmds/join.cpp srcs/cmds/ping.cpp srcs/cmds/pong.cpp \
 					srcs/cmds/privmsg.cpp srcs/cmds/chan_cmds/part.cpp \
