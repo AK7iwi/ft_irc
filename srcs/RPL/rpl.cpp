@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 21:23:24 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/18 23:45:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,10 @@ std::string NEW_PING(std::string const &client_prefix)
 std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason)
 {return(client_prefix + " PART " + channel_name + " :" + reason);}
 
+/* 5555 */
+std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const &channel_name, std::string const &comment)
+{return(client_prefix + " KICK " + channel_name + " :" + comment);}
+
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
 	std::string reply;
@@ -136,6 +140,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);						break;
 		case 3333: reply = NEW_PING(reply_arg[1]);										break;
 		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);			break;
+		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3]);	break;
     }
 	
 	return (reply);

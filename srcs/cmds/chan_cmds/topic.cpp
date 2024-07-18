@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 16:18:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 00:18:32 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,15 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 			reply_arg.push_back(new_topic);
 			return (send_reply(client_socket, 332, reply_arg));
 		}
-		else if (s_command.size() >= 3)
+		
+		new_topic = create_topic(s_command);
+		if (new_topic == ERR_COLON)
 		{
-			new_topic = create_topic(s_command);
-			if (new_topic == ERR_COLON)
-			{
-				std::cerr << ERR_COLON << std::endl;
-				return ;
-			}
+			std::cerr << ERR_COLON << std::endl;
+			return ;
 		}
-	
+
+		//fct
 		reply_arg.push_back(new_topic);
 		channel->set_topic(new_topic);
 		

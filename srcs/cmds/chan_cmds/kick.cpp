@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 23:30:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 00:08:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 void 	Server::kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {
-	
-	// reply_arg.push_back(comment);
-	
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy.size(); ++i)
-		send_reply(cpy[i]->get_socket(), 4444, reply_arg);
+		send_reply(cpy[i]->get_socket(), 5555, reply_arg);
 	
 	reply_arg.erase(reply_arg.begin() + 3);
 	(void)channel;
@@ -66,9 +63,14 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 		std::vector <Client*> cpy = channel->get_clients_of_chan();
 		for (size_t i = 0; i < cpy.size(); ++i)
 			if (s_command[2] == cpy[i]->get_nickname())
-				kicked(client_socket, channel, reply_arg);
-		
-		return (send_reply(client_socket, 441, reply_arg)); 
+			{
+				
+				return (kicked(client_socket, channel, reply_arg));
+			}
+
+		reply_arg.push_back(s_command[2]);
+		std::cerr << "The target is not in the channel" << std::endl;
+ 		return (send_reply(client_socket, 441, reply_arg)); 
 	}
 	
 	// std::vector<std::string> clients_list = split(s_command[2], ',')
