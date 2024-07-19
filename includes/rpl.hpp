@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/17 13:28:08 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:05:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ std::string	RPL_CREATED(Client const *client, std::string const &start_time, std
 std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version);
 /* 332 */
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
+/* 341 */
+std::string RPL_INVITING(Client const *client, std::string const &client_to_invite, std::string const &channel_name);
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
 /* 431 */
@@ -43,6 +45,8 @@ std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick);
 std::string	ERR_USERNOTINCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name);
 /* 442 */
 std::string	ERR_NOTONCHANNEL(Client const *client,  std::string const &channel_name);
+/* 443 */
+std::string	ERR_USERONCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name);
 /* 451 */
 std::string	ERR_NOTREGISTERED(Client const *client);
 /* 461 */

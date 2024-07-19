@@ -6,7 +6,7 @@ SRCS			= srcs/core/main.cpp srcs/core/Server.cpp srcs/core/Client.cpp srcs/core/
 					srcs/cmds/pass.cpp srcs/cmds/nick.cpp srcs/cmds/user.cpp \
 					srcs/cmds/join.cpp srcs/cmds/ping.cpp srcs/cmds/pong.cpp \
 					srcs/cmds/privmsg.cpp srcs/cmds/chan_cmds/part.cpp \
-					srcs/cmds/chan_cmds/topic.cpp srcs/cmds/chan_cmds/kick.cpp \
+					srcs/cmds/chan_cmds/topic.cpp srcs/cmds/chan_cmds/invite.cpp srcs/cmds/chan_cmds/kick.cpp \
 					srcs/RPL/rpl.cpp srcs/utils/utils.cpp \
 
 OBJS 			= $(SRCS:.cpp=.o)

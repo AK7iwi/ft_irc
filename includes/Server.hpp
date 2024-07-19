@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 12:24:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:03:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ class Server
 		/* Commands */
 		void 		privmsg(int client_socket, std::vector<std::string> &s_command);
 		void 		kick(int client_socket, std::vector<std::string> &s_command);
+		void 		invite(int client_socket, std::vector<std::string> &s_command);
 		void		topic(int client_socket, std::vector<std::string> &s_command);
 		void		part(int client_socket, std::vector<std::string> &s_command);
 		void		pong();
@@ -106,7 +107,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* Kick utils */
-		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */
 		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join utils */

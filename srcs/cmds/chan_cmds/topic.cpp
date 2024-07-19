@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 12:23:06 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 15:09:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,30 +44,30 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	reply_arg.push_back(s_command[1]);
 	
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
-	if (channel)
+	if (!channel)
+		return ;
+	
+	std::string new_topic;
+
+	if (s_command.size() == 2)
 	{
-		std::string new_topic = "";
-
-		if (s_command.size() == 2)
-		{
-			new_topic = channel->get_topic();
-			reply_arg.push_back(new_topic);
-			return (send_reply(client_socket, 332, reply_arg));
-		}
-		
-		new_topic = create_topic(s_command);
-		if (new_topic == ERR_COLON)
-		{
-			std::cerr << ERR_COLON << std::endl;
-			return ;
-		}
-
+		new_topic = channel->get_topic();
 		reply_arg.push_back(new_topic);
-		channel->set_topic(new_topic);
-		
-		/* Send reply */
-		std::vector <Client*> cpy = channel->get_clients_of_chan();
-		for (size_t i = 0; i < cpy.size(); ++i)
-			send_reply(cpy[i]->get_socket(), 332, reply_arg);
+		return (send_reply(client_socket, 332, reply_arg));
 	}
+		
+	new_topic = create_topic(s_command);
+	if (new_topic == ERR_COLON)
+	{
+		std::cerr << ERR_COLON << std::endl;
+		return ;
+	}
+
+	reply_arg.push_back(new_topic);
+	channel->set_topic(new_topic);
+		
+	/* Send reply */
+	std::vector <Client*> cpy = channel->get_clients_of_chan();
+	for (size_t i = 0; i < cpy.size(); ++i)
+		send_reply(cpy[i]->get_socket(), 332, reply_arg);
 }
