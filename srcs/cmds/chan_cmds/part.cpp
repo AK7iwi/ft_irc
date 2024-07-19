@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 22:14:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:23:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void 	Server::leave(int client_socket, Channel *channel, std::vector<std::string
 	}
 }
 
-/* Find reason method */
+/* Create topic method */
 static	std::string	create_reason(std::vector<std::string> &s_command)
 {
 	std::string reason = "";

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/18 22:16:13 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:24:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ class Server
 		void		handle_new_connections();
 		
 		/////////////////// Utils methods for Server///////////////
-		
 		/* Kick utils */
 		void 								kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

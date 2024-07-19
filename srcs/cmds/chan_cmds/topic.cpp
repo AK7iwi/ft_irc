@@ -6,13 +6,13 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 00:18:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:23:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-/* Find reason method */
+/* Create topic method */
 static	std::string	create_topic(std::vector<std::string> &s_command)
 {
 	std::string new_topic = s_command[2];
@@ -62,10 +62,10 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 			return ;
 		}
 
-		//fct
 		reply_arg.push_back(new_topic);
 		channel->set_topic(new_topic);
 		
+		/* Send reply */
 		std::vector <Client*> cpy = channel->get_clients_of_chan();
 		for (size_t i = 0; i < cpy.size(); ++i)
 			send_reply(cpy[i]->get_socket(), 332, reply_arg);

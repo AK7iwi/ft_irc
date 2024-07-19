@@ -6,25 +6,25 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 00:08:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 13:13:58 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void 	Server::kicked(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
+void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg)
 {
+	/* Send reply */
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy.size(); ++i)
 		send_reply(cpy[i]->get_socket(), 5555, reply_arg);
 	
-	reply_arg.erase(reply_arg.begin() + 3);
-	(void)channel;
-	(void)client_socket;
-	// channel->remove_from_chan(client_socket); /
-	// _clients[client_socket]->leave_channel(channel);
+	/* Leave channel */
+	channel->remove_from_chan(client_socket_to_kick);
+	_clients[client_socket_to_kick]->leave_channel(channel);
 }
 
+/* Create comment method */
 static	std::string	create_comment(std::vector<std::string> &s_command)
 {
 	std::string comment = "";
@@ -41,8 +41,8 @@ static	std::string	create_comment(std::vector<std::string> &s_command)
 	}
 
 	return (comment);
-	
 }
+
 void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 {	
 	std::vector<std::string>    reply_arg;
@@ -57,21 +57,35 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 
 	reply_arg.push_back(s_command[1]);
 
+	std::cout << "Size" << s_command[2].length() << std::endl;
+
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
 	if (channel)
 	{
 		std::vector <Client*> cpy = channel->get_clients_of_chan();
+		reply_arg.push_back(s_command[2]);
 		for (size_t i = 0; i < cpy.size(); ++i)
+		{
 			if (s_command[2] == cpy[i]->get_nickname())
 			{
+				if (cpy[i]->get_socket != client_socket)
+				{
+					std::cerr << "You cannot kick yourself" << std::endl;
+					return ;
+				}
 				
-				return (kicked(client_socket, channel, reply_arg));
+				std::string comment = create_comment(s_command);
+				if (comment == ERR_COLON)
+				{
+					std::cerr << ERR_COLON << std::endl;
+					return ;
+				}
+				reply_arg.push_back(comment);
+				return (kicked(cpy[i]->get_socket(), channel, reply_arg));
 			}
+		}
 
-		reply_arg.push_back(s_command[2]);
 		std::cerr << "The target is not in the channel" << std::endl;
  		return (send_reply(client_socket, 441, reply_arg)); 
 	}
-	
-	// std::vector<std::string> clients_list = split(s_command[2], ',')
 }

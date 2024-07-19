@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/15 18:21:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/19 12:23:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 Channel::Channel(std::string const &name, std::string const &key) :
 	_name(name),
 	_key(key),
-	_topic(NO_TOPIC)
-{}
+	_topic(NO_TOPIC) {}
 
 Channel::~Channel() {}
 
