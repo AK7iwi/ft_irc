@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 16:26:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:56:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 	/* Leave channel */
 	channel->remove_from_chan(client_socket_to_kick);
 	_clients[client_socket_to_kick]->leave_channel(channel);
-
-	//PART if RPL doesnt work
 }
 
 /* Create comment method */
@@ -63,7 +61,7 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	if (!channel)
 		return ;
 	
-	std::vector <Client*> cpy = channel->get_clients_of_chan(); //fct 
+	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	reply_arg.push_back(s_command[2]);
 	for (size_t i = 0; i < cpy.size(); ++i)
 	{

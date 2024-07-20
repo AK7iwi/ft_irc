@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 17:05:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/20 17:35:24 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std
 
 /* 341 */
 std::string RPL_INVITING(Client const *client, std::string const &client_to_invite, std::string const &channel_name)
-{return (client->get_prefix() + " 341 " + client_to_invite + " :" + channel_name);}
+{return (client->get_prefix() + " 341 " + client->get_nickname() + " " + client_to_invite + " " + channel_name);}
 
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
@@ -109,8 +109,8 @@ std::string GOODBYE(std::string const &client_prefix, std::string const &channel
 {return(client_prefix + " PART " + channel_name + " :" + reason);}
 
 /* 5555 */
-std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const &channel_name, std::string const &comment)
-{return(client_prefix + " KICK " + channel_name + " :" + comment);}
+std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const &channel_name, std::string const &client_to_kick, std::string const &comment)
+{return (client_prefix + " KICK " + channel_name + " " + client_to_kick + " :" + comment);}
 
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
@@ -118,40 +118,40 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 	
 	switch (rpl)
 	{
-        case   1: reply = RPL_WELCOME(client, _networkname, _servername);				break;
-        case   2: reply = RPL_YOURHOST(client, _servername, _version);					break;
-        case   3: reply = RPL_CREATED(client, _start_time, _servername);				break;
-        case   4: reply = RPL_MYINFO(client, _servername, _version);					break;
+        case   1: reply = RPL_WELCOME(client, _networkname, _servername);							break;
+        case   2: reply = RPL_YOURHOST(client, _servername, _version);								break;
+        case   3: reply = RPL_CREATED(client, _start_time, _servername);							break;
+        case   4: reply = RPL_MYINFO(client, _servername, _version);								break;
 
-		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);				break;
+		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);							break;
 		
-		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);				break;
+		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);							break;
 		
-		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);						break;
+		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);									break;
 
-		case 431: reply = ERR_NONICKNAMEGIVEN(client);									break;
-        case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);					break;
-        case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);						break;
+		case 431: reply = ERR_NONICKNAMEGIVEN(client);												break;
+        case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);								break;
+        case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);									break;
 
-		case 441: reply = ERR_USERNOTINCHANNEL(client, reply_arg[3], reply_arg[2]);		break;
-		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);						break;
-		case 443: reply = ERR_USERONCHANNEL(client, reply_arg[3], reply_arg[2]);		break;
+		case 441: reply = ERR_USERNOTINCHANNEL(client, reply_arg[3], reply_arg[2]);					break;
+		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);									break;
+		case 443: reply = ERR_USERONCHANNEL(client, reply_arg[3], reply_arg[2]);					break;
 		
-		case 451: reply = ERR_NOTREGISTERED(client);									break;
+		case 451: reply = ERR_NOTREGISTERED(client);												break;
 		
-        case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);						break;
-        case 462: reply = ERR_ALREADYREGISTERED(client);           						break;
-        case 464: reply = ERR_PASSWDMISMATCH(client);									break;
+        case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);									break;
+        case 462: reply = ERR_ALREADYREGISTERED(client);           									break;
+        case 464: reply = ERR_PASSWDMISMATCH(client);												break;
 		
-		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);						break;
-		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);						break;
-		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);								break;
+		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);									break;
+		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);									break;
+		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);											break;
 		
-		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);						break;
-		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);						break;
-		case 3333: reply = NEW_PING(reply_arg[1]);										break;
-		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);			break;
-		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3]);	break;
+		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);									break;
+		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);									break;
+		case 3333: reply = NEW_PING(reply_arg[1]);													break;
+		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);						break;
+		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3], reply_arg[4]); break;
     }
 	
 	return (reply);
