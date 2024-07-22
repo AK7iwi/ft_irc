@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/20 17:35:24 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:52:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,21 @@ std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std
 std::string RPL_INVITING(Client const *client, std::string const &client_to_invite, std::string const &channel_name)
 {return (client->get_prefix() + " 341 " + client->get_nickname() + " " + client_to_invite + " " + channel_name);}
 
+/* 401 */
+std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
+{return (client->get_prefix() + " 401 " + nickname + " :No such nick/channel");}
+
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
 {return (client->get_prefix() + " 403 " + channel_name + " :No such channel");}
+
+/* 411 */
+std::string	ERR_NORECIPIENT(Client const *client)
+{return (client->get_prefix() + " 411 :No recipient given (PRIVMSG)");}
+
+/* 412 */
+std::string	ERR_NOTEXTTOSEND(Client const *client)
+{return (client->get_prefix() + " 412 :No text to send");}
 
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client) 
@@ -112,6 +124,10 @@ std::string GOODBYE(std::string const &client_prefix, std::string const &channel
 std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const &channel_name, std::string const &client_to_kick, std::string const &comment)
 {return (client_prefix + " KICK " + channel_name + " " + client_to_kick + " :" + comment);}
 
+/* 6666 */
+std::string MSGS(std::string const &client_prefix, std::string const &name, std::string const &message)
+{return (client_prefix + " PRIVMSG " + name + " :" + message);}
+
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
 	std::string reply;
@@ -124,11 +140,14 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case   4: reply = RPL_MYINFO(client, _servername, _version);								break;
 
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);							break;
-		
 		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);							break;
 		
+		case 401: reply = ERR_NOSUCHNICK(client, reply_arg[2]);										break;
 		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);									break;
 
+		case 411: reply = ERR_NORECIPIENT(client);													break;
+		case 412: reply = ERR_NOTEXTTOSEND(client);													break;
+		
 		case 431: reply = ERR_NONICKNAMEGIVEN(client);												break;
         case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);								break;
         case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);									break;
@@ -152,6 +171,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 3333: reply = NEW_PING(reply_arg[1]);													break;
 		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);						break;
 		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3], reply_arg[4]); break;
+		case 6666: reply = MSGS(reply_arg[1], reply_arg[2], reply_arg[3]); 							break;
     }
 	
 	return (reply);

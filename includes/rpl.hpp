@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/20 17:54:40 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:28:21 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,14 @@ std::string	RPL_MYINFO(Client const *client, std::string const &servername, std:
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
 /* 341 */
 std::string RPL_INVITING(Client const *client, std::string const &client_to_invite, std::string const &channel_name);
+/* 401 */
+std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname);
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
+/* 411 */
+std::string	ERR_NORECIPIENT(Client const *client);
+/* 412 */
+std::string	ERR_NOTEXTTOSEND(Client const *client);
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 /* 432 */
@@ -72,5 +78,7 @@ std::string NEW_PING(std::string const &client_prefix);
 std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason);
 /* 5555 */
 std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const &channel_name, std::string const &client_to_kick, std::string const &comment);
+/* 6666 */
+std::string MSGS(std::string const &client_prefix, std::string const &name, std::string const &message);
 
 #endif /* RPL_HPP */

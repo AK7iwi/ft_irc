@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/17 14:14:42 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:00:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	send_reply(client_socket, 332, reply_arg);
 	reply_arg.erase(reply_arg.begin() + 3);
 }
-
-static bool inline is_valid_prefix(std::string const &potential_new_channels)
-{return (potential_new_channels[0] == '#' || potential_new_channels[0] == '&');}
 
 std::map<std::string, std::string>	Server::create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {

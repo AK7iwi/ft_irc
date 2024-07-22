@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/20 17:56:04 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:55:58 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 	/* Send reply */
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i <  cpy.size(); ++i)
-		send_reply(cpy[i]->get_socket(), 5555, reply_arg); //REVIEW
+		send_reply(cpy[i]->get_socket(), 5555, reply_arg);
 	
 	/* Leave channel */
 	channel->remove_from_chan(client_socket_to_kick);

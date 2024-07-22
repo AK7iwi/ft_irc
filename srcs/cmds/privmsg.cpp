@@ -6,13 +6,83 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/16 15:07:40 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:52:09 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-// void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
-// {
+/* Send message to a channel */
+void Server::send_message_to_channel(Channel *channel, std::vector<std::string> &reply_arg)
+{
+	/* Send reply */
+	std::vector <Client*> cpy = channel->get_clients_of_chan();
+	for (size_t i = 0; i <  cpy.size(); ++i)
+		send_reply(cpy[i]->get_socket(), 6666, reply_arg);
+}
+
+/* Create topic method */
+static	std::string	create_message(std::vector<std::string> &s_command)
+{
+	std::string message = "";
 	
-// }
+	if (s_command.size() >= 3) 
+	{
+		message = s_command[2];
+		if (message[0] != ':')
+			return (ERR_COLON);
+		message.erase(0, 1);
+		
+		for (size_t i = 3; i < s_command.size(); ++i)
+        	message += " " + s_command[i];
+	}
+	
+	return (message);
+}
+
+
+void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
+{	
+	std::vector<std::string>    reply_arg;
+	
+	reply_arg.push_back(s_command[0]);
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+	
+	if (!_clients[client_socket]->is_registered())
+		return (send_reply(client_socket, 451, reply_arg)); 
+	else if (s_command.size() < 2)
+		return (send_reply(client_socket, 411, reply_arg)); 
+	else if (s_command.size() < 3)
+		return (send_reply(client_socket, 412, reply_arg));
+	
+		
+	reply_arg.push_back(s_command[1]);
+	
+	std::string message = create_message(s_command);
+	if (message.empty())
+		return (send_reply(client_socket, 412, reply_arg));
+
+	reply_arg.push_back(message);
+	
+	if (is_valid_prefix(s_command[1]))
+	{
+		for (size_t i = 0; i < _channels.size(); ++i)
+		{
+			if (s_command[1] == _channels[i]->get_chan_name())
+				return (send_message_to_channel(_channels[i], reply_arg));	
+		}
+		return (send_reply(client_socket, 403, reply_arg));
+		// return (send_reply(client_socket, 404, reply_arg));
+		
+	}
+	else
+	{
+		
+		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		{
+			if (s_command[1] == it->second->get_nickname())
+				return (send_reply(it->second->get_socket(), 6666, reply_arg));
+		}
+		return (send_reply(client_socket, 401, reply_arg));
+	}
+}
