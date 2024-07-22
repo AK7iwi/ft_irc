@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 13:54:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 00:03:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 Server::Server(uint16_t port, std::string const &password) : 
     _port(port),
     _password(password),
-	_networkname("Black Market"),
+	_networkname("Black_Market"),
 	_servername("No_Rules"),
 	_version("Jailbreak 1.33")
 {
@@ -120,6 +120,8 @@ void	Server::handle_commands(int client_socket, std::string &command)
 		kick(client_socket, s_command);
 	else if (s_command[0] == "PRIVMSG")
 		privmsg(client_socket, s_command);
+	else if (s_command[0] == "MODE")
+		mode(client_socket, s_command);
 	else
 		std::cout << "Unknow command" << std::endl; 
 }

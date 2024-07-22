@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 18:59:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 23:26:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
 	else if (s_command.size() < 3)
 		return (send_reply(client_socket, 412, reply_arg));
 	
-		
 	reply_arg.push_back(s_command[1]);
 	
 	std::string message = create_message(s_command);

@@ -6,14 +6,11 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 16:58:47 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 12:09:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:31:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 void	Server::pong()
-{
-	std::cout << "PONG" << std::endl;
-	return ;
-}
+{std::cout << "PONG" << std::endl;}

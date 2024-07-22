@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 18:46:33 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 00:32:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ std::string	RPL_YOURHOST(Client const *client, std::string const &servername, st
 std::string	RPL_CREATED(Client const *client, std::string const &start_time, std::string const &servername);
 /* 004 */
 std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version);
+/* 221 */
+std::string RPL_UMODEIS(Client const *client);
 /* 332 */
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
 /* 341 */
@@ -69,6 +71,8 @@ std::string	ERR_CHANNELISFULL(Client const *client, std::string const &channel_n
 std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name);
 /* 476 */
 std::string	ERR_BADCHANMASK(std::string const &channel_name);
+/* 502 */
+std::string	ERR_USERSDONTMATCH(Client const *client);
 
 /* 1111 */
 std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick);

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 18:49:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 22:35:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include <errno.h>
 #include <poll.h>
 #include <netinet/in.h>
-
+ #include <unistd.h>
 
 #define BUFFER_MAX	4096
 #define CLIENT_MAX	5
@@ -86,6 +86,7 @@ class Server
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg); 
 		
 		/* Commands */
+		void		mode(int client_socket, std::vector<std::string> &s_command);
 		void 		privmsg(int client_socket, std::vector<std::string> &s_command);
 		void 		kick(int client_socket, std::vector<std::string> &s_command);
 		void 		invite(int client_socket, std::vector<std::string> &s_command);
