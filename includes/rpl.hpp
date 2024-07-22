@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 17:28:21 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:46:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ std::string RPL_INVITING(Client const *client, std::string const &client_to_invi
 std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname);
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name);
+/* 404 */
+std::string	ERR_CANNOTSENDTOCHAN(Client const *client, std::string const &channel_name);
 /* 411 */
 std::string	ERR_NORECIPIENT(Client const *client);
 /* 412 */

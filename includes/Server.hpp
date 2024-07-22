@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 17:52:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:49:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ class Server
 		void		handle_new_connections();
 		
 		/////////////////// Utils methods for Server///////////////
-		/* Privmsg utils */
-		void 								send_message_to_channel(Channel *channel, std::vector<std::string> &reply_arg);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

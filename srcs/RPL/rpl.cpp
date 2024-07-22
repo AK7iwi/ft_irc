@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 17:52:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:47:16 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
 /* 403 */
 std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
 {return (client->get_prefix() + " 403 " + channel_name + " :No such channel");}
+
+/* 404 */
+std::string	ERR_CANNOTSENDTOCHAN(Client const *client, std::string const &channel_name)
+{return (client->get_prefix() + " 404 " + channel_name + " :Cannot send to channel");}
 
 /* 411 */
 std::string	ERR_NORECIPIENT(Client const *client)
@@ -144,7 +148,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		
 		case 401: reply = ERR_NOSUCHNICK(client, reply_arg[2]);										break;
 		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);									break;
-
+		case 404: reply = ERR_CANNOTSENDTOCHAN(client, reply_arg[2]); 								break;
 		case 411: reply = ERR_NORECIPIENT(client);													break;
 		case 412: reply = ERR_NOTEXTTOSEND(client);													break;
 		
