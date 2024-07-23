@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 12:05:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:43:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ std::string	RPL_MYINFO(Client const *client, std::string const &servername, std:
 {return (":" + servername + " 004 " + client->get_nickname() + " " + servername + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
 /* 221 */
-std::string RPL_UMODEIS(Client const *client, std::string const &client_modes)
-{return (":" + client->get_prefix() + " 221 " + client->get_nickname() + " " + client_modes);}
+std::string RPL_UMODEIS(Client const *client)
+{return (":" + client->get_prefix() + " 221 " + client->get_nickname() + " No mode");}
 
 /* 324 */
 std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params)
@@ -159,7 +159,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case   3: reply = RPL_CREATED(client, _start_time, _servername);							break;
         case   4: reply = RPL_MYINFO(client, _servername, _version);								break;
 
-		case 221: reply = RPL_UMODEIS(client, reply_arg[3]);										break;
+		case 221: reply = RPL_UMODEIS(client);														break;
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);		break;
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);							break;
@@ -189,7 +189,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);									break;
 		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);											break;
 
-		case 501: reply = ERR_UMODEUNKNOWNFLAG(client)												break;
+		case 501: reply = ERR_UMODEUNKNOWNFLAG(client);												break;
 		case 502: reply = ERR_USERSDONTMATCH(client);												break;
 		
 		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);									break;

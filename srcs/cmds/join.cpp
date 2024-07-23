@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 15:00:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:20:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ std::map<std::string, std::string>	Server::create_channel_map(int client_socket,
         std::vector<std::string> v_key = split(s_command[2], ',');
 		
         for (size_t i = 0; i < potential_new_channels.size(); ++i)
-            channel_key_map[potential_new_channels[i]] = v_key[i];
+            channel_key_map[potential_new_channels[i]] = v_key[i]; //x
 	}
 	else 
 		for (size_t i = 0; i < potential_new_channels.size(); ++i)

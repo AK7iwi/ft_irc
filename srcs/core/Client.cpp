@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 11:39:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:18:32 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@ Client::Client(int socket_fd) :
 	_hostname(DEFAULT),
 	_realname(DEFAULT),
 	_valid_pass(false),
-	_register(false),
-	_client_mode(NO_MODE)
+	_register(false)
 {set_prefix();}
 
 Client::~Client() {}
 
-
-/* Leave channel method */
-
+/* Channel method */
 void	Client::leave_channel(Channel *channel) 
 {
 	for (std::vector<Channel*>::iterator it = _channels_of_client.begin(); it != _channels_of_client.end();)
@@ -39,29 +36,22 @@ void	Client::leave_channel(Channel *channel)
 	}
 }
 
-/* Add chan method */
-
 void 							Client::add_chan_to_client(Channel *channel) 		{_channels_of_client.push_back(channel);}
 
 /* Checker */
-
 bool 							Client::is_registered()				const			{return (_register);}
 bool 							Client::is_valid_pass()				const			{return (_valid_pass);}
 
 /* Getter methods */
-
-std::string 			const&	Client::get_client_mode()			const 			{return (_mode);}
 std::vector<Channel*>	const&	Client::get_channels_of_client() 	const			{return (_channels_of_client);}
 std::string  			const&	Client::get_realname()				const			{return (_realname);}
 std::string  			const&	Client::get_hostname()				const			{return (_hostname);}
 std::string  			const&	Client::get_username()				const			{return (_username);}
 std::string  			const&	Client::get_nickname()				const			{return (_nickname);}
 std::string  			const&	Client::get_prefix()				const			{return (_prefix);}
-uint16_t  						Client::get_socket()				const			{return (_socket_fd);}
+int 							Client::get_socket()				const			{return (_socket_fd);}
 
 /* Setter method */
-
-void 							Client::set_client_mode(std::string const &mode)	{_mode = mode;}
 void 							Client::set_register()								{_register = true;}
 void 							Client::set_valid_pass()							{_valid_pass = true;}
 void							Client::set_realname(std::string const &realname)	{_realname = realname;} 
