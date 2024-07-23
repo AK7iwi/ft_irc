@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/13 18:37:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:39:50 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ Client::Client(int socket_fd) :
 	_hostname(DEFAULT),
 	_realname(DEFAULT),
 	_valid_pass(false),
-	_register(false)
+	_register(false),
+	_client_mode(NO_MODE)
 {set_prefix();}
 
 Client::~Client() {}
@@ -49,6 +50,7 @@ bool 							Client::is_valid_pass()				const			{return (_valid_pass);}
 
 /* Getter methods */
 
+std::string 			const&	Client::get_client_mode()			const 			{return (_mode);}
 std::vector<Channel*>	const&	Client::get_channels_of_client() 	const			{return (_channels_of_client);}
 std::string  			const&	Client::get_realname()				const			{return (_realname);}
 std::string  			const&	Client::get_hostname()				const			{return (_hostname);}
@@ -59,6 +61,7 @@ uint16_t  						Client::get_socket()				const			{return (_socket_fd);}
 
 /* Setter method */
 
+void 							Client::set_client_mode(std::string const &mode)	{_mode = mode;}
 void 							Client::set_register()								{_register = true;}
 void 							Client::set_valid_pass()							{_valid_pass = true;}
 void							Client::set_realname(std::string const &realname)	{_realname = realname;} 

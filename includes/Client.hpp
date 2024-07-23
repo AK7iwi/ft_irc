@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/12 17:36:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/07/23 11:59:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ class Client
 		bool 							is_valid_pass() const;
 		
 		/* Getter */
-		std::vector<Channel*>	const 	&get_channels_of_client() const;
+
+		std::string 			const	&get_client_mode()			const;
+		std::vector<Channel*>	const 	&get_channels_of_client()	const;
 		std::string 			const 	&get_realname() const;
 		std::string 			const 	&get_hostname() const;
 		std::string 			const 	&get_username() const;
@@ -48,6 +50,7 @@ class Client
 		uint16_t					  	get_socket()	const;
 
 		/* Setter */
+		void 							set_client_mode(std::string const &mode);
 		void 			 				set_register();
 		void 							set_valid_pass();
 		void 							set_realname(std::string const &realname);
@@ -66,6 +69,7 @@ class Client
 		std::string 	_realname;
 		bool 			_valid_pass;
 		bool 			_register;
+		std::string 	_client_mode; //vector of string 
 
 		/* Vector of channels that the client belong to */
 		std::vector<Channel*>	_channels_of_client;	
