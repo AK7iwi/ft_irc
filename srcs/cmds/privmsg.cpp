@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 23:26:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:18:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,8 @@ void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
 	{
 		/* Find the client and send reply if found */
 		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
-		{
 			if (s_command[1] == it->second->get_nickname())
 				return (send_reply(it->second->get_socket(), 6666, reply_arg));
-		}
 		
 		/* The client doesn't exist */
 		return (send_reply(client_socket, 401, reply_arg));
