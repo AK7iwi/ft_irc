@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 16:11:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:04:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ class Channel
 		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
-		std::vector<std::string>	const	&get_param_mode()		const;
-		std::vector<std::string> 	const	&get_channel_mode()		const;
+		std::string					const	&get_param_mode()		const;
+		std::string 				const	&get_channel_mode()		const;
 		std::string					const 	&get_topic()  			const;
 		std::string 				const	&get_key()				const;
 		std::vector<Client*> 		const	&get_clients_of_chan()	const; 
@@ -54,8 +54,8 @@ class Channel
 		std::string					_name;
 		std::string 				_key;
 		std::string 				_topic;
-		std::vector<std::string>	_mode;
-		std::vector<std::string> 	_param_mode;
+		std::string					_mode;
+		std::string 				_param_mode;
 
 		/* Vector of clients belong to the channel */
 		std::vector<Client*>	_clients_of_chan;

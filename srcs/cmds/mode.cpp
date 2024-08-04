@@ -6,17 +6,21 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 16:25:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/04 21:29:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static	std::vector<std::string> wich_modes(std::string &modes)
+bool	Server::wich_modes(int client_socket, std::string &modes)
 {
-	//parse s_command[2]
-	std::vector<std::string>    modes;
+	bool modes_flag = 0;
 	
+	if (l > 0)
+
+	send_reply(client_socket, 501, );
+
+	return (modes_flag);
 }
 
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
@@ -44,27 +48,16 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		
 		reply_arg.push_back(channel->get_channel_mode());
 		reply_arg.push_back(channel->get_param_mode());
+		
 		if (s_command.size() < 3) 
 			return (send_reply(client_socket, 324, reply_arg));
+		
 		reply_arg.erase(reply_arg.begin() + 3);
 		reply_arg.erase(reply_arg.begin() + 4);
 
-
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
 		
-		std::vector<std::string> modes = wich_modes(s_command[2]); //s_command
-		for (size_t i = 0; i <  modes.size(); ++i)
-		{
-			switch (modes[i])
-			{
-				case "i": mode_i();										break;
-				case "t": mode_t();										break;
-				case "k": mode_k();										break;
-				case "o": mode_o();										break;
-				case "l": mode_l();										break;
-				default : send_reply(client_socket, 501, reply_arg);	break;
-			}
-		}
+		bool	modes_flag = wich_modes(client_socket, s_command[2]);
 		
 	}
 	else
@@ -81,7 +74,9 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 					return (send_reply(client_socket, 221, reply_arg));
 				else if (s_command[2] == "+i")
 					return ;
-				
+				else if (s_command[2] == "+o")
+					return ;
+					
 				std::cout << "No mode for user" << std::endl;
 				return (send_reply(client_socket, 501, reply_arg));
             }

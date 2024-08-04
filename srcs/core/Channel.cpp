@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 16:04:30 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:03:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,17 @@ Channel::Channel(std::string const &name, std::string const &key) :
 	_key(key),
 	_topic(NO_TOPIC),
 	_mode(""),
-	_param_mode("") {}
+	_param_mode("") 
+	{}
 
 Channel::~Channel() {}
 
 /* Mode method*/
-void 							Channel::add_param_mode(std::string const &param)		{_param_mode += param;}
-void 							Channel::remove_param_mode(std::string const &param)	{_param_mode = param;}
+// void 							Channel::add_param_mode(std::string const &param)		{_param_mode += param;}
+// void 							Channel::remove_param_mode(std::string const &param)	{_param_mode = param;}
 
-void 							Channel::add_channel_mode(std::string const &mode)		{_mode += mode;}
-void 							Channel::remove_channel_mode(std::string const &mode)	{_mode = mode;}
+// void 							Channel::add_channel_mode(std::string const &mode)		{_mode += mode;}
+// void 							Channel::remove_channel_mode(std::string const &mode)	{_mode = mode;}
 
 /* Channel method */
 void	Channel::remove_from_chan(int client_socket)
