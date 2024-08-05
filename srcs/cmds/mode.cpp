@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/04 21:29:41 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:58:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,60 @@
 bool	Server::wich_modes(int client_socket, std::string &modes)
 {
 	bool modes_flag = 0;
+	std::vector<std::string>	reply_null;
 	
+	uint8_t l;
+	uint8_t i;
+	uint8_t t;
+	uint8_t k;
+	
+	for (size_t j = 0; j < modes.length(); ++j)
+	{
+		if (modes[j] == "+") //fct 
+		{
+			while (modes[j] != "-")
+			{
+				if (modes[j] == "l")
+					l++;
+				else if (modes[j] == "i")
+					i++;
+				else if (modes[j] == "t")
+					t++;
+				else if (modes[j] == "k")
+					k++;
+				else
+					send_reply(client_socket, 501, reply_null);
+				j++;
+			}
+		}
+		if (modes[j] == "-") //fct 
+		{
+			while (modes[j] != "+")
+			{
+				if (modes[j] == "l")
+					l--;
+				else if (modes[j] == "i")
+					i--;
+				else if (modes[j] == "t")
+					t--;
+				else if (modes[j] == "k")
+					k--;
+				else
+					send_reply(client_socket, 501, reply_null);
+				j++;
+			}
+		}
+	}
+
 	if (l > 0)
-
-	send_reply(client_socket, 501, );
-
+		modes_flag |= MODE_T;
+	if (i > 0)
+		modes_flag |= MODE_I;
+	if (t > 0)
+		modes_flag |= MODE_T;
+	if (k > 0)
+		modes_flag |= MODE_K;
+	
 	return (modes_flag);
 }
 
@@ -59,6 +108,21 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		
 		bool	modes_flag = wich_modes(client_socket, s_command[2]);
 		
+		if (modes_flag & MODE_L)
+		{
+			std::cout << "Mode L brother" << std::endl;
+			// mode_L();
+		}
+		// if (modes_flag & MODE_I)
+		// 	mode_I();
+		// if (modes_flag & MODE_K)
+		// 	mode_K();
+		// if (modes_flag & MODE_T)
+		// 	mode_T();
+		// if (modes_flag & MODE_O)
+		// 	mode_O();
+		
+		//Check active flag of modes_flag
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/04 20:49:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:22:02 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,18 @@
 #include <errno.h>
 #include <poll.h>
 #include <netinet/in.h>
- #include <unistd.h>
+#include <unistd.h>
 
 #define BUFFER_MAX	4096
 #define CLIENT_MAX	5
 #define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
+
+/* Flags mode */
+#define MODE_L	0x1
+#define MODE_I	0x2
+#define MODE_K	0x4
+#define MODE_T	0x8
+#define MODE_O	0x10
 
 
 class Client;
