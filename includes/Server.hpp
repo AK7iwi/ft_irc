@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/05 17:22:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:33:55 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@
 #define MODE_I	0x2
 #define MODE_K	0x4
 #define MODE_T	0x8
-#define MODE_O	0x10
-
 
 class Client;
 class Channel;

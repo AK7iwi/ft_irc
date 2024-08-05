@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/05 18:58:06 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:55:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,57 +17,89 @@ bool	Server::wich_modes(int client_socket, std::string &modes)
 	bool modes_flag = 0;
 	std::vector<std::string>	reply_null;
 	
-	uint8_t l;
-	uint8_t i;
-	uint8_t t;
-	uint8_t k;
-	
+	uint8_t l = 0;
+	uint8_t i = 0;
+	uint8_t k = 0;
+	uint8_t t = 0;
+
+	std::cout << "Modes: " << modes << std::endl;
+		
 	for (size_t j = 0; j < modes.length(); ++j)
 	{
-		if (modes[j] == "+") //fct 
+		if (modes[j] == '+')
 		{
-			while (modes[j] != "-")
+			j++;
+			for (; j < modes.length() && modes[j] != '-' ; ++j)
 			{
-				if (modes[j] == "l")
-					l++;
-				else if (modes[j] == "i")
-					i++;
-				else if (modes[j] == "t")
-					t++;
-				else if (modes[j] == "k")
-					k++;
-				else
-					send_reply(client_socket, 501, reply_null);
-				j++;
-			}
+				switch (modes[j])
+				{
+					case 'l': l++; break;
+					case 'i': i++; break;
+					case 'k': k++; break; 
+					case 't': t++; break;
+					default: send_reply(client_socket, 501, reply_null);
+				}
+			}	
 		}
-		if (modes[j] == "-") //fct 
+		if (modes[j] == '-')
 		{
-			while (modes[j] != "+")
+			j++;
+			for (; j < modes.length() && modes[j] != '+' ; ++j)
 			{
-				if (modes[j] == "l")
-					l--;
-				else if (modes[j] == "i")
-					i--;
-				else if (modes[j] == "t")
-					t--;
-				else if (modes[j] == "k")
-					k--;
-				else
-					send_reply(client_socket, 501, reply_null);
-				j++;
+				switch (modes[j])
+				{
+					case 'l': l--; break;
+					case 'i': i--; break;
+					case 'k': k--; break;
+					case 't': t--; break;
+					default: send_reply(client_socket, 501, reply_null);
+				}
 			}
 		}
 	}
-
+	
 	if (l > 0)
-		modes_flag |= MODE_T;
+	{
+		std::cout << "LLL" << std::endl;
+		modes_flag |= MODE_L;
+	}
 	if (i > 0)
+	{
+		std::cout << "III" << std::endl;
 		modes_flag |= MODE_I;
-	if (t > 0)
-		modes_flag |= MODE_T;
+	}
 	if (k > 0)
+	{
+		std::cout << "KKK" << std::endl;	
 		modes_flag |= MODE_K;
+	}
+	if (t > 0)
+	{
+		std::cout << "TTT" << std::endl;
+		modes_flag |= MODE_T;
+	}
+
+	if (modes_flag & MODE_L)
+	{
+		std::cout << "Mode L" << std::endl;
+		// mode_L();
+	}
+	if (modes_flag & MODE_I)
+	{
+		std::cout << "Mode I" << std::endl;
+		// mode_I();
+			
+	}
+	if (modes_flag & MODE_K)
+	{
+		std::cout << "Mode K" << std::endl;
+		// mode_K();
+	}
+	if (modes_flag & MODE_T)
+	{
+		std::cout << "Mode T" << std::endl;
+		// mode_T();
+	}
 	
 	return (modes_flag);
 }
@@ -110,17 +142,31 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		
 		if (modes_flag & MODE_L)
 		{
-			std::cout << "Mode L brother" << std::endl;
+			std::cout << "Mode L" << std::endl;
 			// mode_L();
 		}
 		// if (modes_flag & MODE_I)
-		// 	mode_I();
+		// {
+		// 	std::cout << "Mode I" << std::endl;
+		// 	// mode_I();
+			
+		// }
 		// if (modes_flag & MODE_K)
-		// 	mode_K();
+		// {
+		// 	std::cout << "Mode K" << std::endl;
+		// 	// mode_K();
+		// }
 		// if (modes_flag & MODE_T)
-		// 	mode_T();
+		// {
+		// 	std::cout << "Mode T" << std::endl;
+		// 	// mode_T();
+		// }
 		// if (modes_flag & MODE_O)
-		// 	mode_O();
+		// {
+		// 	std::cout << "Mode L brother" << std::endl;
+		// 	// mode_O();
+			
+		// }
 		
 		//Check active flag of modes_flag
 	}

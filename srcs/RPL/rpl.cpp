@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 14:43:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/05 20:40:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ std::string	ERR_BADCHANMASK(std::string const &channel_name)
 
 /* 501 */
 std::string ERR_UMODEUNKNOWNFLAG(Client const *client)
-{return (":" + client->get_prefix() + " 501 " + client->get_nickname() + " :Unknown MODE flag");}
+{return (client->get_prefix() + " 501 " + client->get_nickname() + " :Unknown MODE flag");}
 
 /* 502 */
 std::string	ERR_USERSDONTMATCH(Client const *client)
