@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/05 22:33:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 17:22:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
-#define BUFFER_MAX	4096
-#define CLIENT_MAX	5
-#define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
+# define BUFFER_MAX	4096
+# define CLIENT_MAX	5
+# define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
 
 /* Flags mode */
-#define MODE_L	0x1
-#define MODE_I	0x2
-#define MODE_K	0x4
-#define MODE_T	0x8
+# define MODE_L	0x1
+# define MODE_I	0x2
+# define MODE_K	0x4
+# define MODE_T	0x8
 
 class Client;
 class Channel;
@@ -113,7 +113,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* mode utils */
-		bool								wich_modes(int client_socket, std::string &modes);
+		uint8_t								wich_modes(int client_socket, std::string &modes);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

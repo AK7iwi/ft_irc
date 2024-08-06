@@ -6,21 +6,18 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/05 22:55:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 17:41:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-bool	Server::wich_modes(int client_socket, std::string &modes)
+uint8_t	Server::wich_modes(int client_socket, std::string &modes)
 {
-	bool modes_flag = 0;
+	uint8_t modes_flag = 0;
 	std::vector<std::string>	reply_null;
 	
-	uint8_t l = 0;
-	uint8_t i = 0;
-	uint8_t k = 0;
-	uint8_t t = 0;
+	int l = 0, i = 0, k = 0, t = 0;
 
 	std::cout << "Modes: " << modes << std::endl;
 		
@@ -58,48 +55,16 @@ bool	Server::wich_modes(int client_socket, std::string &modes)
 		}
 	}
 	
+	std::cout << "L: " << l << std::endl;
+	
 	if (l > 0)
-	{
-		std::cout << "LLL" << std::endl;
 		modes_flag |= MODE_L;
-	}
 	if (i > 0)
-	{
-		std::cout << "III" << std::endl;
 		modes_flag |= MODE_I;
-	}
 	if (k > 0)
-	{
-		std::cout << "KKK" << std::endl;	
 		modes_flag |= MODE_K;
-	}
 	if (t > 0)
-	{
-		std::cout << "TTT" << std::endl;
 		modes_flag |= MODE_T;
-	}
-
-	if (modes_flag & MODE_L)
-	{
-		std::cout << "Mode L" << std::endl;
-		// mode_L();
-	}
-	if (modes_flag & MODE_I)
-	{
-		std::cout << "Mode I" << std::endl;
-		// mode_I();
-			
-	}
-	if (modes_flag & MODE_K)
-	{
-		std::cout << "Mode K" << std::endl;
-		// mode_K();
-	}
-	if (modes_flag & MODE_T)
-	{
-		std::cout << "Mode T" << std::endl;
-		// mode_T();
-	}
 	
 	return (modes_flag);
 }
@@ -138,35 +103,29 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
 		
-		bool	modes_flag = wich_modes(client_socket, s_command[2]);
+		uint8_t	modes_flag = wich_modes(client_socket, s_command[2]);
 		
 		if (modes_flag & MODE_L)
 		{
 			std::cout << "Mode L" << std::endl;
 			// mode_L();
 		}
-		// if (modes_flag & MODE_I)
-		// {
-		// 	std::cout << "Mode I" << std::endl;
-		// 	// mode_I();
+		if (modes_flag & MODE_I)
+		{
+			std::cout << "Mode I" << std::endl;
+			// mode_I();
 			
-		// }
-		// if (modes_flag & MODE_K)
-		// {
-		// 	std::cout << "Mode K" << std::endl;
-		// 	// mode_K();
-		// }
-		// if (modes_flag & MODE_T)
-		// {
-		// 	std::cout << "Mode T" << std::endl;
-		// 	// mode_T();
-		// }
-		// if (modes_flag & MODE_O)
-		// {
-		// 	std::cout << "Mode L brother" << std::endl;
-		// 	// mode_O();
-			
-		// }
+		}
+		if (modes_flag & MODE_K)
+		{
+			std::cout << "Mode K" << std::endl;
+			// mode_K();
+		}
+		if (modes_flag & MODE_T)
+		{
+			std::cout << "Mode T" << std::endl;
+			// mode_T();
+		}
 		
 		//Check active flag of modes_flag
 	}
