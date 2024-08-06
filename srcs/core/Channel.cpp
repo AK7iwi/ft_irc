@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 23:16:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:39:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,22 @@ void	Channel::remove_from_chan(int client_socket)
 void	Channel::add_client_to_chan(Client *client)	{_clients_of_chan.push_back(client);}
 
 /* Getter methods */
-bool 							Channel::get_modes(std::string mode) 	const		
+
+bool 							Channel::get_mode(std::string mode_str) const		
 {
+	bool mode = false;
 	
-	return ();
+	switch (mode_str[0])
+	{
+		case 'l': mode = _mode_l; break;
+		case 'i': mode = _mode_i; break;
+		case 'k': mode = _mode_k; break;
+		case 't': mode = _mode_k; break;
+	}
+		
+	return (mode);
 }
+
 int 						  	Channel::get_nb_max_clients()	const				{return (_nb_max_clients);}
 std::string 			const&	Channel::get_topic()			const				{return (_topic);}
 std::string 			const&	Channel::get_key()				const				{return (_key);}

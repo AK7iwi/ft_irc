@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 23:22:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:37:45 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (!channel)
 			return ;
 		
-		reply_arg.push_back(channel->get_channel_mode());
+		reply_arg.push_back(channel->get_channel_modes());
 		reply_arg.push_back(channel->get_param_mode());
 		
 		if (s_command.size() < 3) 
@@ -110,27 +110,26 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		
 		wich_modes(client_socket, s_command[2], channel);
 		
-		if (modes_flag & MODE_L)
+		if (channel->get_mode("l"))
 		{
 			std::cout << "Mode L" << std::endl;
-			_mode_l = true;
 			std::istringstream iss(s_command[3]);
     		int nb_max_clients;
     		iss >> nb_max_clients;
 			channel->set_nb_max_clients(nb_max_clients);
 		}
-		if (modes_flag & MODE_I)
+		if (channel->get_mode("i"))
 		{
 			std::cout << "Mode I" << std::endl;
 			// mode_I();
 			
 		}
-		if (modes_flag & MODE_K)
+		if (channel->get_mode("k"))
 		{
 			std::cout << "Mode K" << std::endl;
 			// mode_K();
 		}
-		if (modes_flag & MODE_T)
+		if (channel->get_mode("t"))
 		{
 			std::cout << "Mode T" << std::endl;
 			// mode_T();
