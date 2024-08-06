@@ -6,18 +6,17 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 17:41:26 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:22:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-uint8_t	Server::wich_modes(int client_socket, std::string &modes)
+//refacto
+void	Server::wich_modes(int client_socket, std::string &modes, Channel *channel)
 {
-	uint8_t modes_flag = 0;
 	std::vector<std::string>	reply_null;
 	
-	int l = 0, i = 0, k = 0, t = 0;
+	uint8_t l = 0, i = 0, k = 0, t = 0;
 
 	std::cout << "Modes: " << modes << std::endl;
 		
@@ -32,7 +31,7 @@ uint8_t	Server::wich_modes(int client_socket, std::string &modes)
 				{
 					case 'l': l++; break;
 					case 'i': i++; break;
-					case 'k': k++; break; 
+					case 'k': k++; break;
 					case 't': t++; break;
 					default: send_reply(client_socket, 501, reply_null);
 				}
@@ -55,18 +54,24 @@ uint8_t	Server::wich_modes(int client_socket, std::string &modes)
 		}
 	}
 	
-	std::cout << "L: " << l << std::endl;
-	
+	std::vector<int> modes;
+	modes.push_back();
 	if (l > 0)
-		modes_flag |= MODE_L;
+		channel->set_mode(channel->get_mode("l"));
+	else if (l < 0)
+		channel->reset_mode(channel->get_mode("l"));
 	if (i > 0)
-		modes_flag |= MODE_I;
+		channel->set_mode(channel->get_mode_i);
+	else if (i < 0)
+		channel->reset_mode(channel->get_mode_i);
 	if (k > 0)
-		modes_flag |= MODE_K;
+		channel->set_mode(channel->get_mode_k);
+	else if (k < 0)
+		channel->reset_mode(channel->get_mode_k);
 	if (t > 0)
-		modes_flag |= MODE_T;
-	
-	return (modes_flag);
+		channel->set_mode(channel->get_mode_t);
+	else if (t < 0)
+		channel->reset_mode(channel->get_mode_t);
 }
 
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
@@ -103,12 +108,16 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
 		
-		uint8_t	modes_flag = wich_modes(client_socket, s_command[2]);
+		wich_modes(client_socket, s_command[2], channel);
 		
 		if (modes_flag & MODE_L)
 		{
 			std::cout << "Mode L" << std::endl;
-			// mode_L();
+			_mode_l = true;
+			std::istringstream iss(s_command[3]);
+    		int nb_max_clients;
+    		iss >> nb_max_clients;
+			channel->set_nb_max_clients(nb_max_clients);
 		}
 		if (modes_flag & MODE_I)
 		{

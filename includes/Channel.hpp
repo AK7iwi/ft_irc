@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/04 20:04:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:16:32 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,19 @@ class Channel
 		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
-		std::string					const	&get_param_mode()		const;
-		std::string 				const	&get_channel_mode()		const;
-		std::string					const 	&get_topic()  			const;
-		std::string 				const	&get_key()				const;
-		std::vector<Client*> 		const	&get_clients_of_chan()	const; 
-		std::string 				const	&get_chan_name()		const;
+		int 						  		get_nb_max_clients()		const;
+		bool 								get_mode(std::string mode)	const;			
+		std::string					const	&get_param_mode()			const;
+		std::string 				const	&get_channel_mode()			const;
+		std::string					const 	&get_topic()  				const;
+		std::string 				const	&get_key()					const;
+		std::vector<Client*> 		const	&get_clients_of_chan()		const; 
+		std::string 				const	&get_chan_name()			const;
 		
 		/* Setter methods */
+		void 							reset_mode(bool _mode);
+		void 							set_mode(bool _mode);
+		void 							set_nb_max_clients(int nb_max_clients);
 		void 							set_topic(std::string const &topic);	
 		
 	private:
@@ -56,10 +61,15 @@ class Channel
 		std::string 				_topic;
 		std::string					_mode;
 		std::string 				_param_mode;
+		bool 						_mode_l;
+		bool 						_mode_i;
+		bool 						_mode_k;
+		bool 						_mode_t;
+		int							_nb_max_clients;
 
 		/* Vector of clients belong to the channel */
-		std::vector<Client*>	_clients_of_chan;
+		std::vector<Client*>		_clients_of_chan;
+		std::vector<Client*>		_invited_clients_of_chan;
 };
-
 
 #endif /* CHANNEL_HPP */

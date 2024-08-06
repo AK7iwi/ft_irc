@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 17:22:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:10:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* mode utils */
-		uint8_t								wich_modes(int client_socket, std::string &modes);
+		void								wich_modes(int client_socket, std::string &modes, Channel *channel);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

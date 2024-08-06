@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/05 20:40:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/06 22:47:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ std::string	ERR_PASSWDMISMATCH(Client const *client)
 
 /* 471 */
 std::string	ERR_CHANNELISFULL(Client const *client, std::string const &channel_name)
-{return (":" + client->get_hostname() + " 471 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+l)");}
+{return (":" + client->get_hostname() + " 471 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+l)");} //verif RPL
 
 /* 475 */
 std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name)
