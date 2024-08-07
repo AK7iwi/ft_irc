@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 23:34:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:16:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "Server.hpp"
 #include <vector>
+#include <stdint.h>
 
 #define NO_TOPIC "No topic is set"
 #define NO_MODE  "No Mode"
@@ -39,14 +40,14 @@ class Channel
 		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
-		int 						  		get_nb_max_clients()		const;
-		bool 								get_mode(std::string mode)	const;			
-		std::string					const	&get_param_mode()			const;
-		std::string 				const	&get_channel_modes()		const;
-		std::string					const 	&get_topic()  				const;
-		std::string 				const	&get_key()					const;
-		std::vector<Client*> 		const	&get_clients_of_chan()		const; 
-		std::string 				const	&get_chan_name()			const;
+		int 						  	get_nb_max_clients()		const;
+		bool 							get_mode(int mode)			const;			
+		std::string				const	&get_param_mode()			const;
+		std::string 			const	&get_channel_modes()		const;
+		std::string				const 	&get_topic()  				const;
+		std::string 			const	&get_key()					const;
+		std::vector<Client*>	const	&get_clients_of_chan()		const; 
+		std::string 			const	&get_chan_name()			const;
 		
 		/* Setter methods */
 		void 							reset_mode(bool _mode);

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 23:38:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:18:13 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 					send_reply(client_socket, 475, reply_arg);
 					break ;
 				}
-				else if (_channels[i]->get_mode("l") && _channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients())
+				else if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) //to test 
 				{
 					send_reply(client_socket, 471, reply_arg);
 					break;

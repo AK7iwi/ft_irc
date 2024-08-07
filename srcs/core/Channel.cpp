@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 23:39:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/07 20:25:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ Channel::Channel(std::string const &name, std::string const &key) :
 	_name(name),
 	_key(key),
 	_topic(NO_TOPIC),
+	_mode(""),
+	_param_mode(""),
 	_mode_l(false),
 	_mode_i(false),
 	_mode_k(false),
-	_mode_t(false),
-	_mode(""),
-	_param_mode("")
+	_mode_t(false)
 {}
 
 Channel::~Channel() {}
@@ -42,16 +42,16 @@ void	Channel::add_client_to_chan(Client *client)	{_clients_of_chan.push_back(cli
 
 /* Getter methods */
 
-bool 							Channel::get_mode(std::string mode_str) const		
+bool 							Channel::get_mode(int mode_int) const		
 {
 	bool mode = false;
 	
-	switch (mode_str[0])
+	switch (mode_int)
 	{
-		case 'l': mode = _mode_l; break;
-		case 'i': mode = _mode_i; break;
-		case 'k': mode = _mode_k; break;
-		case 't': mode = _mode_k; break;
+		case 1: return (_mode_l); break;
+		case 2: return (_mode_i); break;
+		case 3: return (_mode_k); break;
+		case 4: return (_mode_t); break;
 	}
 		
 	return (mode);
@@ -64,7 +64,7 @@ std::vector<Client*> 	const&	Channel::get_clients_of_chan()	const				{return (_c
 std::string  			const&	Channel::get_chan_name()		const				{return (_name);}
 
 /* Setter methods */
-void 							Channel::reset_mode(bool _mode) 					{_mode = false;}
-void 							Channel::set_mode(bool _mode) 						{_mode = true;}
+void 							Channel::reset_mode(bool mode) 						{mode = false;}
+void 							Channel::set_mode(bool mode) 						{mode = true;}
 void 							Channel::set_nb_max_clients(int nb_max_clients)  	{_nb_max_clients = nb_max_clients;}
 void 							Channel::set_topic(std::string const &topic)		{_topic = topic;}
