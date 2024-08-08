@@ -6,26 +6,27 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/07 21:07:52 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:27:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-void	Server::parse_modes(int client_socket, std::string &modes, Channel *channel)
+std::vector<int>	Server::parse_modes(int client_socket, std::string &modes)
 {
+	std::cout << "Modes: " << modes << std::endl;
+	
+	/* Parse the modes*/
 	std::vector<std::string>	reply_null;
 	
-	uint8_t l = 0, i = 0, k = 0, t = 0;
+	int	l = 0, i = 0, k = 0, t = 0;
 
-	std::cout << "Modes: " << modes << std::endl;
-		
 	for (size_t j = 0; j < modes.length(); ++j)
 	{
 		if (modes[j] == '+')
 		{
 			j++;
-			for (; j < modes.length() && modes[j] != '-' ; ++j)
+			for (; j < modes.length() && modes[j] != '-' ; ++j) 
 			{
 				switch (modes[j])
 				{
@@ -42,7 +43,7 @@ void	Server::parse_modes(int client_socket, std::string &modes, Channel *channel
 			j++;
 			for (; j < modes.length() && modes[j] != '+' ; ++j)
 			{
-				switch (modes[j])
+				switch (modes[j]) 
 				{
 					case 'l': l--; break;
 					case 'i': i--; break;
@@ -54,40 +55,15 @@ void	Server::parse_modes(int client_socket, std::string &modes, Channel *channel
 		}
 	}
 	
-	//fct 
+	/* Fill the vector */
 	std::vector<int> modes_vector;
 	
-	modes.push_back(l);
-	modes.push_back(i);
-	modes.push_back(k);
-	modes.push_back(t);
-	
-	for (size_t i = 0; i < modes_vector.size(); ++i)
-	{
-		if (modes_vector[i] > 0)
-			channel->set_mode(channel->get_mode(i +1));
-		else if (modes_vector[i] < 0) 
-			channel->reset_mode(channel->get_mode(i + 1));
-	}
-	
-	//return the vector 
-	
-	// if (l > 0)
-	// 	channel->set_mode(channel->get_mode("l"));
-	// else if (l < 0)
-	// 	channel->reset_mode(channel->get_mode("l"));
-	// if (i > 0)
-	// 	channel->set_mode(channel->get_mode_i);
-	// else if (i < 0)
-	// 	channel->reset_mode(channel->get_mode_i);
-	// if (k > 0)
-	// 	channel->set_mode(channel->get_mode_k);
-	// else if (k < 0)
-	// 	channel->reset_mode(channel->get_mode_k);
-	// if (t > 0)
-	// 	channel->set_mode(channel->get_mode_t);
-	// else if (t < 0)
-	// 	channel->reset_mode(channel->get_mode_t);
+	modes_vector.push_back(l);
+	modes_vector.push_back(i);
+	modes_vector.push_back(k);
+	modes_vector.push_back(t);
+
+	return (modes_vector);	
 }
 
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
@@ -124,24 +100,21 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
 		
-		parse_modes(client_socket, s_command[2], channel);
+		std::vector<int> modes_vector = parse_modes(client_socket, s_command[2]);
+		
+		for (size_t i = 0; i < modes_vector.size(); ++i)
+		{
+			if (modes_vector[i] > 0)
+				channel->set_mode(i + 1);
+			else if (modes_vector[i] < 0)
+				channel->reset_mode(i + 1);
+		}
 		
 		if (channel->get_mode(1))
-		{
-
-			//mode_L
-			std::cout << "Mode L" << std::endl;
-			std::istringstream iss(s_command[3]);
-    		int nb_max_clients;
-    		iss >> nb_max_clients;
-			channel->set_nb_max_clients(nb_max_clients);
-		}
+			mode_L(channel, s_command);
 		if (channel->get_mode(2))
-		{
-			std::cout << "Mode I" << std::endl;
-			// mode_I();
-			
-		}
+			mode_I();
+
 		if (channel->get_mode(3))
 		{
 			std::cout << "Mode K" << std::endl;

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/07 20:26:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:22:09 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 #include <unistd.h>
 
 # define BUFFER_MAX	4096
-# define CLIENT_MAX	5
+# define CLIENT_MAX	3
 # define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
 
 class Client;
@@ -76,6 +76,13 @@ class Server
 
 		//////////////////// Methods ////////////////////////////
 		
+		/* Mode methods*/
+
+		void 		mode_L(Channel *channel, std::vector<std::string> &s_command);
+		void 		mode_I();
+		void 		mode_K();
+		void 		mode_T();
+		
 		/* Check if the channel exist and the client is in method */
 		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
 		/* Remove client method */
@@ -107,7 +114,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* mode utils */
-		void								parse_modes(int client_socket, std::string &modes, Channel *channel);
+		std::vector<int>					parse_modes(int client_socket, std::string &modes);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

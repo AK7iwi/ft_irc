@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/07 20:25:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:07:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Channel::Channel(std::string const &name, std::string const &key) :
 Channel::~Channel() {}
 
 /* Channel method */
+
 void	Channel::remove_from_chan(int client_socket)
 {
 	for (std::vector<Client*>::iterator it = _clients_of_chan.begin(); it != _clients_of_chan.end();)
@@ -64,7 +65,28 @@ std::vector<Client*> 	const&	Channel::get_clients_of_chan()	const				{return (_c
 std::string  			const&	Channel::get_chan_name()		const				{return (_name);}
 
 /* Setter methods */
-void 							Channel::reset_mode(bool mode) 						{mode = false;}
-void 							Channel::set_mode(bool mode) 						{mode = true;}
+void 							Channel::reset_mode(int mode_int)
+{
+	switch (mode_int)
+	{
+		case 1: _mode_l = false; break;
+		case 2: _mode_i = false; break;
+		case 3: _mode_k = false; break;
+		case 4: _mode_t = false; break;
+	}
+}
+
+void 							Channel::set_mode(int mode_int)
+{
+	switch (mode_int)
+	{
+		case 1: _mode_l = true; break;
+		case 2: _mode_i = true; break;
+		case 3: _mode_k = true; break;
+		case 4: _mode_t = true; break;
+	}
+}
+
+
 void 							Channel::set_nb_max_clients(int nb_max_clients)  	{_nb_max_clients = nb_max_clients;}
 void 							Channel::set_topic(std::string const &topic)		{_topic = topic;}

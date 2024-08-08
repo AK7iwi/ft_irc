@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/07 20:16:06 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:09:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ class Channel
 		std::string 			const	&get_chan_name()			const;
 		
 		/* Setter methods */
-		void 							reset_mode(bool _mode);
-		void 							set_mode(bool _mode);
+		void 							reset_mode(int mode_int);
+		void 							set_mode(int mode_int);
 		void 							set_nb_max_clients(int nb_max_clients);
 		void 							set_topic(std::string const &topic);	
 		
