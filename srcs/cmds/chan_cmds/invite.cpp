@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:58 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 18:33:44 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:37:36 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 			return (send_reply(client_socket, 443, reply_arg));
 
 	/* Find the socket to invite and send RPL */
-	int client_to_kick;
+	int client_to_invite;
 	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
 		if (s_command[1] == it->second->get_nickname())
@@ -48,10 +48,10 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 				std::cerr << "You cannot invite yoursel, who do you think you are" << std::endl;
 				return ;
 			}
-			client_to_kick = it->second->get_socket();
-			//add client to invite channel
+			client_to_invite = it->second->get_socket();
+			channel->add_invited_client_to_chan(_clients[client_to_invite]);
 			send_reply(client_socket, 341, reply_arg);
-			return (send_reply(client_to_kick, 341, reply_arg));
+			return (send_reply(client_to_invite, 341, reply_arg));
 		}
 	}
 	

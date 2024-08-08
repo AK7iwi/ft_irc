@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 18:53:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:53:16 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	/* Check if the channel already exist and add client if exist */
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end(); it++)
 	{
-		bool found = false;
+		bool found_chan = false;
 		
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
@@ -85,30 +85,30 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			if (it->first == _channels[i]->get_chan_name())
 			{
 				std::cout << "The channel exist" << std::endl;
-				found = true;
-				if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) //to test 
+				found_chan = true;
+				if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) 
+					return (send_reply(client_socket, 471, reply_arg));
+				else if (_channels[i]->get_mode(2))
 				{
-					send_reply(client_socket, 471, reply_arg);
-					break;
+					bool found_client = false;
+					std::vector <Client*> cpy = _channels[i]->get_invited_clients_of_chan();
+					for (size_t j = 0; j < cpy.size(); ++j)
+						if (client_socket == cpy[j]->get_socket())
+							found_client = true;
+						
+					if (!found_client)
+						return (send_reply(client_socket, 473, reply_arg));
 				}
-				if (_channels[i]->get_mode(2))
-				{
-					//check if client in invite vector 
-					
-				}
-				if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
-				{
-					std::cout << "The key is wrong" << std::endl;
-					send_reply(client_socket, 475, reply_arg);
-					break ;
-				}
+				else if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
+					return (send_reply(client_socket, 475, reply_arg));
+				
 				add_client(client_socket, _channels[i], reply_arg);
 				break ;
 			}
 		}
 		
 		//fct create new channel
-		if (!found)
+		if (!found_chan)
 		{
 			std::cout << "A new hannel has been created" << std::endl;
 			send_reply(client_socket, 403, reply_arg);

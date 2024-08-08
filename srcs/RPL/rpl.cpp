@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 22:47:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:39:14 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,16 @@ std::string	ERR_PASSWDMISMATCH(Client const *client)
 {return (client->get_prefix() + " 464 :Password incorrect");}
 
 /* 471 */
-std::string	ERR_CHANNELISFULL(Client const *client, std::string const &channel_name)
-{return (":" + client->get_hostname() + " 471 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+l)");} //verif RPL
+std::string ERR_CHANNELISFULL(Client const *client, std::string const &channel_name)
+{return ("471 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+l)");}
+
+/* 473 */
+std::string ERR_INVITEONLYCHAN(Client const *client, std::string const &channel_name)
+{return ("473 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+i)");}
 
 /* 475 */
-std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name)
-{return (":" + client->get_hostname() + " 475 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+k)");}
+std::string ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name)
+{return ("475 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+k)");}
 
 /* 476 */
 std::string	ERR_BADCHANMASK(std::string const &channel_name)
@@ -186,6 +190,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case 464: reply = ERR_PASSWDMISMATCH(client);												break;
 		
 		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);									break;
+		case 473: reply = ERR_INVITEONLYCHAN(client, reply_arg[2]);									break;
 		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);									break;
 		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);											break;
 

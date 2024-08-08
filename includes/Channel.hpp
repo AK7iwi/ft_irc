@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 17:09:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:36:41 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,19 @@ class Channel
 		
 		/* Channel method  */
 		void 							remove_from_chan(int client_socket);
+		void							add_invited_client_to_chan(Client *client);
 		void							add_client_to_chan(Client *client);
 		
 		/* Getter methods */
-		int 						  	get_nb_max_clients()		const;
-		bool 							get_mode(int mode)			const;			
-		std::string				const	&get_param_mode()			const;
-		std::string 			const	&get_channel_modes()		const;
-		std::string				const 	&get_topic()  				const;
-		std::string 			const	&get_key()					const;
-		std::vector<Client*>	const	&get_clients_of_chan()		const; 
-		std::string 			const	&get_chan_name()			const;
+		std::vector<Client*>	const	&get_invited_clients_of_chan()	const;
+		int 						  	get_nb_max_clients()			const;
+		bool 							get_mode(int mode)				const;			
+		std::string				const	&get_param_mode()				const;
+		std::string 			const	&get_channel_modes()			const;
+		std::string				const 	&get_topic()  					const;
+		std::string 			const	&get_key()						const;
+		std::vector<Client*>	const	&get_clients_of_chan()			const; 
+		std::string 			const	&get_chan_name()				const;
 		
 		/* Setter methods */
 		void 							reset_mode(int mode_int);

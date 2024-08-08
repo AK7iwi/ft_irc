@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 17:07:44 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:06:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	Channel::remove_from_chan(int client_socket)
 	}
 }
 
-void	Channel::add_client_to_chan(Client *client)	{_clients_of_chan.push_back(client);}
+void	Channel::add_invited_client_to_chan(Client *client)	{_invited_clients_of_chan.push_back(client);}
+void	Channel::add_client_to_chan(Client *client)			{_clients_of_chan.push_back(client);}
 
 /* Getter methods */
 
@@ -58,11 +59,12 @@ bool 							Channel::get_mode(int mode_int) const
 	return (mode);
 }
 
-int 						  	Channel::get_nb_max_clients()	const				{return (_nb_max_clients);}
-std::string 			const&	Channel::get_topic()			const				{return (_topic);}
-std::string 			const&	Channel::get_key()				const				{return (_key);}
-std::vector<Client*> 	const&	Channel::get_clients_of_chan()	const				{return (_clients_of_chan);}
-std::string  			const&	Channel::get_chan_name()		const				{return (_name);}
+std::vector<Client*> 	const&	Channel::get_invited_clients_of_chan()	const	{return (_invited_clients_of_chan);}
+int 						  	Channel::get_nb_max_clients()			const	{return (_nb_max_clients);}
+std::string 			const&	Channel::get_topic()					const	{return (_topic);}
+std::string 			const&	Channel::get_key()						const	{return (_key);}
+std::vector<Client*> 	const&	Channel::get_clients_of_chan()			const	{return (_clients_of_chan);}
+std::string  			const&	Channel::get_chan_name()				const	{return (_name);}
 
 /* Setter methods */
 void 							Channel::reset_mode(int mode_int)

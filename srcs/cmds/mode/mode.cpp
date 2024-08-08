@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 18:52:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:44:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,6 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		
 		if (channel->get_mode(1))
 			mode_L(channel, s_command);
-		if (channel->get_mode(2))
-			mode_I();
 
 		if (channel->get_mode(3))
 		{

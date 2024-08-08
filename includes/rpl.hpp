@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 14:09:03 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:38:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ std::string	ERR_ALREADYREGISTERED(Client const *client);
 std::string	ERR_PASSWDMISMATCH(Client const *client);
 /* 471 */
 std::string	ERR_CHANNELISFULL(Client const *client, std::string const &channel_name);
+/* 473 */
+std::string ERR_INVITEONLYCHAN(Client const *client, std::string const &channel_name);
 /* 475 */
 std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name);
 /* 476 */
