@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:58 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/20 16:13:07 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:33:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 				return ;
 			}
 			client_to_kick = it->second->get_socket();
+			//add client to invite channel
 			send_reply(client_socket, 341, reply_arg);
 			return (send_reply(client_to_kick, 341, reply_arg));
 		}

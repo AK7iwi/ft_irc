@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 18:27:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:52:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 
     if (is_valid_prefix(s_command[1]))
 	{
+		//fct channel mode 
 		std::cout << "Channel mode" << std::endl;
 		
 		/* Check is the client is in an existing channel */
@@ -130,6 +131,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	}
 	else
 	{
+		//fct user mode 
 		std::cout << "Client mode " << std::endl;
 		
 		/* Find the client and send reply if found */

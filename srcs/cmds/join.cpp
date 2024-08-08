@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/07 20:18:13 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:53:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,28 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			{
 				std::cout << "The channel exist" << std::endl;
 				found = true;
-				if (it->second != _channels[i]->get_key())
+				if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) //to test 
+				{
+					send_reply(client_socket, 471, reply_arg);
+					break;
+				}
+				if (_channels[i]->get_mode(2))
+				{
+					//check if client in invite vector 
+					
+				}
+				if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
 				{
 					std::cout << "The key is wrong" << std::endl;
 					send_reply(client_socket, 475, reply_arg);
 					break ;
-				}
-				else if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) //to test 
-				{
-					send_reply(client_socket, 471, reply_arg);
-					break;
 				}
 				add_client(client_socket, _channels[i], reply_arg);
 				break ;
 			}
 		}
 		
+		//fct create new channel
 		if (!found)
 		{
 			std::cout << "A new hannel has been created" << std::endl;
@@ -111,6 +117,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			_channels.push_back(new_channel);
 		}
 
+		//fct rage_quit
 		if (it->first == "#0")
 		{
 			std::vector<std::string> channels_name;
