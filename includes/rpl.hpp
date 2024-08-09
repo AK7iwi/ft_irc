@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 21:38:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:42:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ std::string	ERR_BADCHANMASK(std::string const &channel_name);
 std::string ERR_UMODEUNKNOWNFLAG(Client const *client);
 /* 502 */
 std::string	ERR_USERSDONTMATCH(Client const *client);
-
+/* 696 */
+std::string ERR_INVALIDMODEPARAM(Client const *client, std::string const &channel_name, std::string const &mode, std::string const &parameter, std::string const &error_msg);
 /* 1111 */
 std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick);
 /* 2222 */

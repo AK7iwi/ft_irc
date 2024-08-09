@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/20 15:12:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:35:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,22 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 		reply_arg.push_back(new_topic);
 		return (send_reply(client_socket, 332, reply_arg));
 	}
+	
 	/* Create the new topic */
+
+	/* Check if the mode is active and client can change the topic */
+	// if (channel->get_mode(4))
+	// {
+	// 	bool operator = false;
+	// 	std::vector <Client*> cpy = channel->get_operator_clients_of_chan();
+	// 	for (size_t i = 0; i < cpy.size(); ++i)
+	// 		if (client_socket == cpy[i]->get_socket())
+	// 			operator = true;
+
+	// 	if (!operator)
+	// 		//return RPL 482 
+	// }
+	
 	new_topic = create_topic(s_command);
 	if (new_topic == ERR_COLON)
 	{

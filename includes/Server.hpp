@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 18:22:09 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:44:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,9 @@ class Server
 		
 		/* Mode methods*/
 
-		void 		mode_L(Channel *channel, std::vector<std::string> &s_command);
-		void 		mode_I();
-		void 		mode_K();
-		void 		mode_T();
+		void 		mode_L(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 		mode_K(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 		mode_O(Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		
 		/* Check if the channel exist and the client is in method */
 		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 21:53:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:41:57 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,16 @@ std::map<std::string, std::string>	Server::create_channel_map(int client_socket,
         std::vector<std::string> v_key = split(s_command[2], ',');
 		
         for (size_t i = 0; i < potential_new_channels.size(); ++i)
+		{
+			// if ()
             channel_key_map[potential_new_channels[i]] = v_key[i]; //x
+		}
 	}
 	else 
 		for (size_t i = 0; i < potential_new_channels.size(); ++i)
             channel_key_map[potential_new_channels[i]] = "";
 	
+	//fct 
 	for (std::map<std::string, std::string>::iterator it = channel_key_map.begin(); it != channel_key_map.end();) 
 	{
 		if (!is_valid_prefix(it->first)) 
@@ -69,7 +73,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
-	else if (s_command.size() < 2) //!=2 && !=3
+	else if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
 
 	std::map<std::string, std::string> channel_key_map = create_channel_map(client_socket, s_command, reply_arg);
@@ -88,7 +92,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 				found_chan = true;
 				if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) 
 					return (send_reply(client_socket, 471, reply_arg));
-				else if (_channels[i]->get_mode(2))
+				if (_channels[i]->get_mode(2))
 				{
 					bool found_client = false;
 					std::vector <Client*> cpy = _channels[i]->get_invited_clients_of_chan();
@@ -99,7 +103,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 					if (!found_client)
 						return (send_reply(client_socket, 473, reply_arg));
 				}
-				else if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
+				if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
 					return (send_reply(client_socket, 475, reply_arg));
 				
 				add_client(client_socket, _channels[i], reply_arg);
@@ -111,6 +115,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		if (!found_chan)
 		{
 			std::cout << "A new hannel has been created" << std::endl;
+			//founder become also operator
 			send_reply(client_socket, 403, reply_arg);
 			Channel *new_channel = new Channel(it->first, it->second);
 			add_client(client_socket, new_channel, reply_arg);

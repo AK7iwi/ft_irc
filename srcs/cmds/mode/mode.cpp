@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 21:44:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:44:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ std::vector<int>	Server::parse_modes(int client_socket, std::string &modes)
 		}
 	}
 	
-	/* Fill the vector */
+	/* Fill the vector */ //map with parameter like join 
 	std::vector<int> modes_vector;
 	
 	modes_vector.push_back(l);
@@ -65,6 +65,8 @@ std::vector<int>	Server::parse_modes(int client_socket, std::string &modes)
 
 	return (modes_vector);	
 }
+
+//map to have mode with param mode 
 
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 {
@@ -90,15 +92,14 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (!channel)
 			return ;
 		
-		// reply_arg.push_back(channel->get_channel_modes());
-		// reply_arg.push_back(channel->get_param_mode());
 		
-		// if (s_command.size() < 3) 
-		// 	return (send_reply(client_socket, 324, reply_arg));
+		if (s_command.size() < 3)
+		{
+			reply_arg.push_back(channel->get_channel_modes());
+			reply_arg.push_back(channel->get_params_modes());
+			return (send_reply(client_socket, 324, reply_arg));
+		}
 		
-		// reply_arg.erase(reply_arg.begin() + 3);
-		// reply_arg.erase(reply_arg.begin() + 4);
-
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
 		
 		std::vector<int> modes_vector = parse_modes(client_socket, s_command[2]);
@@ -112,24 +113,14 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		}
 		
 		if (channel->get_mode(1))
-			mode_L(channel, s_command);
-
+			mode_L(client_socket, channel, s_command, reply_arg);
 		if (channel->get_mode(3))
-		{
-			std::cout << "Mode K" << std::endl;
-			// mode_K();
-		}
-		if (channel->get_mode(4))
-		{
-			std::cout << "Mode T" << std::endl;
-			// mode_T();
-		}
-		
-		//Check active flag of modes_flag
+			mode_K(client_socket, channel, s_command, reply_arg);
 	}
 	else
 	{
-		//fct user mode 
+		//fct user mode
+		//review the parsing  
 		std::cout << "Client mode " << std::endl;
 		
 		/* Find the client and send reply if found */
@@ -144,7 +135,10 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 				else if (s_command[2] == "+i")
 					return ;
 				else if (s_command[2] == "+o")
+				{
+					// mode_O(channel, s_command, reply_arg);
 					return ;
+				}
 					
 				std::cout << "No mode for user" << std::endl;
 				return (send_reply(client_socket, 501, reply_arg));
