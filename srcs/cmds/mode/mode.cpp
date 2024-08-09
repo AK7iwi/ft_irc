@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:44:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:58:25 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 			else if (modes_vector[i] < 0)
 				channel->reset_mode(i + 1);
 		}
+		
+		// else if (s_command.size() > 2) 
+		// return (send_reply(client_socket, 696, reply_arg));
 		
 		if (channel->get_mode(1))
 			mode_L(client_socket, channel, s_command, reply_arg);
