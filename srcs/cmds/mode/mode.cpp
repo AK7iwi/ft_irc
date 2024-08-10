@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/10 16:29:30 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/10 21:54:16 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,15 +128,26 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		//fct user mode
 		//review the parsing  
 		std::cout << "Client mode " << std::endl;
+
+		//check if the user is operator 
+		
+		// bool operator = false;
+		// 	std::vector <Client*> cpy = channel->get_operator_clients_of_chan();
+		// 	for (size_t i = 0; i < cpy.size(); ++i)
+		// 		if (client_socket == cpy[i]->get_socket())
+		// 			operator = true;
+
+		// 	if (!operator)
+		// 	//return RPL 482 
+		//  	return (send_reply(client_socket, 502, reply_arg));
 		
 		/* Find the client and send reply if found */
 		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		{
 			if (s_command[1] == it->second->get_nickname()) 
             {
-                if (it->second->get_socket() != client_socket)
-				    return (send_reply(client_socket, 502, reply_arg));
-				else if (s_command.size() < 3) 
+				
+				if (s_command.size() < 3) 
 					return (send_reply(client_socket, 221, reply_arg));
 				else if (s_command[2] == "+i")
 					return ;

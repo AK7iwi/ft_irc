@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:41:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/10 20:15:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		if (!found_chan)
 		{
 			std::cout << "A new hannel has been created" << std::endl;
-			//founder become also operator
 			send_reply(client_socket, 403, reply_arg);
 			Channel *new_channel = new Channel(it->first, it->second);
 			add_client(client_socket, new_channel, reply_arg);
+			new_channel->add_operator_client_to_chan(_clients[client_socket]);
 			_channels.push_back(new_channel);
 		}
 
