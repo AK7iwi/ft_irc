@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/10 16:20:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:29:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,13 @@ std::vector<int>	Server::parse_modes(int client_socket, std::string &modes)
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 {
     std::vector<std::string>    reply_arg;
-	
-	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
-    reply_arg.push_back(s_command[1]);
-	
+
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg));
 
+	reply_arg.push_back(s_command[0]);
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+    reply_arg.push_back(s_command[1]);
 
 	// if (s_command.size() > 4)
 	// {
