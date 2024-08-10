@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:58:25 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:20:50 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,18 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	
 	reply_arg.push_back(s_command[0]);
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
+    reply_arg.push_back(s_command[1]);
 	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg));
-	else if (s_command.size() < 2) 
-		return (send_reply(client_socket, 461, reply_arg));
 
-    reply_arg.push_back(s_command[1]);
+
+	// if (s_command.size() > 4)
+	// {
+		
+	// 	return (send_reply(client_socket, 696, reply_arg));
+
+	// }
 
     if (is_valid_prefix(s_command[1]))
 	{
@@ -92,7 +97,6 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (!channel)
 			return ;
 		
-		
 		if (s_command.size() < 3)
 		{
 			reply_arg.push_back(channel->get_channel_modes());
@@ -101,6 +105,9 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		}
 		
 		std::cout << "s_command[2]: " << s_command[2] << std::endl;
+
+		if (s_command.size() >= 4)
+			std::cout << "s_command[3]: " << s_command[3] << std::endl;
 		
 		std::vector<int> modes_vector = parse_modes(client_socket, s_command[2]);
 		
@@ -111,9 +118,6 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 			else if (modes_vector[i] < 0)
 				channel->reset_mode(i + 1);
 		}
-		
-		// else if (s_command.size() > 2) 
-		// return (send_reply(client_socket, 696, reply_arg));
 		
 		if (channel->get_mode(1))
 			mode_L(client_socket, channel, s_command, reply_arg);
