@@ -1,5 +1,5 @@
 CC				= c++ 
-RM				= rm -f
+RM				= rm -rf
 CFLAGS			= -Wall -Wextra -Werror -I./includes -std=c++98 -fsanitize=address -fsanitize=undefined  -fno-omit-frame-pointer -fstack-protector-strong  -fno-optimize-sibling-calls 
 NAME 			= ircserv
 SRCS			= srcs/main.cpp srcs/core/Server.cpp srcs/core/Client.cpp srcs/core/Channel.cpp \
