@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 15:19:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 17:16:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* mode utils */
-		std::vector<int>					parse_modes(int client_socket, std::string &modes);
+		bool								parse_mode(int client_socket, std::string &mode);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */
