@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:45:32 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 19:00:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:11:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void Server::mode_L(int client_socket, Channel *channel, std::vector<std::string
 	
     int nb_max_clients;
 	
-	//test that its a number 
+	//test if its a number 
 	if (s_command.size() == 4)
 	{
 		std::istringstream iss(s_command[3]);
@@ -28,7 +28,7 @@ void Server::mode_L(int client_socket, Channel *channel, std::vector<std::string
 		{
 			reply_arg.push_back("l");
 			reply_arg.push_back(s_command[3]); // not exactly correct
-			reply_arg.push_back("Client limit can be negativ");
+			reply_arg.push_back("Client limit can be negative");
 			return (send_reply(client_socket, 696, reply_arg));
 		}
 	}
@@ -42,7 +42,7 @@ void Server::mode_K(int client_socket, Channel *channel, std::vector<std::string
 {
 	std::cout << "Mode K" << std::endl;
 	
-	if (s_command.size() >= 4)
+	if (s_command.size() == 4)
 	{
 		if (s_command[3] == "x")
 		{

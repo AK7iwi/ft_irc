@@ -6,64 +6,24 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/10 21:54:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:41:09 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-std::vector<int>	Server::parse_modes(int client_socket, std::string &modes)
+bool	Server::parse_modes(int client_socket, std::string &modes)
 {
-	std::cout << "Modes: " << modes << std::endl;
-	
-	/* Parse the modes*/
 	std::vector<std::string>	reply_null;
-	
-	int	l = 0, i = 0, k = 0, t = 0;
 
-	for (size_t j = 0; j < modes.length(); ++j)
+	if (modes[0] != "+" && modes[0] != "-")
+		return (send_reply(client_socket, 501, reply_arg), false);
+	
+	if (modes[1] == 'l' || modes[1] == 'k')
 	{
-		if (modes[j] == '+')
-		{
-			j++;
-			for (; j < modes.length() && modes[j] != '-' ; ++j) 
-			{
-				switch (modes[j])
-				{
-					case 'l': l++; break;
-					case 'i': i++; break;
-					case 'k': k++; break;
-					case 't': t++; break;
-					default: send_reply(client_socket, 501, reply_null);
-				}
-			}	
-		}
-		if (modes[j] == '-')
-		{
-			j++;
-			for (; j < modes.length() && modes[j] != '+' ; ++j)
-			{
-				switch (modes[j]) 
-				{
-					case 'l': l--; break;
-					case 'i': i--; break;
-					case 'k': k--; break;
-					case 't': t--; break;
-					default: send_reply(client_socket, 501, reply_null);
-				}
-			}
-		}
+		
+		
 	}
-	
-	/* Fill the vector */ //map with parameter like join 
-	std::vector<int> modes_vector;
-	
-	modes_vector.push_back(l);
-	modes_vector.push_back(i);
-	modes_vector.push_back(k);
-	modes_vector.push_back(t);
-
-	return (modes_vector);	
 }
 
 //map to have mode with param mode 
@@ -72,23 +32,18 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 {
     std::vector<std::string>    reply_arg;
 
+	reply_arg.push_back(s_command[0]);
+	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg));
+	else if (s_command.size() < 2)
+		return (send_reply(client_socket, 461, reply_arg));
 
-	reply_arg.push_back(s_command[0]);
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
     reply_arg.push_back(s_command[1]);
 
-	// if (s_command.size() > 4)
-	// {
-		
-	// 	return (send_reply(client_socket, 696, reply_arg));
-
-	// }
-
     if (is_valid_prefix(s_command[1]))
 	{
-		//fct channel mode 
 		std::cout << "Channel mode" << std::endl;
 		
 		/* Check is the client is in an existing channel */
@@ -96,6 +51,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (!channel)
 			return ;
 		
+		/* Return modes and parameters of channel */
 		if (s_command.size() < 3)
 		{
 			reply_arg.push_back(channel->get_channel_modes());
@@ -103,29 +59,17 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 			return (send_reply(client_socket, 324, reply_arg));
 		}
 		
-		std::cout << "s_command[2]: " << s_command[2] << std::endl;
-
-		if (s_command.size() >= 4)
-			std::cout << "s_command[3]: " << s_command[3] << std::endl;
+		std::cout << "Modes: " << s_command[2] << std::endl;
 		
-		std::vector<int> modes_vector = parse_modes(client_socket, s_command[2]);
-		
-		for (size_t i = 0; i < modes_vector.size(); ++i)
-		{
-			if (modes_vector[i] > 0)
-				channel->set_mode(i + 1);
-			else if (modes_vector[i] < 0)
-				channel->reset_mode(i + 1);
-		}
+		// if (parse_modes(client_socket, s_command[2]));
 		
 		if (channel->get_mode(1))
 			mode_L(client_socket, channel, s_command, reply_arg);
-		if (channel->get_mode(3))
+		else if (channel->get_mode(3))
 			mode_K(client_socket, channel, s_command, reply_arg);
 	}
 	else
 	{
-		//fct user mode
 		//review the parsing  
 		std::cout << "Client mode " << std::endl;
 
@@ -146,7 +90,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		{
 			if (s_command[1] == it->second->get_nickname()) 
             {
-				
+				//before 
 				if (s_command.size() < 3) 
 					return (send_reply(client_socket, 221, reply_arg));
 				else if (s_command[2] == "+i")
@@ -156,8 +100,6 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 					// mode_O(channel, s_command, reply_arg);
 					return ;
 				}
-					
-				std::cout << "No mode for user" << std::endl;
 				return (send_reply(client_socket, 501, reply_arg));
             }
 		}
