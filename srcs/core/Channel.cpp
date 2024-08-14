@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:43:16 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:45:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool 							Channel::get_mode(int mode_int) const
 std::vector<Client*> 	const&	Channel::get_operator_clients_of_chan()	const	{return (_operator_clients_of_chan);}
 std::vector<Client*> 	const&	Channel::get_invited_clients_of_chan()	const	{return (_invited_clients_of_chan);}
 int 						  	Channel::get_nb_max_clients()			const	{return (_nb_max_clients);}
-std::string				const&	Channel::get_params_modes()				const	{return (_params_modes);}
+std::string				const&	Channel::get_channel_params_modes()		const	{return (_params_modes);}
 std::string 			const&  Channel::get_channel_modes()			const	{return (_modes);}
 std::string 			const&	Channel::get_topic()					const	{return (_topic);}
 std::string 			const&	Channel::get_key()						const	{return (_key);}
@@ -81,8 +81,6 @@ void 							Channel::reset_mode(int mode_int)
 		case 3: _mode_k = false; break;
 		case 4: _mode_t = false; break;
 	}
-
-	//reset _modes
 }
 
 void 							Channel::set_mode(int mode_int)

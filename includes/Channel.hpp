@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:42:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:44:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Channel
 		std::vector<Client*>	const	&get_invited_clients_of_chan()	const;
 		int 						  	get_nb_max_clients()			const;
 		bool 							get_mode(int mode)				const;			
-		std::string				const	&get_params_modes()				const;
+		std::string				const	&get_channel_params_modes()		const;
 		std::string 			const	&get_channel_modes()			const;
 		std::string				const 	&get_topic()  					const;
 		std::string 			const	&get_key()						const;

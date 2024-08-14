@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:45:32 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 15:11:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:50:24 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void Server::mode_L(int client_socket, Channel *channel, std::vector<std::string
 	
     int nb_max_clients;
 	
-	//test if its a number 
+	//check if its a number 
 	if (s_command.size() == 4)
 	{
 		std::istringstream iss(s_command[3]);

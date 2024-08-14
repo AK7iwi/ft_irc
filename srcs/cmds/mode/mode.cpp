@@ -6,25 +6,29 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 15:41:09 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:54:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-bool	Server::parse_modes(int client_socket, std::string &modes)
-{
-	std::vector<std::string>	reply_null;
+// bool	Server::parse_modes(int client_socket, std::string &modes)
+// {
+// 	std::vector<std::string>	reply_null;
 
-	if (modes[0] != "+" && modes[0] != "-")
-		return (send_reply(client_socket, 501, reply_arg), false);
+// 	if (modes[0] == "+")
+// 	{
+//		switch 
+			
+// 	}
+// 	else if (modes[0] == "-")
+// 	{
+		
+// 	}
+// 	else 
+// 		return (send_reply(client_socket, 501, reply_arg), false);
 	
-	if (modes[1] == 'l' || modes[1] == 'k')
-	{
-		
-		
-	}
-}
+// }
 
 //map to have mode with param mode 
 
@@ -55,7 +59,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (s_command.size() < 3)
 		{
 			reply_arg.push_back(channel->get_channel_modes());
-			reply_arg.push_back(channel->get_params_modes());
+			reply_arg.push_back(channel->get_channel_params_modes());
 			return (send_reply(client_socket, 324, reply_arg));
 		}
 		
