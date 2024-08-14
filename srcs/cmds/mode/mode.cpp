@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 17:21:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/14 18:10:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ bool	Server::parse_mode(int client_socket, std::string &mode)
 		
 	if (mode[0] == '+')
 	{
-		switch (mode[1])
+		//try to get qnd set_mode 
 			
 	}
 	else if (mode[0] == '-')
 	{
-		switch (mode[1])
+		
 	}
 	else
 		return (false);
@@ -71,7 +71,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		if (parse_mode(client_socket, s_command[2]))
 			return (send_reply(client_socket, 501, reply_arg));
 		
-		std::string param_mode;
+		std::string param_mode = "";
 		
 		if (s_command.size() == 4)
 			param_mode = s_command[3];
