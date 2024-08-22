@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 17:27:45 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/22 15:11:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ std::string	RPL_CREATED(Client const *client, std::string const &start_time, std
 /* 004 */
 std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version) 
 {return (":" + servername + " 004 " + client->get_nickname() + " " + servername + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
-
-/* 221 */
-std::string RPL_UMODEIS(Client const *client)
-{return (":" + client->get_prefix() + " 221 " + client->get_nickname() + " No mode");}
 
 /* 324 */
 std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params)
@@ -124,10 +120,6 @@ std::string	ERR_BADCHANMASK(std::string const &channel_name)
 std::string ERR_UMODEUNKNOWNFLAG(Client const *client)
 {return (client->get_prefix() + " 501 " + client->get_nickname() + " :Unknown MODE flag");}
 
-/* 502 */
-std::string	ERR_USERSDONTMATCH(Client const *client)
-{return (client->get_prefix() + " 502 :Cant change mode for other users");}
-
 /* 696 */
 std::string ERR_INVALIDMODEPARAM(Client const *client, std::string const &channel_name, std::string const &mode, std::string const &parameter, std::string const &error_msg)
 {return (client->get_prefix() + " 696 " + channel_name + " " + mode + " " + parameter + " :Invalid mode parameter. " + error_msg);}
@@ -166,8 +158,6 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case   2: reply = RPL_YOURHOST(client, _servername, _version);												break;
         case   3: reply = RPL_CREATED(client, _start_time, _servername);											break;
         case   4: reply = RPL_MYINFO(client, _servername, _version);												break;
-
-		case 221: reply = RPL_UMODEIS(client);																		break;
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break;
@@ -199,7 +189,6 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);															break;
 
 		case 501: reply = ERR_UMODEUNKNOWNFLAG(client);																break;
-		case 502: reply = ERR_USERSDONTMATCH(client);																break;
 
 		case 696: reply = ERR_INVALIDMODEPARAM(client, reply_arg[2], reply_arg[3], reply_arg[4], reply_arg[5]);		break;
 		
