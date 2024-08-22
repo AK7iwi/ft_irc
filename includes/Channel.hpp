@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 15:44:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:04:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ class Channel
 		bool 						_mode_i;
 		bool 						_mode_k;
 		bool 						_mode_t;
+		bool 						_mode_o;
 		int							_nb_max_clients;
 
 		/* Vector of clients belong to the channel */

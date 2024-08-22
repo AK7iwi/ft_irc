@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 17:16:49 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/22 17:40:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 #define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
 
 /* Modes */
-
 #define MODE_L		1
 #define MODE_I		2
 #define MODE_K		3

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/14 15:45:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/22 19:15:14 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ Channel::Channel(std::string const &name, std::string const &key) :
 	_mode_l(false),
 	_mode_i(false),
 	_mode_k(false),
-	_mode_t(false)
+	_mode_t(false),
+	_mode_o(false)
 {}
 
 Channel::~Channel() {}
@@ -55,6 +56,7 @@ bool 							Channel::get_mode(int mode_int) const
 		case 2: return (_mode_i); break;
 		case 3: return (_mode_k); break;
 		case 4: return (_mode_t); break;
+		case 5: return (_mode_o); break;
 	}
 		
 	return (mode);
@@ -80,6 +82,7 @@ void 							Channel::reset_mode(int mode_int)
 		case 2: _mode_i = false; break;
 		case 3: _mode_k = false; break;
 		case 4: _mode_t = false; break;
+		case 5: _mode_o = false; break;
 	}
 }
 
@@ -91,9 +94,8 @@ void 							Channel::set_mode(int mode_int)
 		case 2: _mode_i = true; break;
 		case 3: _mode_k = true; break;
 		case 4: _mode_t = true; break;
+		case 5: _mode_t = true; break;
 	}
-
-	//set _modes 
 }
 
 void 							Channel::set_key(std::string const &key)			{_key = key;}
