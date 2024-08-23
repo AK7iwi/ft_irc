@@ -6,40 +6,38 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/22 19:16:13 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:38:32 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-int8_t	Server::parse_mode(int client_socket, std::string &mode)
+int8_t	Server::parse_mode(std::string &mode)
 {
 	std::cout << "Modes: " << mode << std::endl;
 	
 	std::vector<std::string>	reply_null;
-	uint8_t mode;
+	uint8_t mode_int;
 
 	if (mode.length() != 2)
-		return (-1);
+		return (-1); //verif this error for RPL
 	else if (mode[0] != '+' && mode[0] != '-')
-		return (-1);
+		return (-2);
 	
 	switch (mode[1])
 	{
-		case 'l': return (1); break;
-		case 'i': return (3); break;
-		case 'k': return (5); break;
-		case 't': return (7); break;
-		case 'o': return (9); break;
+		case 'l': mode_int = 1; break;
+		case 'i': mode_int = 3; break;
+		case 'k': mode_int = 5; break;
+		case 't': mode_int = 7; break;
+		case 'o': mode_int = 9; break;
 	}
 		
-	if (mode[0] == '-')
-		mode++;
+	if (mode[0] == '+')
+		mode_int++;
 	
-	return (mode);
+	return (mode_int);
 }
-
-//map to have mode with param mode 
 
 void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 {
@@ -68,23 +66,25 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		return (send_reply(client_socket, 324, reply_arg));
 	}
 	
-	int8_t mode = parse_mode(client_socket, s_command[2]);
+	int8_t mode = parse_mode(s_command[2]);
 	if ((mode < 0))
 		return (send_reply(client_socket, 501, reply_arg));
+	else if (mode % 2 && mode != 9)
+		return (channel->reset_mode((mode + 1) / 2)); 
 	
 	std::string param_mode = "";
-		
+	
 	if (s_command.size() == 4)
 		param_mode = s_command[3];
-		
-	if (mode == 1 || mode == 2)
+	
+	if (mode == 2)
 		mode_L(client_socket, channel, mode, param_mode, reply_arg);
-	else if (mode == 3 || mode == 4)
-		mode_I();
-	else if (mode == 5 || mode == 6)
+	else if (mode == 4)
+		mode_I(channel, mode);
+	else if (mode == 6)
 		mode_K(client_socket, channel, mode, param_mode, reply_arg);
-	else if (mode == 7 || mode == 8)
-		mode_T();
+	else if (mode == 8)
+		mode_T(channel, mode);
 	else if (mode == 9 || mode == 10)
-		mode_O();
+		mode_O(client_socket, channel, mode, param_mode, reply_arg);
 }

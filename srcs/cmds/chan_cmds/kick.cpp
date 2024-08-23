@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 15:55:58 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:30:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	if (!channel)
 		return ;
 	
-	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	reply_arg.push_back(s_command[2]);
+	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	for (size_t i = 0; i < cpy.size(); ++i)
 	{
 		if (s_command[2] == cpy[i]->get_nickname())

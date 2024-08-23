@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/22 15:11:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:42:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,10 @@ std::string ERR_BADCHANNELKEY(Client const *client, std::string const &channel_n
 std::string	ERR_BADCHANMASK(std::string const &channel_name)
 {return ("476 " + channel_name + " :Bad Channel Mask");}
 
+/* 482 */
+std::string ERR_CHANOPRIVSNEEDED(Client const *client, std::string const &channel_name)
+{return (client->get_prefix() + " 482 " + channel_name + " :You're not channel operator");}
+
 /* 501 */
 std::string ERR_UMODEUNKNOWNFLAG(Client const *client)
 {return (client->get_prefix() + " 501 " + client->get_nickname() + " :Unknown MODE flag");}
@@ -187,6 +191,8 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 473: reply = ERR_INVITEONLYCHAN(client, reply_arg[2]);													break;
 		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);													break;
 		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);															break;
+
+		case 482: reply = ERR_CHANOPRIVSNEEDED(client, reply_arg[2]);												break; 
 
 		case 501: reply = ERR_UMODEUNKNOWNFLAG(client);																break;
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/22 17:40:59 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:43:35 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,11 @@ class Server
 		//////////////////// Methods ////////////////////////////
 		
 		/* Mode methods*/
-
-		void 		mode_L(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
-		void 		mode_K(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
-		void 		mode_O(Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 		mode_O(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
+		void 		mode_T(Channel *channel, uint8_t mode);
+		void 		mode_K(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
+		void 		mode_I(Channel *channel, uint8_t mode);
+		void 		mode_L(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
 		
 		/* Check if the channel exist and the client is in method */
 		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
@@ -120,7 +121,7 @@ class Server
 		
 		/////////////////// Utils methods for Server///////////////
 		/* mode utils */
-		bool								parse_mode(int client_socket, std::string &mode);
+		int8_t								parse_mode(std::string &mode);
 		/* Kick utils */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part utils */

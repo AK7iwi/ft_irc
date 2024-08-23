@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/10 20:15:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:55:28 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,12 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		{
 			if (it->first == _channels[i]->get_chan_name())
 			{
-				std::cout << "The channel exist" << std::endl;
+				std::cout << "Channel found" << std::endl;
+				
 				found_chan = true;
-				if (_channels[i]->get_mode(1) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) 
+				if (_channels[i]->get_mode(MODE_L) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) 
 					return (send_reply(client_socket, 471, reply_arg));
-				if (_channels[i]->get_mode(2))
+				if (_channels[i]->get_mode(MODE_I))
 				{
 					bool found_client = false;
 					std::vector <Client*> cpy = _channels[i]->get_invited_clients_of_chan();
@@ -103,7 +104,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 					if (!found_client)
 						return (send_reply(client_socket, 473, reply_arg));
 				}
-				if (_channels[i]->get_mode(3) && it->second != _channels[i]->get_key())
+				if (_channels[i]->get_mode(MODE_K) && it->second != _channels[i]->get_key())
 					return (send_reply(client_socket, 475, reply_arg));
 				
 				add_client(client_socket, _channels[i], reply_arg);
@@ -111,9 +112,9 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			}
 		}
 		
-		//fct create new channel
 		if (!found_chan)
 		{
+			//fct create new channel
 			std::cout << "A new hannel has been created" << std::endl;
 			send_reply(client_socket, 403, reply_arg);
 			Channel *new_channel = new Channel(it->first, it->second);
@@ -122,9 +123,9 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			_channels.push_back(new_channel);
 		}
 
-		//fct rage_quit
 		if (it->first == "#0")
 		{
+		//fct rage_quit
 			std::vector<std::string> channels_name;
 			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
 			std::string channels_name_str = cpy[0]->get_chan_name();
