@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 16:36:58 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/24 17:31:58 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class Channel
 		~Channel();
 		
 		/* Channel method  */
+		void		remove_from_list(int client_socket, std::vector <Client*> list);
 		void							remove_from_chan_operator(int client_socket);
 		void 							remove_from_chan(int client_socket);
 		void							add_operator_client_to_chan(Client *client);

@@ -27,7 +27,6 @@ void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::stri
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t j = 0; j < cpy.size(); ++j)
 	{
-		//false, get_name and recover the socket 
 		if (param_mode == cpy[j]->get_nickname())
 		{
 			found_client = true;		

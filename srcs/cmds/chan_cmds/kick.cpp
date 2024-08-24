@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 17:30:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/24 18:38:06 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,27 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 		send_reply(cpy[i]->get_socket(), 5555, reply_arg);
 	
 	/* Leave channel */
-	channel->remove_from_chan(client_socket_to_kick);
+
+	
+	//print before 
+	std::cout << "Before:\n" << std::endl;
+	std::vector <Client*> cpy2 = channel->get_clients_of_chan();
+	std::cout << "Size: " << cpy2.size() << std::endl;
+	for (size_t i = 0; i < cpy2.size(); ++i)
+		std::cout << "Nickname:" << cpy2[i]->get_nickname() << std::endl;
+	
+	// channel->remove_from_chan(client_socket_to_kick);
+	channel->remove_from_list(client_socket_to_kick, channel->get_clients_of_chan());
+
+	//print after 
+	std::cout << "After:\n" << std::endl;
+	std::vector <Client*> cpy3 = channel->get_clients_of_chan();
+	std::cout << "Size: " << cpy3.size() << std::endl;
+	for (size_t i = 0; i < cpy3.size(); ++i)
+		std::cout << "Nickname:" << cpy3[i]->get_nickname() << std::endl;
+
+
+	
 	_clients[client_socket_to_kick]->leave_channel(channel);
 }
 
@@ -61,7 +81,11 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	if (!channel)
 		return ;
 	
+	//split and loop on s_command[2]
 	reply_arg.push_back(s_command[2]);
+	
+	//check if client is operator, rpl 482
+	
 	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	for (size_t i = 0; i < cpy.size(); ++i)
 	{
@@ -72,7 +96,7 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 				std::cerr << "You cannot kick yourself" << std::endl;
 				return ;
 			}
-				
+			//check if target not operator
 			std::string comment = create_comment(s_command);
 			if (comment == ERR_COLON)
 			{
@@ -80,7 +104,7 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 				return ;
 			}
 			reply_arg.push_back(comment);
-			return (kicked(cpy[i]->get_socket(), channel, reply_arg));
+			kicked(cpy[i]->get_socket(), channel, reply_arg);
 		}
 
 	}

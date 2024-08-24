@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 17:35:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/24 17:37:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,19 @@ Channel::~Channel() {}
 
 /* Channel method */
 
-// one method
+/* Test */ // one method
+
+void	Channel::remove_from_list(int client_socket, std::vector <Client*> list)
+{
+	for (std::vector<Client*>::iterator it = list.begin(); it != list.end();)
+    {
+		if (client_socket == (*it)->get_socket())
+			it = list.erase(it);
+		else
+			++it;
+	}
+}
+
 void	Channel::remove_from_chan_operator(int client_socket)
 {
 	for (std::vector<Client*>::iterator it = _operator_clients_of_chan.begin(); it != _operator_clients_of_chan.end();)
