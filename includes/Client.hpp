@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 14:18:40 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:13:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class Client
 		
 		/* Checker */
 		bool 							is_registered() const;
-		bool 							is_valid_pass() const;
+		bool 							is_pass_valid() const;
 		
 		/* Getter */
 
@@ -48,12 +48,12 @@ class Client
 
 		/* Setter */
 		void 			 				set_register();
-		void 							set_valid_pass();
 		void 							set_realname(std::string const &realname);
 		void 							set_hostname(std::string const &hostname);
 		void 							set_username(std::string const &username);
-		void							set_nickname(std::string const &nickname);
 		void							set_prefix();
+		void							set_nickname(std::string const &nickname);
+		void 							set_pass();
 
 	private:
 		/* Client infos */

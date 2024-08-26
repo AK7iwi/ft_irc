@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 15:43:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:36:52 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #define BUFFER_MAX	4096
 #define CLIENT_MAX	3
-#define ERR_COLON 	"You should set the reason with a "":"" before bro, be rigorous please"
+#define ERR_COLON 	"You should set the reason with a "":"""
 
 /* Modes */
 #define MODE_L		1
@@ -62,7 +62,7 @@ class Server
 		uint16_t 					_port;
     	std::string					_password;
 		std::string					_networkname;
-		std::string					_servername;
+		std::string					_server_name;
 		std::string					_version;
 		std::string             	_start_time;
 

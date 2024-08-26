@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/06 20:48:07 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:29:54 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Server::Server(uint16_t port, std::string const &password) :
     _port(port),
     _password(password),
 	_networkname("Black_Market"),
-	_servername("No_Rules"),
+	_server_name("No_Rules"),
 	_version("Jailbreak 1.33")
 {
 	time_t  now = time(0);
@@ -42,47 +42,6 @@ Server::~Server()
 	for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end(); it++)
         delete (*it); 
     _channels.clear(); 
-}
-
-Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg)
-{
-	Channel *null_chan = NULL;
-	for (size_t i = 0; i < _channels.size(); ++i)
-	{	
-		if (channel == _channels[i]->get_chan_name())
-		{
-			std::vector <Client*> cpy = _channels[i]->get_clients_of_chan();
-			for (size_t j = 0; j < cpy.size(); ++j)
-				if (client_socket == cpy[j]->get_socket())
-					return (_channels[i]);
-			
-			return (send_reply(client_socket, 442, reply_arg), null_chan);
-		}
-	}
-		
-	return (send_reply(client_socket, 403, reply_arg), null_chan);
-}
-
-
-void	Server::remove_client(int client_socket)
-{
-	std::cout << "Move fast " << _clients[client_socket]->get_nickname() <<std::endl;
-	
-    close(client_socket);
-
-	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
-	{
-        if (it->fd == client_socket)
-		{
-            _fds.erase(it);
-            break;
-        }
-    }
-
-	delete (_clients[client_socket]);
-    _clients.erase(_clients.find(client_socket));
-
-	//PART from the chan also (leave_channels)
 }
 
 void	Server::handle_commands(int client_socket, std::string &command)

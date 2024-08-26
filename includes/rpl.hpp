@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/09 18:42:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:20:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ class Server;
 class Client;
 
 /* 001 */
-std::string	RPL_WELCOME(Client const *client, std::string const &networkname, std::string const &servername);
+std::string RPL_WELCOME(Client const *client, std::string const &network_name);
 /* 002 */
-std::string	RPL_YOURHOST(Client const *client, std::string const &servername, std::string const &version);
+std::string RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version);
 /* 003 */
-std::string	RPL_CREATED(Client const *client, std::string const &start_time, std::string const &servername);
+std::string RPL_CREATED(Client const *client, std::string const &start_time);
 /* 004 */
-std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version);
+std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version);
 /* 221 */
 std::string RPL_UMODEIS(Client const *client);
 /* 324 */
@@ -50,9 +50,9 @@ std::string	ERR_NOTEXTTOSEND(Client const *client);
 /* 431 */
 std::string	ERR_NONICKNAMEGIVEN(Client const *client);
 /* 432 */
-std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick);
+std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nickname);
 /* 433 */
-std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick);
+std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nickname);
 /* 441 */
 std::string	ERR_USERNOTINCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name);
 /* 442 */
@@ -82,7 +82,7 @@ std::string	ERR_USERSDONTMATCH(Client const *client);
 /* 696 */
 std::string ERR_INVALIDMODEPARAM(Client const *client, std::string const &channel_name, std::string const &mode, std::string const &parameter, std::string const &error_msg);
 /* 1111 */
-std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick);
+std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nickname);
 /* 2222 */
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name);
 /* 3333 */

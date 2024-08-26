@@ -6,27 +6,30 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/15 16:00:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:23:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
-static	bool	contains_invalid_chars(std::string const &nickname)
+static	bool	is_nickname_invalid(std::string const &nickname)
 {
 	if (nickname[0] == '$' || nickname[0] == ':' || nickname[0] == '#')
 		return (true);
-
+	else if (nickname == "DEFAULT")
+		return (true);
+	
 	std::string invalid_chars = " ,*?!@.";
-
+ 
 	return (nickname.find_first_of(invalid_chars) != std::string::npos);
 }
 
 void Server::nick(int client_socket, std::vector<std::string> &s_command)
 {
-	if (!(_clients[client_socket]->is_valid_pass()))
+	/* Need to set the password before */
+	if (!(_clients[client_socket]->is_pass_valid())) 
 	{
-		std::cout << "Put a password bro\n" << std::endl; //RPL 462
+		std::cout << "You have to set a password\n" << std::endl;
 		return ;
 	}
 	
@@ -38,7 +41,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);
 	
-	if (contains_invalid_chars(s_command[1]))
+	if (is_nickname_invalid(s_command[1]))
 		return (send_reply(client_socket, 432, reply_arg));
 	
 	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)

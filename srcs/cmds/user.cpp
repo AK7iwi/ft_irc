@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:09 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/22 23:27:20 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:24:12 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	/* Need to set-up a nickname before */
 	if (_clients[client_socket]->get_nickname() == "DEFAULT")
 	{
-		std::cout << "Put a nickname bro\n" << std::endl; //RPL 462
+		std::cout << "You have to set a nickname\n" << std::endl;
 		return ;
 	}
 
 	std::vector<std::string>    reply_arg;
-	reply_arg.push_back(s_command[0]);
-
+	
 	if (s_command.size() != 5 && s_command.size() != 6)
+	{	
+		reply_arg.push_back(s_command[0]);
 		return (send_reply(client_socket, 461, reply_arg));
+	}
 	else if (_clients[client_socket]->is_registered())
     	return (send_reply(client_socket, 462, reply_arg));
 
@@ -41,21 +43,20 @@ void Server::user(int client_socket,  std::vector<std::string> &s_command)
 	}
 	realname.erase(0, 1);
 
+	if (realname.empty())
+	{
+		reply_arg.push_back(s_command[0]);
+		return (send_reply(client_socket, 461, reply_arg));
+	}
+
 	if (s_command.size() == 6)
 		realname += " " + s_command[5];
-
-	// std::cout << "realname: " << realname << std::endl;
-	// if (realname.empty())
-	// {
-	// 	std::cout << "You should set a realname with a "":"" before bro, be rigorous please" << std::endl;
-	// 	return ;
-	// }
 
 	_clients[client_socket]->set_realname(realname);
     _clients[client_socket]->set_prefix();
 	_clients[client_socket]->set_register();
 
-	std::cout << "Welcome home " << _clients[client_socket]->get_nickname() <<std::endl;
+	std::cout << "Welcome " << _clients[client_socket]->get_nickname() <<std::endl;
 
 	send_reply(client_socket, 1, reply_arg);
 	send_reply(client_socket, 2, reply_arg);

@@ -6,27 +6,27 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 17:42:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:45:03 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rpl.hpp"
 
 /* 001 */
-std::string	RPL_WELCOME(Client const *client, std::string const &networkname, std::string const &servername) 
-{return (":" + servername + " 001 " + client->get_nickname() + " :Welcome to the " + networkname + " Network, " + client->get_nickname() + "[!" + client->get_username() + "@" + client->get_hostname() + "]");}
+std::string RPL_WELCOME(Client const *client, std::string const &network_name) 
+{return ("001 " + client->get_nickname() + " :Welcome to the " + network_name + " Network " + client->get_prefix());}
 
 /* 002 */
-std::string	RPL_YOURHOST(Client const *client, std::string const &servername, std::string const &version) 
-{return (":" + servername + " 002 " + client->get_nickname() + " :Your host is "+ servername + ", running version " + version);}
+std::string RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version)
+{return ("002 " + client->get_nickname() + " :Your host is " + server_name + ", running version " + version);}
 
 /* 003 */
-std::string	RPL_CREATED(Client const *client, std::string const &start_time, std::string const &servername) 
-{return (":" + servername + " 003 " + client->get_nickname() + " :This server was created " + start_time);}
+std::string RPL_CREATED(Client const *client, std::string const &start_time)
+{return ("003 " + client->get_nickname() + " :This server was created " + start_time);}
 
 /* 004 */
-std::string	RPL_MYINFO(Client const *client, std::string const &servername, std::string const &version) 
-{return (":" + servername + " 004 " + client->get_nickname() + " " + servername + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
+std::string RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version)
+{return ("004 " + client->get_nickname() + " " + server_name + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
 /* 324 */
 std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params)
@@ -65,12 +65,12 @@ std::string	ERR_NONICKNAMEGIVEN(Client const *client)
 {return (client->get_prefix() + " 431 :No nickname given");}
 
 /* 432 */
-std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nick)
-{return (client->get_prefix() + " 432 " + nick + " :Erroneus nickname");}
+std::string	ERR_ERRONEUSNICKNAME(Client const *client, std::string const &nickname)
+{return (client->get_prefix() + " 432 " + nickname + " :Erroneus nickname");}
 
 /* 433 */
-std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nick)
-{return (client->get_prefix() + " 433 " + nick + " :Nickname is already in use");}
+std::string	ERR_NICKNAMEINUSE(Client const *client, std::string const &nickname)
+{return (client->get_prefix() + " 433 " + nickname + " :Nickname is already in use");}
 
 /* 441 */
 std::string	ERR_USERNOTINCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name)
@@ -129,8 +129,8 @@ std::string ERR_INVALIDMODEPARAM(Client const *client, std::string const &channe
 {return (client->get_prefix() + " 696 " + channel_name + " " + mode + " " + parameter + " :Invalid mode parameter. " + error_msg);}
 
 /* 1111 */
-std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nick)
-{return (client_prefix + " NICK " + new_nick);}
+std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_nickname)
+{return (client_prefix + " NICK " + new_nickname);}
 
 /* 2222 */
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name)
@@ -152,16 +152,19 @@ std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const 
 std::string MSGS(std::string const &client_prefix, std::string const &name, std::string const &message)
 {return (client_prefix + " PRIVMSG " + name + " :" + message);}
 
+
+//file for that 
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
 {
 	std::string reply;
 	
 	switch (rpl)
 	{
-        case   1: reply = RPL_WELCOME(client, _networkname, _servername);											break;
-        case   2: reply = RPL_YOURHOST(client, _servername, _version);												break;
-        case   3: reply = RPL_CREATED(client, _start_time, _servername);											break;
-        case   4: reply = RPL_MYINFO(client, _servername, _version);												break;
+		/* OK */
+        case   1: reply = RPL_WELCOME(client, _networkname);														break;
+        case   2: reply = RPL_YOURHOST(client, _server_name, _version);												break;
+        case   3: reply = RPL_CREATED(client, _start_time);															break;
+        case   4: reply = RPL_MYINFO(client, _server_name, _version);												break;
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break;
@@ -173,6 +176,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 411: reply = ERR_NORECIPIENT(client);																	break;
 		case 412: reply = ERR_NOTEXTTOSEND(client);																	break;
 		
+		/* OK */
 		case 431: reply = ERR_NONICKNAMEGIVEN(client);																break;
         case 432: reply = ERR_ERRONEUSNICKNAME(client, reply_arg[1]);												break;
         case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);													break;
@@ -183,6 +187,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		
 		case 451: reply = ERR_NOTREGISTERED(client);																break;
 		
+		/* OK */
         case 461: reply = ERR_NEEDMOREPARAMS(client, reply_arg[0]);													break;
         case 462: reply = ERR_ALREADYREGISTERED(client);           													break;
         case 464: reply = ERR_PASSWDMISMATCH(client);																break;
@@ -198,7 +203,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 
 		case 696: reply = ERR_INVALIDMODEPARAM(client, reply_arg[2], reply_arg[3], reply_arg[4], reply_arg[5]);		break;
 		
-		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);													break;
+		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);													break; //OK
 		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);													break;
 		case 3333: reply = NEW_PING(reply_arg[1]);																	break;
 		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);										break;
@@ -209,7 +214,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 	return (reply);
 }
 
-void Server::send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const  &reply_arg) 
+void Server::send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg) 
 {
 	std::string message = wich_rpl(_clients[client_socket], rpl, reply_arg) + "\r\n";
 

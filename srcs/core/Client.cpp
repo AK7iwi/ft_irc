@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/23 14:18:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:12:56 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void 							Client::add_chan_to_client(Channel *channel) 		{_channels_of_client.
 
 /* Checker */
 bool 							Client::is_registered()				const			{return (_register);}
-bool 							Client::is_valid_pass()				const			{return (_valid_pass);}
+bool 							Client::is_pass_valid()				const			{return (_valid_pass);}
 
 /* Getter methods */
 std::vector<Channel*>	const&	Client::get_channels_of_client() 	const			{return (_channels_of_client);}
@@ -53,9 +53,9 @@ int 							Client::get_socket()				const			{return (_socket_fd);}
 
 /* Setter method */
 void 							Client::set_register()								{_register = true;}
-void 							Client::set_valid_pass()							{_valid_pass = true;}
 void							Client::set_realname(std::string const &realname)	{_realname = realname;} 
 void							Client::set_hostname(std::string const &hostname)	{_hostname = hostname;} 
 void							Client::set_username(std::string const &username)	{_username = username;} 
-void							Client::set_nickname(std::string const &nickname)	{_nickname = nickname;} 
 void							Client::set_prefix()								{_prefix = ":" + _nickname + "!" + _username + "@" + _hostname;}
+void							Client::set_nickname(std::string const &nickname)	{_nickname = nickname;} 
+void 							Client::set_pass()									{_valid_pass = true;}

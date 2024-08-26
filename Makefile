@@ -3,7 +3,7 @@ NAME			:= ircserv
 SRC_DIR			:= srcs
 OBJ_DIR			:= obj
 
-SRCS			:= main.cpp core/Server.cpp core/Client.cpp core/Channel.cpp \
+SRCS			:= main.cpp core/Server/Server.cpp core/Server/utils_server.cpp core/Client.cpp core/Channel.cpp \
 					cmds/pass.cpp cmds/nick.cpp cmds/user.cpp \
 					cmds/join.cpp cmds/ping.cpp cmds/pong.cpp cmds/privmsg.cpp \
 					cmds/chan_cmds/part.cpp cmds/chan_cmds/topic.cpp cmds/chan_cmds/invite.cpp \
