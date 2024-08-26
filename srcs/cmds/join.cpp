@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 15:55:28 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:55:57 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	reply_arg.erase(reply_arg.begin() + 3);
 }
 
+
 std::map<std::string, std::string>	Server::create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {
 	std::map<std::string, std::string> channel_key_map;
 	std::vector<std::string> potential_new_channels = split(s_command[1], ',');
 	
+	/* If key(s) is(are) supplied */
     if (s_command.size() >= 3)
 	{
         std::vector<std::string> v_key = split(s_command[2], ',');
@@ -69,13 +71,14 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string>    reply_arg;
 	
 	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
 	else if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
 
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+	
 	std::map<std::string, std::string> channel_key_map = create_channel_map(client_socket, s_command, reply_arg);
 		
 	/* Check if the channel already exist and add client if exist */

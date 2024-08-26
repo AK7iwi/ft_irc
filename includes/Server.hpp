@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 16:36:52 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:25:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 #define BUFFER_MAX	4096
 #define CLIENT_MAX	3
-#define ERR_COLON 	"You should set the reason with a "":"""
+#define ERR_COLON 	"You should set the reason with a ""':'"""
 
 /* Modes */
 #define MODE_L		1

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 17:45:03 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:54:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ std::string ERR_BADCHANNELKEY(Client const *client, std::string const &channel_n
 {return ("475 " + client->get_nickname() + " " + channel_name + " :Cannot join channel (+k)");}
 
 /* 476 */
-std::string	ERR_BADCHANMASK(std::string const &channel_name)
-{return ("476 " + channel_name + " :Bad Channel Mask");}
+std::string ERR_BADCHANMASK(Client const *client, std::string const &channel_name)
+{return (client->get_prefix() + " 476 " + channel_name + " :Bad Channel Mask");}
 
 /* 482 */
 std::string ERR_CHANOPRIVSNEEDED(Client const *client, std::string const &channel_name)
@@ -185,6 +185,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);													break;
 		case 443: reply = ERR_USERONCHANNEL(client, reply_arg[3], reply_arg[2]);									break;
 		
+		/* OK */
 		case 451: reply = ERR_NOTREGISTERED(client);																break;
 		
 		/* OK */
@@ -195,7 +196,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);													break;
 		case 473: reply = ERR_INVITEONLYCHAN(client, reply_arg[2]);													break;
 		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);													break;
-		case 476: reply = ERR_BADCHANMASK(reply_arg[2]);															break;
+		case 476: reply = ERR_BADCHANMASK(client, reply_arg[2]);													break; //ok
 
 		case 482: reply = ERR_CHANOPRIVSNEEDED(client, reply_arg[2]);												break; 
 
@@ -204,7 +205,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		case 696: reply = ERR_INVALIDMODEPARAM(client, reply_arg[2], reply_arg[3], reply_arg[4], reply_arg[5]);		break;
 		
 		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);													break; //OK
-		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);													break;
+		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);													break; 
 		case 3333: reply = NEW_PING(reply_arg[1]);																	break;
 		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);										break;
 		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3], reply_arg[4]); 				break;

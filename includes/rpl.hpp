@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 17:20:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:53:13 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ std::string ERR_INVITEONLYCHAN(Client const *client, std::string const &channel_
 /* 475 */
 std::string	ERR_BADCHANNELKEY(Client const *client, std::string const &channel_name);
 /* 476 */
-std::string	ERR_BADCHANMASK(std::string const &channel_name);
+std::string ERR_BADCHANMASK(Client const *client, std::string const &channel_name);
 /* 501 */
 std::string ERR_UMODEUNKNOWNFLAG(Client const *client);
 /* 502 */
