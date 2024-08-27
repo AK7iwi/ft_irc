@@ -6,14 +6,14 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/24 17:37:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:39:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Channel.hpp"
 
-Channel::Channel(std::string const &name, std::string const &key) :
-	_name(name),
+Channel::Channel(std::string const &channel_name, std::string const &key) :
+	_channel_name(channel_name),
 	_key(key),
 	_topic(NO_TOPIC),
 	_modes(""),
@@ -94,7 +94,7 @@ std::string 			const&  Channel::get_channel_modes()			const	{return (_modes);}
 std::string 			const&	Channel::get_topic()					const	{return (_topic);}
 std::string 			const&	Channel::get_key()						const	{return (_key);}
 std::vector<Client*> 	const&	Channel::get_clients_of_chan()			const	{return (_clients_of_chan);}
-std::string  			const&	Channel::get_chan_name()				const	{return (_name);}
+std::string  			const&	Channel::get_channel_name()				const	{return (_channel_name);}
 
 /* Setter methods */
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 16:50:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 17:23:11 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:02:25 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void Server::nick(int client_socket, std::vector<std::string> &s_command)
 			return (send_reply(client_socket, 433, reply_arg));
 	
 	if (_clients[client_socket]->is_registered())
-		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++) //check to who send that 
     		if (it->second->is_registered())
         		send_reply(it->first, 1111, reply_arg);
 	

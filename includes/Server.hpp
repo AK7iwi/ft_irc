@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 20:25:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:21:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,11 @@ class Server
 		/* Part utils */
 		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join utils */
+		void 								create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg);
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
-		std::map<std::string, std::string>	create_channel_map(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
-		/* Check if the channel name is valid */
-		bool 								is_valid_prefix(std::string const &channel);
+		bool								is_client_in_invite_list(int client_socket, Channel *channel); //utils gen 
+		std::map<std::string, std::string>	create_channel_map(std::vector<std::string> const &valid_channels, std::vector<std::string> &s_command);
+		std::vector<std::string> 			get_valid_channels(int client_socket, std::string const &potential_new_channels, std::vector<std::string> &reply_arg);
 		/* Init struct address */
 		void								init_address_structures();
 };

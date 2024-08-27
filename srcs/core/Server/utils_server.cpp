@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 13:55:04 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 14:08:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:38:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &chann
 	Channel *null_chan = NULL;
 	for (size_t i = 0; i < _channels.size(); ++i)
 	{	
-		if (channel == _channels[i]->get_chan_name())
+		if (channel == _channels[i]->get_channel_name())
 		{
 			std::vector <Client*> cpy = _channels[i]->get_clients_of_chan();
 			for (size_t j = 0; j < cpy.size(); ++j)

@@ -27,11 +27,11 @@ RED 		= \033[0;91m
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(FSANITIZE_FLAG) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME)
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.cpp
 	$(DIR_DUP)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(FSANITIZE_FLAG) -c -o $@ $<
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 clean:
 	$(RM) $(OBJS)
@@ -46,3 +46,5 @@ re:	fclean all
 	@echo "$(RED)Cleaned and rebuilt!$(DEF_COLOR)"
 
 .PHONY: all clean fclean re
+
+# $(FSANITIZE_FLAG)

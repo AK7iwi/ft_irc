@@ -6,17 +6,28 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 14:00:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:39:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
-/* Check if the channel name is valid */
-bool	Server::is_valid_prefix(std::string const &channel) 
-{return (channel[0] == '#' || channel[0] == '&');}
+/* Check if client is in invite client list */
+
+bool	Server::is_client_in_invite_list(int client_socket, Channel *channel)
+{
+	bool found_client = false;
+	
+	std::vector <Client*> cpy = channel->get_invited_clients_of_chan();
+	for (size_t j = 0; j < cpy.size(); ++j)
+		if (client_socket == cpy[j]->get_socket())
+			found_client = true;
+
+	return (found_client);
+}
 
 /* Split method */
+
 std::vector<std::string> split(std::string const &str, char delimiter) 
 {
     std::vector<std::string> tokens;
@@ -30,6 +41,7 @@ std::vector<std::string> split(std::string const &str, char delimiter)
 }
 
 /* Parse the argument */
+
 void	parse_arg(int argc, char **argv)
 {
 	if (argc != 3)

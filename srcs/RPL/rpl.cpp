@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 20:54:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:15:50 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
 {return (client->get_prefix() + " 401 " + nickname + " :No such nick/channel");}
 
 /* 403 */
-std::string	ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
-{return (client->get_prefix() + " 403 " + channel_name + " :No such channel");}
+std::string ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
+{return ("403 " + client->get_nickname() + " " + channel_name + " :No such channel");}
 
 /* 404 */
 std::string	ERR_CANNOTSENDTOCHAN(Client const *client, std::string const &channel_name)
@@ -160,14 +160,14 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 	
 	switch (rpl)
 	{
-		/* OK */
+		/* OK but retake the previous RPL */
         case   1: reply = RPL_WELCOME(client, _networkname);														break;
         case   2: reply = RPL_YOURHOST(client, _server_name, _version);												break;
         case   3: reply = RPL_CREATED(client, _start_time);															break;
         case   4: reply = RPL_MYINFO(client, _server_name, _version);												break;
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
-		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break;
+		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break; //OK
 		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);											break;
 		
 		case 401: reply = ERR_NOSUCHNICK(client, reply_arg[2]);														break;
@@ -193,10 +193,11 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case 462: reply = ERR_ALREADYREGISTERED(client);           													break;
         case 464: reply = ERR_PASSWDMISMATCH(client);																break;
 		
-		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);													break;
+		/* OK */
+		case 471: reply = ERR_CHANNELISFULL(client, reply_arg[2]);													break; 
 		case 473: reply = ERR_INVITEONLYCHAN(client, reply_arg[2]);													break;
 		case 475: reply = ERR_BADCHANNELKEY(client, reply_arg[2]);													break;
-		case 476: reply = ERR_BADCHANMASK(client, reply_arg[2]);													break; //ok
+		case 476: reply = ERR_BADCHANMASK(client, reply_arg[2]);													break;
 
 		case 482: reply = ERR_CHANOPRIVSNEEDED(client, reply_arg[2]);												break; 
 

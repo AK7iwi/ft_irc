@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/24 17:31:58 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:37:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ class Channel
 		std::string				const 	&get_topic()  					const;
 		std::string 			const	&get_key()						const;
 		std::vector<Client*>	const	&get_clients_of_chan()			const; 
-		std::string 			const	&get_chan_name()				const;
+		std::string 			const	&get_channel_name()				const;
 		
 		/* Setter methods */
 		void 							set_key(std::string const &key);			
@@ -57,7 +57,7 @@ class Channel
 		
 	private:
 		/* Channel infos */
-		std::string					_name;
+		std::string					_channel_name;
 		std::string 				_key;
 		std::string 				_topic;
 		std::string					_modes;

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/07/19 12:23:20 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:40:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,19 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string>    reply_arg;
 	
 	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
 	else if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
 	
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+	
 	std::vector<std::string> p_channels = split(s_command[1], ',');	
 	for (size_t i = 0; i < p_channels.size(); ++i)
 	{	
 		reply_arg.push_back(p_channels[i]);
-		Channel *channel = is_client_in_a_valid_chan(client_socket, p_channels[i], reply_arg);
-	
+		Channel *channel = is_client_in_a_valid_chan(client_socket, p_channels[i], reply_arg); //modify the check
 		if (channel)
 		{
 			std::string reason = create_reason(s_command);
