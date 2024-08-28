@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 17:21:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:38:22 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ class Server
 		/* Server infos */
 		uint16_t 					_port;
     	std::string					_password;
-		std::string					_networkname;
+		std::string					_network_name;
 		std::string					_server_name;
 		std::string					_version;
 		std::string             	_start_time;
@@ -130,6 +130,7 @@ class Server
 		void 								create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg);
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		bool								is_client_in_invite_list(int client_socket, Channel *channel); //utils gen 
+		bool 								check_client_access(int client_socket, Channel *channel, std::string const &key, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(std::vector<std::string> const &valid_channels, std::vector<std::string> &s_command);
 		std::vector<std::string> 			get_valid_channels(int client_socket, std::string const &potential_new_channels, std::vector<std::string> &reply_arg);
 		/* Init struct address */

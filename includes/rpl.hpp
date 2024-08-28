@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 20:53:13 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:40:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@ class Server;
 class Client;
 
 /* 001 */
-std::string RPL_WELCOME(Client const *client, std::string const &network_name);
+std::string	RPL_WELCOME(Client const *client, std::string const &server_name, std::string const &networ_kname);
 /* 002 */
-std::string RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version);
+std::string	RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version);
 /* 003 */
-std::string RPL_CREATED(Client const *client, std::string const &start_time);
+std::string	RPL_CREATED(Client const *client, std::string const &server_name, std::string const &start_time);
 /* 004 */
 std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version);
+
 /* 221 */
 std::string RPL_UMODEIS(Client const *client);
 /* 324 */

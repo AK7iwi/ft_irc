@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/26 16:29:54 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:38:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 Server::Server(uint16_t port, std::string const &password) : 
     _port(port),
     _password(password),
-	_networkname("Black_Market"),
+	_network_name("Black_Market"),
 	_server_name("No_Rules"),
 	_version("Jailbreak 1.33")
 {

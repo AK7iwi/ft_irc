@@ -6,13 +6,14 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 17:44:52 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:48:48 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 /* Create a new channel */
+
 void 	Server::create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg)
 {
 	std::cout << "A new hannel has been created: " << channel_name << std::endl;
@@ -24,6 +25,7 @@ void 	Server::create_new_channel(int client_socket, std::string const &channel_n
 }
 
 /* Add client to the channel */
+
 void	Server::add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg)
 {
 	channel->add_client_to_chan(_clients[client_socket]);
@@ -38,7 +40,22 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	reply_arg.erase(reply_arg.begin() + 3);
 }
 
+/* Check if modes are active and if client have acces */
+
+bool 	Server::check_client_access(int client_socket, Channel *channel, std::string const &key, std::vector<std::string> &reply_arg)
+{
+	if (channel->get_mode(MODE_L) && (int)channel->get_clients_of_chan().size() >= channel->get_nb_max_clients()) 
+		return (send_reply(client_socket, 471, reply_arg), false);
+	else if (channel->get_mode(MODE_I) && !is_client_in_invite_list(client_socket, channel))
+		return (send_reply(client_socket, 473, reply_arg), false);
+	else if (channel->get_mode(MODE_K) && key != channel->get_key())
+		return (send_reply(client_socket, 475, reply_arg), false);
+
+	return (true);
+}
+
 /* Create a map with channels and keys based on incoming commands from clients*/
+
 std::map<std::string, std::string>	Server::create_channel_map(std::vector<std::string> const &valid_channels, std::vector<std::string> &s_command)
 {	
 	std::map<std::string, std::string> channel_key_map;
@@ -63,10 +80,12 @@ std::map<std::string, std::string>	Server::create_channel_map(std::vector<std::s
 }
 
 /* Check if the channel name is valid */
+
 static inline bool is_valid_prefix(std::string const &channel) 
 {return (channel[0] == '#' || channel[0] == '&');}
 
 /* Create a vector with the valid channels */
+
 std::vector<std::string> Server::get_valid_channels(int client_socket, std::string const &potential_new_channels, std::vector<std::string> &reply_arg)
 {
 	std::vector<std::string> v_potential_new_channels = split(potential_new_channels, ',');
@@ -117,13 +136,8 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 				
 				found_chan = true;
 				
-				/* Check if modes are active */ //fct??
-				if (_channels[i]->get_mode(MODE_L) && (int)_channels[i]->get_clients_of_chan().size() >= _channels[i]->get_nb_max_clients()) 
-					return (send_reply(client_socket, 471, reply_arg));
-				else if (_channels[i]->get_mode(MODE_I) && !is_client_in_invite_list(client_socket, _channels[i]))
-					return (send_reply(client_socket, 473, reply_arg));
-				else if (_channels[i]->get_mode(MODE_K) && it->second != _channels[i]->get_key())
-					return (send_reply(client_socket, 475, reply_arg));
+				if (!check_client_access(client_socket, _channels[i], it->second, reply_arg))
+					return ;
 				
 				add_client(client_socket, _channels[i], reply_arg);
 				break ;
@@ -131,27 +145,20 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		}
 		
 		if (!found_chan)
-		{
-			std::string key;
-			
-			if (it->first == "#0")
-				key = ""; 
-			key = it->second;
-			
-			create_new_channel(client_socket, it->first, key, reply_arg);
-		}
+			create_new_channel(client_socket, it->first, it->second, reply_arg);
 		
-		if (it->first == "#0")
-		{
-			std::vector<std::string> channels_name;
-			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
-			std::string channels_name_str = cpy[0]->get_channel_name();
-			for (size_t i = 1; i < cpy.size(); ++i)
-				channels_name_str += "," + cpy[i]->get_channel_name();
-			channels_name.push_back("PART");
-			channels_name.push_back(channels_name_str);
-			part(client_socket, channels_name);
-		}
+		// continue when part no leaks 
+		// if (it->first == "#0")
+		// {
+		// 	std::vector<std::string> channels_name;
+		// 	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+		// 	std::string channels_name_str = cpy[0]->get_channel_name();
+		// 	for (size_t i = 1; i < cpy.size(); ++i)
+		// 		channels_name_str += "," + cpy[i]->get_channel_name();
+		// 	channels_name.push_back("PART");
+		// 	channels_name.push_back(channels_name_str);
+		// 	part(client_socket, channels_name);
+		// }
 		
 		reply_arg.erase(reply_arg.begin() + 2);
 	}

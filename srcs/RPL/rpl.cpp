@@ -6,27 +6,27 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 18:15:50 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:30:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rpl.hpp"
 
 /* 001 */
-std::string RPL_WELCOME(Client const *client, std::string const &network_name) 
-{return ("001 " + client->get_nickname() + " :Welcome to the " + network_name + " Network " + client->get_prefix());}
+std::string	RPL_WELCOME(Client const *client, std::string const &server_name, std::string const &network_name) 
+{return (":" + server_name + " 001 " + client->get_nickname() + " :Welcome to the " + network_name + " Network " + client->get_prefix());}
 
 /* 002 */
-std::string RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version)
-{return ("002 " + client->get_nickname() + " :Your host is " + server_name + ", running version " + version);}
+std::string	RPL_YOURHOST(Client const *client, std::string const &server_name, std::string const &version) 
+{return (":" + server_name + " 002 " + client->get_nickname() + " :Your host is " + server_name + ", running version " + version);}
 
 /* 003 */
-std::string RPL_CREATED(Client const *client, std::string const &start_time)
-{return ("003 " + client->get_nickname() + " :This server was created " + start_time);}
+std::string	RPL_CREATED(Client const *client, std::string const &server_name, std::string const &start_time) 
+{return (":" + server_name + " 003 " + client->get_nickname() + " :This server was created " + start_time);}
 
 /* 004 */
-std::string RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version)
-{return ("004 " + client->get_nickname() + " " + server_name + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
+std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version) 
+{return (":" + server_name + " 004 " + client->get_nickname() + " " + server_name + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
 /* 324 */
 std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params)
@@ -160,10 +160,10 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 	
 	switch (rpl)
 	{
-		/* OK but retake the previous RPL */
-        case   1: reply = RPL_WELCOME(client, _networkname);														break;
+		/* OK */
+		case   1: reply = RPL_WELCOME(client, _server_name, _network_name);											break;
         case   2: reply = RPL_YOURHOST(client, _server_name, _version);												break;
-        case   3: reply = RPL_CREATED(client, _start_time);															break;
+        case   3: reply = RPL_CREATED(client, _server_name, _start_time);											break;
         case   4: reply = RPL_MYINFO(client, _server_name, _version);												break;
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
