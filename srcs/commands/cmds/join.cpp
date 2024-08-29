@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 10:54:55 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:43:03 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ void	Server::add_client(int client_socket, Channel *channel, std::vector<std::st
 	channel->add_client_to_chan(_clients[client_socket]);
 	_clients[client_socket]->add_chan_to_client(channel);
 	
-	std::vector <Client*> cpy = channel->get_clients_of_chan();
-	for (size_t i = 0; i <  cpy.size(); ++i)
-		send_reply(cpy[i]->get_socket(), 2222, reply_arg);
+	send_rpl_to_channel(channel, 2222, reply_arg);
 	
 	reply_arg.push_back(channel->get_topic());
 	send_reply(client_socket, 332, reply_arg);

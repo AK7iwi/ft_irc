@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rpl.cpp                                            :+:      :+:    :+:   */
+/*   RPL.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 12:46:22 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:14:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rpl.hpp"
+#include "RPL.hpp"
 
 /* 001 */
 std::string	RPL_WELCOME(Client const *client, std::string const &server_name, std::string const &network_name) 
@@ -38,7 +38,7 @@ std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std
 
 /* 341 */
 std::string RPL_INVITING(Client const *client, std::string const &client_to_invite, std::string const &channel_name)
-{return (client->get_prefix() + " 341 " + client->get_nickname() + " " + client_to_invite + " " + channel_name);}
+{return (client->get_prefix() + " 341 " + client->get_nickname() + " " + client_to_invite + " :" + channel_name);}
 
 /* 401 */
 std::string ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
@@ -77,8 +77,8 @@ std::string ERR_NOTONCHANNEL(Client const *client, std::string const &channel_na
 { return ("442 " + client->get_nickname() + " " + channel_name + " :You're not on that channel");}
 
 /* 443 */
-std::string	ERR_USERONCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name)
-{return (client->get_prefix() + " 443 " + client_to_kick + " " + channel_name + " :is already on channel");}
+std::string ERR_USERONCHANNEL(Client const *client, std::string const &nickname, std::string const &channel_name)
+{return (client->get_prefix() + " 443 " + client->get_nickname() + " " + nickname + " " + channel_name + " :is already on channel");}
 
 /* 451 */
 std::string	ERR_NOTREGISTERED(Client const *client)
@@ -133,8 +133,8 @@ std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &chan
 {return (client_prefix + " JOIN " + channel_name + " :" + channel_name);}
 
 /* 3333 */
-std::string NEW_PING(std::string const &token)
-{return ("PONG :" + token);} 
+std::string RPL_PONG(std::string const &server_name, std::string const &ping_token)
+{return ("PONG " + server_name + " :" + ping_token);}
 
 /* 4444 */
 std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason)
@@ -147,7 +147,6 @@ std::string GET_OUT_OF_HERE(std::string const &client_prefix, std::string const 
 /* 6666 */
 std::string MSGS(std::string const &client_prefix, std::string const &name, std::string const &message)
 {return (client_prefix + " PRIVMSG " + name + " :" + message);}
-
 
 //file for that 
 std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg)
@@ -164,8 +163,9 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		
 		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break; //OK
-		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);											break;
+		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);											break; // OK 
 		
+		/* OK */
 		case 401: reply = ERR_NOSUCHNICK(client, reply_arg[2]);														break;
 		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);													break;
 		case 411: reply = ERR_NORECIPIENT(client);																	break;
@@ -177,8 +177,8 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case 433: reply = ERR_NICKNAMEINUSE(client, reply_arg[1]);													break;
 
 		case 441: reply = ERR_USERNOTINCHANNEL(client, reply_arg[3], reply_arg[2]);									break;
-		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);													break;
-		case 443: reply = ERR_USERONCHANNEL(client, reply_arg[3], reply_arg[2]);									break;
+		case 442: reply = ERR_NOTONCHANNEL(client, reply_arg[2]);													break; //OK
+		case 443: reply = ERR_USERONCHANNEL(client, reply_arg[3], reply_arg[2]);									break; //OK 
 		
 		/* OK */
 		case 451: reply = ERR_NOTREGISTERED(client);																break;
@@ -202,10 +202,10 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		
 		case 1111: reply = NEW_NICK(reply_arg[0], reply_arg[1]);													break; //OK
 		case 2222: reply = NEW_MEMBER(reply_arg[1], reply_arg[2]);													break; 
-		case 3333: reply = NEW_PING(reply_arg[1]);																	break;
+		case 3333: reply = RPL_PONG(_server_name, reply_arg[1]);													break;
 		case 4444: reply = GOODBYE(reply_arg[1], reply_arg[2], reply_arg[3]);										break;
 		case 5555: reply = GET_OUT_OF_HERE(reply_arg[1], reply_arg[2], reply_arg[3], reply_arg[4]); 				break;
-		case 6666: reply = MSGS(reply_arg[1], reply_arg[2], reply_arg[3]); 											break;
+		case 6666: reply = MSGS(reply_arg[1], reply_arg[2], reply_arg[3]); 											break; //OK
     }
 	
 	return (reply);

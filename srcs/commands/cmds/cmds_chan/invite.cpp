@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:58 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/08 21:37:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:02:37 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,30 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string>    reply_arg;
 	
 	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
 
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
 	else if (s_command.size() < 3)
 		return (send_reply(client_socket, 461, reply_arg));
 
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[2]);
-	reply_arg.push_back(s_command[1]);
 
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[2], reply_arg);
 	if (!channel)
 		return ;
 	
+	if (channel->get_mode(MODE_I) && !is_client_in_operator_list(client_socket, channel))
+		return (send_reply(client_socket, 482, reply_arg));
+	
 	/* Check if the target is already in the channel */
+	reply_arg.push_back(s_command[1]);
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t i = 0; i < cpy.size(); ++i)
 		if (s_command[1] == cpy[i]->get_nickname())
 			return (send_reply(client_socket, 443, reply_arg));
 
 	/* Find the socket to invite and send RPL */
-	int client_to_invite;
 	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
 		if (s_command[1] == it->second->get_nickname())
@@ -48,7 +50,8 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 				std::cerr << "You cannot invite yoursel, who do you think you are" << std::endl;
 				return ;
 			}
-			client_to_invite = it->second->get_socket();
+			
+			int client_to_invite = it->second->get_socket();
 			channel->add_invited_client_to_chan(_clients[client_to_invite]);
 			send_reply(client_socket, 341, reply_arg);
 			return (send_reply(client_to_invite, 341, reply_arg));

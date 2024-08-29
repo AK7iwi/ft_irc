@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rpl.hpp                                            :+:      :+:    :+:   */
+/*   RPL.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 12:46:28 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 17:54:25 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ std::string	ERR_USERNOTINCHANNEL(Client const *client, std::string const &client
 /* 442 */
 std::string	ERR_NOTONCHANNEL(Client const *client,  std::string const &channel_name);
 /* 443 */
-std::string	ERR_USERONCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name);
+std::string ERR_USERONCHANNEL(Client const *client, std::string const &nickname, std::string const &channel_name);
 /* 451 */
 std::string	ERR_NOTREGISTERED(Client const *client);
 /* 461 */
@@ -85,7 +85,7 @@ std::string	NEW_NICK(std::string const &client_prefix, std::string const &new_ni
 /* 2222 */
 std::string	NEW_MEMBER(std::string const &client_prefix, std::string const &channel_name);
 /* 3333 */
-std::string NEW_PING(std::string const &client_prefix);
+std::string RPL_PONG(std::string const &server_name, std::string const &ping_token);
 /* 4444 */
 std::string GOODBYE(std::string const &client_prefix, std::string const &channel_name, std::string const &reason);
 /* 5555 */

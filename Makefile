@@ -3,12 +3,12 @@ NAME			:= ircserv
 SRC_DIR			:= srcs
 OBJ_DIR			:= obj
 
-SRCS			:= main.cpp core/Server/Server.cpp core/Server/utils_server.cpp core/Client.cpp core/Channel.cpp \
-					cmds/pass.cpp cmds/nick.cpp cmds/user.cpp \
-					cmds/join.cpp cmds/ping.cpp cmds/pong.cpp cmds/privmsg.cpp \
-					cmds/chan_cmds/part.cpp cmds/chan_cmds/topic.cpp cmds/chan_cmds/invite.cpp \
-					cmds/chan_cmds/kick.cpp RPL/rpl.cpp utils/utils.cpp \
-					cmds/mode/mode.cpp cmds/mode/mode_fct.cpp
+SRCS			:= main.cpp core/Server.cpp core/Client.cpp core/Channel.cpp \
+					commands/cmds/pass.cpp commands/cmds/nick.cpp commands/cmds/user.cpp \
+					commands/cmds/join.cpp commands/cmds/ping.cpp commands/cmds/pong.cpp commands/cmds/privmsg.cpp \
+					commands/cmds/cmds_chan/part.cpp commands/cmds/cmds_chan/topic.cpp commands/cmds/cmds_chan/invite.cpp \
+					commands/cmds/cmds_chan/kick.cpp commands/cmds/mode/mode.cpp commands/cmds/mode/mode_fct.cpp \
+					commands/cmds_utils/list_check_and_manip.cpp commands/cmds_utils/str_check_and_manip.cpp RPL/RPL.cpp
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 

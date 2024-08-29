@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 17:38:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 20:42:57 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string>    reply_arg;
 
 	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
 	else if (s_command.size() < 2)
 		return (send_reply(client_socket, 461, reply_arg));
 	
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);
 	
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
@@ -60,17 +60,8 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	/* Create the new topic */
 
 	/* Check if the mode is active and client can change the topic */
-	if (channel->get_mode(MODE_T))
-	{
-		bool is_operator = false;
-		std::vector <Client*> cpy = channel->get_operator_clients_of_chan();
-		for (size_t i = 0; i < cpy.size(); ++i)
-			if (client_socket == cpy[i]->get_socket())
-				is_operator = true;
-
-		if (!is_operator)
-			return (send_reply(client_socket, 482, reply_arg)); 
-	}
+	if (channel->get_mode(MODE_T) && !is_client_in_operator_list(client_socket, channel))
+		return (send_reply(client_socket, 482, reply_arg)); 
 	
 	new_topic = create_topic(s_command);
 	if (new_topic == ERR_COLON)
@@ -82,8 +73,6 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	reply_arg.push_back(new_topic);
 	channel->set_topic(new_topic);
 		
-	/* Send reply */
-	std::vector <Client*> cpy = channel->get_clients_of_chan();
-	for (size_t i = 0; i < cpy.size(); ++i)
-		send_reply(cpy[i]->get_socket(), 332, reply_arg);
+	send_rpl_to_channel(channel, 332, reply_arg);
+
 }

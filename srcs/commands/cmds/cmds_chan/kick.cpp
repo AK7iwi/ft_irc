@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/24 18:38:06 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:59:07 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 	
 	/* Leave channel */
 
-	
 	//print before 
 	std::cout << "Before:\n" << std::endl;
 	std::vector <Client*> cpy2 = channel->get_clients_of_chan();
@@ -39,8 +38,6 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 	for (size_t i = 0; i < cpy3.size(); ++i)
 		std::cout << "Nickname:" << cpy3[i]->get_nickname() << std::endl;
 
-
-	
 	_clients[client_socket_to_kick]->leave_channel(channel);
 }
 
@@ -68,13 +65,13 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string>    reply_arg;
 	
 	reply_arg.push_back(s_command[0]);
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
 
 	if (!_clients[client_socket]->is_registered())
 		return (send_reply(client_socket, 451, reply_arg)); 
 	else if (s_command.size() < 3)
 		return (send_reply(client_socket, 461, reply_arg));
 
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);
 
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
