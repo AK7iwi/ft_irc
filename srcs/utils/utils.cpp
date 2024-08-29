@@ -6,12 +6,23 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:23:39 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 15:39:00 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:39:23 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.hpp"
 
+/* Create message */
+
+/* Send mesage to all client of a channel */
+
+// void Server::send_rpl_to_channel(Channel *channel, std::vector<std::string> &reply_arg)
+// {
+	// std::vector <Client*> cpy = channel->get_clients_of_chan();
+	// 	for (size_t i = 0; i <  cpy.size(); ++i)
+// 		send_reply(cpy[i]->get_socket(), 2222, reply_arg);
+// }
+	
 /* Check if client is in invite client list */
 
 bool	Server::is_client_in_invite_list(int client_socket, Channel *channel)
@@ -25,6 +36,11 @@ bool	Server::is_client_in_invite_list(int client_socket, Channel *channel)
 
 	return (found_client);
 }
+
+/* Check if the channel name is valid */
+
+bool is_valid_prefix(std::string const &channel) 
+{return (channel[0] == '#' || channel[0] == '&');}
 
 /* Split method */
 

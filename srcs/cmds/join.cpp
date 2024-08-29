@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/28 13:48:48 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:54:55 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,6 @@ std::map<std::string, std::string>	Server::create_channel_map(std::vector<std::s
 	
 	return (channel_key_map);
 }
-
-/* Check if the channel name is valid */
-
-static inline bool is_valid_prefix(std::string const &channel) 
-{return (channel[0] == '#' || channel[0] == '&');}
 
 /* Create a vector with the valid channels */
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/28 15:30:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 12:46:22 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,12 @@ std::string RPL_INVITING(Client const *client, std::string const &client_to_invi
 {return (client->get_prefix() + " 341 " + client->get_nickname() + " " + client_to_invite + " " + channel_name);}
 
 /* 401 */
-std::string	ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
-{return (client->get_prefix() + " 401 " + nickname + " :No such nick/channel");}
+std::string ERR_NOSUCHNICK(Client const *client, std::string const &nickname)
+{return ("401 " + client->get_nickname() + " " + nickname + " :No such nick/channel");}
 
 /* 403 */
 std::string ERR_NOSUCHCHANNEL(Client const *client, std::string const &channel_name)
 {return ("403 " + client->get_nickname() + " " + channel_name + " :No such channel");}
-
-/* 404 */
-std::string	ERR_CANNOTSENDTOCHAN(Client const *client, std::string const &channel_name)
-{return (client->get_prefix() + " 404 " + channel_name + " :Cannot send to channel");}
 
 /* 411 */
 std::string	ERR_NORECIPIENT(Client const *client)
@@ -77,8 +73,8 @@ std::string	ERR_USERNOTINCHANNEL(Client const *client, std::string const &client
 {return (client->get_prefix() + " 441 " + client_to_kick + " " + channel_name + " :They aren't on that channel");}
 
 /* 442 */
-std::string	ERR_NOTONCHANNEL(Client const *client, std::string const &channel_name)
-{return (client->get_prefix() + " 442 " + channel_name + " :You're not on that channel");}
+std::string ERR_NOTONCHANNEL(Client const *client, std::string const &channel_name)
+{ return ("442 " + client->get_nickname() + " " + channel_name + " :You're not on that channel");}
 
 /* 443 */
 std::string	ERR_USERONCHANNEL(Client const *client, std::string const &client_to_kick, std::string const &channel_name)
@@ -172,7 +168,6 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
 		
 		case 401: reply = ERR_NOSUCHNICK(client, reply_arg[2]);														break;
 		case 403: reply = ERR_NOSUCHCHANNEL(client, reply_arg[2]);													break;
-		case 404: reply = ERR_CANNOTSENDTOCHAN(client, reply_arg[2]); 												break;
 		case 411: reply = ERR_NORECIPIENT(client);																	break;
 		case 412: reply = ERR_NOTEXTTOSEND(client);																	break;
 		

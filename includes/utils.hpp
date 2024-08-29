@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/06/30 13:32:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/29 10:39:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+
+/* Check if the channel name is valid */
+
+bool is_valid_prefix(std::string const &channel);
 
 /* String method */
 
