@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 12:22:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 16:43:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:48:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #define CMDS_UTILS_HPP
 
 #include "Server.hpp"
+
+/* Create message, reason, topic*/
+
+std::string	create_message(std::vector<std::string> &s_command, uint8_t s_command_size);
 
 /* Check if the channel name is valid */
 

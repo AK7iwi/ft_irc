@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 16:37:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:26:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,20 @@ class Channel
 	public:
 		Channel(std::string const &name, std::string const &key);
 		~Channel();
-		
+
 		/* Channel method  */
-		void		remove_from_list(int client_socket, std::vector <Client*> list);
+		void							remove_from_chan_invited(int client_socket);
 		void							remove_from_chan_operator(int client_socket);
 		void 							remove_from_chan(int client_socket);
 		void							add_operator_client_to_chan(Client *client);
 		void							add_invited_client_to_chan(Client *client);
 		void							add_client_to_chan(Client *client);
 		
+		/* Checker */
+		bool							is_client_in_operator_list(int client_socket);
+		bool							is_client_in_invite_list(int client_socket);
+		
 		/* Getter methods */
-		std::vector<Client*>	const	&get_operator_clients_of_chan()	const;
-		std::vector<Client*>	const	&get_invited_clients_of_chan()	const;
 		int 						  	get_nb_max_clients()			const;
 		bool 							get_mode(int mode)				const;			
 		std::string				const	&get_channel_params_modes()		const;

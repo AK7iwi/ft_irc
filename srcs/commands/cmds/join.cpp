@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 20:43:03 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:15:13 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool 	Server::check_client_access(int client_socket, Channel *channel, std::stri
 {
 	if (channel->get_mode(MODE_L) && (int)channel->get_clients_of_chan().size() >= channel->get_nb_max_clients()) 
 		return (send_reply(client_socket, 471, reply_arg), false);
-	else if (channel->get_mode(MODE_I) && !is_client_in_invite_list(client_socket, channel))
+	else if (channel->get_mode(MODE_I) && !channel->is_client_in_invite_list(client_socket))
 		return (send_reply(client_socket, 473, reply_arg), false);
 	else if (channel->get_mode(MODE_K) && key != channel->get_key())
 		return (send_reply(client_socket, 475, reply_arg), false);
@@ -118,7 +118,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	/* Check if the channel already exist and add client if exist */
 	for (std::map<std::string, std::string>::iterator it = m_channel_key.begin(); it != m_channel_key.end(); it++)
 	{
-		bool found_chan = false;
+		bool channel_found = false;
 		
 		reply_arg.push_back(it->first);
 		for (size_t i = 0; i < _channels.size(); ++i)
@@ -127,7 +127,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			{
 				std::cout << "Channel " << it->first << " found" << std::endl;
 				
-				found_chan = true;
+				channel_found = true;
 				
 				if (!check_client_access(client_socket, _channels[i], it->second, reply_arg))
 					return ;
@@ -137,21 +137,21 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 			}
 		}
 		
-		if (!found_chan)
+		if (!channel_found)
 			create_new_channel(client_socket, it->first, it->second, reply_arg);
 		
-		// continue when part no leaks 
-		// if (it->first == "#0")
-		// {
-		// 	std::vector<std::string> channels_name;
-		// 	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
-		// 	std::string channels_name_str = cpy[0]->get_channel_name();
-		// 	for (size_t i = 1; i < cpy.size(); ++i)
-		// 		channels_name_str += "," + cpy[i]->get_channel_name();
-		// 	channels_name.push_back("PART");
-		// 	channels_name.push_back(channels_name_str);
-		// 	part(client_socket, channels_name);
-		// }
+		//fct 
+		if (it->first == "#0")
+		{
+			std::vector<std::string> channels_name;
+			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+			std::string channels_name_str = cpy[0]->get_channel_name();
+			for (size_t i = 1; i < cpy.size(); ++i)
+				channels_name_str += "," + cpy[i]->get_channel_name();
+			channels_name.push_back("PART");
+			channels_name.push_back(channels_name_str);
+			part(client_socket, channels_name);
+		}
 		
 		reply_arg.erase(reply_arg.begin() + 2);
 	}

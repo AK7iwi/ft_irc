@@ -6,28 +6,29 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:04:35 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 20:50:25 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:47:21 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmds_utils.hpp"
 
-/* Create message */
-
-static	std::string	create_message(std::vector<std::string> &s_command)
+/* Create message, reason, topic, comment*/
+std::string	create_message(std::vector<std::string> &s_command, uint8_t s_command_size)
 {
-	std::string new_topic = s_command[2];
-	if (new_topic[0] != ':')
-		return (ERR_COLON);
-	new_topic.erase(0, 1);
-		
-	for (size_t i = 3; i < s_command.size(); ++i)
-        new_topic += " " + s_command[i];
-		
-	if (new_topic.empty())
-		new_topic = "No topic is set";
+	std::string message = "";
 	
-	return (new_topic);
+	if (s_command.size() >= s_command_size) 
+	{
+		message = s_command[s_command_size - 1];
+		if (message[0] != ':')
+			return (ERR_COLON);
+		message.erase(0, 1);
+		
+		for (size_t i = s_command_size; i < s_command.size(); ++i)
+        	message += " " + s_command[i];
+	}
+	
+	return (message);
 }
 
 /* Check if the channel name is valid */

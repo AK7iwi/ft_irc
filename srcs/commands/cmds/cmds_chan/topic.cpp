@@ -6,28 +6,11 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 20:42:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:15:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-/* Create topic method */
-static	std::string	create_topic(std::vector<std::string> &s_command)
-{
-	std::string new_topic = s_command[2];
-	if (new_topic[0] != ':')
-		return (ERR_COLON);
-	new_topic.erase(0, 1);
-		
-	for (size_t i = 3; i < s_command.size(); ++i)
-        new_topic += " " + s_command[i];
-		
-	if (new_topic.empty())
-		new_topic = "No topic is set";
-	
-	return (new_topic);
-}
 
 void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 {
@@ -60,19 +43,20 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 	/* Create the new topic */
 
 	/* Check if the mode is active and client can change the topic */
-	if (channel->get_mode(MODE_T) && !is_client_in_operator_list(client_socket, channel))
+	if (channel->get_mode(MODE_T) && !channel->is_client_in_operator_list(client_socket))
 		return (send_reply(client_socket, 482, reply_arg)); 
 	
-	new_topic = create_topic(s_command);
+	new_topic = create_message(s_command, 3);
 	if (new_topic == ERR_COLON)
 	{
 		std::cerr << ERR_COLON << std::endl;
 		return ;
 	}
+	else if (new_topic.empty())
+		new_topic = "No topic is set";
 
 	reply_arg.push_back(new_topic);
 	channel->set_topic(new_topic);
 		
 	send_rpl_to_channel(channel, 332, reply_arg);
-
 }

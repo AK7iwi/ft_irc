@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:58 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 19:02:37 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:15:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 	if (!channel)
 		return ;
 	
-	if (channel->get_mode(MODE_I) && !is_client_in_operator_list(client_socket, channel))
+	if (channel->get_mode(MODE_I) && !channel->is_client_in_operator_list(client_socket))
 		return (send_reply(client_socket, 482, reply_arg));
 	
 	/* Check if the target is already in the channel */

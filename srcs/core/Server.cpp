@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 15:51:36 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:26:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ Server::~Server()
     _channels.clear(); 
 }
 
+void 	Server::remove_channel(Channel *channel)
+{
+	for (std::vector<Channel*>::iterator it = _channels.begin(); it != _channels.end();)
+	{
+		if (channel == (*it))
+		{
+			delete (*it);
+			it = _channels.erase(it);
+		}
+		else 
+			++it;
+	}
+}
+
 void	Server::remove_client(int client_socket)
 {
 	std::cout << "Move fast " << _clients[client_socket]->get_nickname() <<std::endl;
@@ -62,7 +76,7 @@ void	Server::remove_client(int client_socket)
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
 
-	//PART from the chan also (leave_channels)
+	//PART from the chan also (leave_channels) to test
 }
 
 void	Server::handle_commands(int client_socket, std::string &command)

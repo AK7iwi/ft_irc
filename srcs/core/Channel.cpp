@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:32:44 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/27 16:39:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:26:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,15 @@ Channel::Channel(std::string const &channel_name, std::string const &key) :
 
 Channel::~Channel() {}
 
-/* Channel method */
+/* Channel methods */
 
-/* Test */ // one method
-
-void	Channel::remove_from_list(int client_socket, std::vector <Client*> list)
+/* Remove from list */
+void	Channel::remove_from_chan_invited(int client_socket)
 {
-	for (std::vector<Client*>::iterator it = list.begin(); it != list.end();)
+	for (std::vector<Client*>::iterator it = _invited_clients_of_chan.begin(); it != _invited_clients_of_chan.end();)
     {
 		if (client_socket == (*it)->get_socket())
-			it = list.erase(it);
+			it = _invited_clients_of_chan.erase(it);
 		else
 			++it;
 	}
@@ -68,9 +67,37 @@ void	Channel::add_operator_client_to_chan(Client *client)	{_operator_clients_of_
 void	Channel::add_invited_client_to_chan(Client *client)		{_invited_clients_of_chan.push_back(client);}
 void	Channel::add_client_to_chan(Client *client)				{_clients_of_chan.push_back(client);}
 
-/* Getter methods */
+/* Checker */
 
-bool 							Channel::get_mode(int mode_int) const		
+/* Check if client is operator of the channel */
+
+bool	Channel::is_client_in_operator_list(int client_socket)
+{
+	bool is_operator = false;
+	
+	for (size_t i = 0; i < _operator_clients_of_chan.size(); ++i)
+		if (client_socket ==  _operator_clients_of_chan[i]->get_socket())
+			is_operator = true;
+		
+	return (is_operator);
+}
+
+/* Check if client is in invite client list */
+
+bool	Channel::is_client_in_invite_list(int client_socket)
+{
+	bool found_client = false;
+	
+	for (size_t j = 0; j < _invited_clients_of_chan.size(); ++j)
+		if (client_socket == _invited_clients_of_chan[j]->get_socket())
+			found_client = true;
+
+	return (found_client);
+}
+
+/* Getter */
+
+bool 	Channel::get_mode(int mode_int) const		
 {
 	bool mode = false;
 	
@@ -86,8 +113,6 @@ bool 							Channel::get_mode(int mode_int) const
 	return (mode);
 }
 
-std::vector<Client*> 	const&	Channel::get_operator_clients_of_chan()	const	{return (_operator_clients_of_chan);}
-std::vector<Client*> 	const&	Channel::get_invited_clients_of_chan()	const	{return (_invited_clients_of_chan);}
 int 						  	Channel::get_nb_max_clients()			const	{return (_nb_max_clients);}
 std::string				const&	Channel::get_channel_params_modes()		const	{return (_params_modes);}
 std::string 			const&  Channel::get_channel_modes()			const	{return (_modes);}
@@ -96,7 +121,7 @@ std::string 			const&	Channel::get_key()						const	{return (_key);}
 std::vector<Client*> 	const&	Channel::get_clients_of_chan()			const	{return (_clients_of_chan);}
 std::string  			const&	Channel::get_channel_name()				const	{return (_channel_name);}
 
-/* Setter methods */
+/* Setter */
 
 void 							Channel::reset_mode(int mode_int)
 {

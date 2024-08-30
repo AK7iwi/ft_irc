@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 17:54:25 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:34:35 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ std::string	RPL_YOURHOST(Client const *client, std::string const &server_name, s
 std::string	RPL_CREATED(Client const *client, std::string const &server_name, std::string const &start_time);
 /* 004 */
 std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std::string const &version);
-
 /* 221 */
 std::string RPL_UMODEIS(Client const *client);
 /* 324 */

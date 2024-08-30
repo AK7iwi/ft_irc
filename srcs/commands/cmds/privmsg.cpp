@@ -6,30 +6,11 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 15:26:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:51:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-/* Create topic method */
-static	std::string	create_message(std::vector<std::string> &s_command)
-{
-	std::string message = "";
-	
-	if (s_command.size() >= 3) 
-	{
-		message = s_command[2];
-		if (message[0] != ':')
-			return (ERR_COLON);
-		message.erase(0, 1);
-		
-		for (size_t i = 3; i < s_command.size(); ++i)
-        	message += " " + s_command[i];
-	}
-	
-	return (message);
-}
 
 void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
 {	
@@ -44,7 +25,7 @@ void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
 	else if (s_command.size() < 3)
 		return (send_reply(client_socket, 412, reply_arg));
 	
-	std::string message = create_message(s_command);
+	std::string message = create_message(s_command, 3);
 	if (message.empty()) 
 		return (send_reply(client_socket, 412, reply_arg));
 	else if (message == ERR_COLON)

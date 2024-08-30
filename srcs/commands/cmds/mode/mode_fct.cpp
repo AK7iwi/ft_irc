@@ -12,7 +12,7 @@
 
 #include "Server.hpp"
 
-void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg)
+void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg)
 {
 	std::cout << "Mode O" << std::endl;
 
@@ -38,25 +38,19 @@ void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::stri
 		reply_arg.push_back("Client target is not in the channel");
 		return (send_reply(client_socket, 696, reply_arg));
 	}
-
-	bool found_operator = false;
-	std::vector <Client*> cpy2 = channel->get_operator_clients_of_chan();
-	for (size_t j = 0; j < cpy2.size(); ++j)
-		if (client_socket_operator == cpy2[j]->get_socket())
-			found_operator = true;
 	
 	if (mode == 9)
 	{
-		if (!found_operator)
+		if (!channel->is_client_in_operator_list(client_socket_operator))
 		{
-			reply_arg.push_back("Targte is alreday not opeator");
+			reply_arg.push_back("Targte is not opeator");
 			return (send_reply(client_socket, 696, reply_arg)); 
 		}
 		channel->remove_from_chan_operator(client_socket_operator);
 	}
 	else if (mode == 10)
 	{
-		if (found_operator)
+		if (channel->is_client_in_operator_list(client_socket_operator))
 		{
 			reply_arg.push_back("Target is already operator");
 			return (send_reply(client_socket, 696, reply_arg)); 
@@ -74,7 +68,7 @@ void Server::mode_T(Channel *channel, uint8_t mode)
 	channel->set_mode(mode / 2);
 }
 
-void Server::mode_K(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg)
+void Server::mode_K(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg)
 {
 	std::cout << "Mode K" << std::endl;
 	
@@ -104,7 +98,7 @@ void Server::mode_I(Channel *channel, uint8_t mode)
 	channel->set_mode(mode / 2);
 }
 
-void Server::mode_L(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg)
+void Server::mode_L(int client_socket, Channel *channel, uint8_t mode, std::string const&param_mode, std::vector<std::string> &reply_arg)
 {
 	std::cout << "Mode L" << std::endl;
 	

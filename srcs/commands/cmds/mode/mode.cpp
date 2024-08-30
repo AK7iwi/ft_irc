@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/23 16:38:32 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:18:38 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
 	if (!channel)
 		return ;
-		
+	
+	if (!channel->is_client_in_operator_list(client_socket))
+		return (send_reply(client_socket, 482, reply_arg)); 
+	
 	/* Return modes and parameters of channel */
 	if (s_command.size() < 3)
 	{

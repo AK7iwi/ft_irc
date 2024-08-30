@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 20:38:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/08/30 17:35:20 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,8 @@ class Server
 		std::vector<Channel*>				_channels;
 
 		//////////////////// Methods ////////////////////////////
+		/* Send rpl to the all channel */
 		void 		send_rpl_to_channel(Channel *channel, int rpl, std::vector<std::string> &reply_arg);
-		bool		is_client_in_operator_list(int client_socket, Channel *channel);
-		bool		is_client_in_invite_list(int client_socket, Channel *channel);
 		/* Check if the channel exist and the client is in method */
 		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
 		
@@ -104,6 +103,8 @@ class Server
 		void 		nick(int client_socket, std::vector<std::string> &s_command);
 		void		pass(int client_socket, std::vector<std::string> &s_command);
 		
+		/* Remove channel*/
+		void 		remove_channel(Channel *channel);
 		/* Remove client method */
 		void		remove_client(int client_socket);
 		/* Handle commands */
@@ -116,16 +117,16 @@ class Server
 		/////////////////// Methods for commands ///////////////
 		
 		/* Mode */
-		void 								mode_O(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
+		void 								mode_O(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
 		void 								mode_T(Channel *channel, uint8_t mode);
-		void 								mode_K(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
+		void 								mode_K(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
 		void 								mode_I(Channel *channel, uint8_t mode);
-		void 								mode_L(int client_socket, Channel *channel, uint8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
+		void 								mode_L(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
 		int8_t								parse_mode(std::string &mode);
 		/* Kick */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Part */
-		void 								leave(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		void 								goodbye(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join */
 		void 								create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg);
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
