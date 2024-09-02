@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:58 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:15:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:02:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void 	Server::invite(int client_socket, std::vector<std::string> &s_command)
 			return (send_reply(client_socket, 443, reply_arg));
 
 	/* Find the socket to invite and send RPL */
+	//fct 
 	for (std::map<int, Client*>::iterator it = _clients.begin(); it != _clients.end(); it++)
 	{
 		if (s_command[1] == it->second->get_nickname())

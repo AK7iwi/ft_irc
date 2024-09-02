@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 12:51:59 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:54:00 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
 	reply_arg.push_back(s_command[1]);
 	reply_arg.push_back(message);
 	
+	//fct send_message
 	if (is_valid_prefix(s_command[1]))
 	{
 		/* Check is the client is in an existing channel */

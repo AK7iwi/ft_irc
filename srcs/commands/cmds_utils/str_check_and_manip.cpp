@@ -6,11 +6,14 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:04:35 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 12:47:21 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:02:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmds_utils.hpp"
+
+/* Basic check */
+
 
 /* Create message, reason, topic, comment*/
 std::string	create_message(std::vector<std::string> &s_command, uint8_t s_command_size)

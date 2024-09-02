@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 14:13:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:48:14 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	std::map<std::string, std::string> m_channel_key = create_channel_map(valid_channels, s_command);
 		
 	/* Check if the channel already exist and add client if exist */
+	//fct
 	for (std::map<std::string, std::string>::iterator it = m_channel_key.begin(); it != m_channel_key.end(); it++)
 	{
 		bool channel_found = false;

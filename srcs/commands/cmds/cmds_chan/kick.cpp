@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:15:44 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:02:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 	std::vector<std::string> clients_to_kick = split(s_command[2], ',');
 	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	
+	//fct 
 	for (size_t i = 0; i < clients_to_kick.size(); ++i)
 	{
 		bool client_to_kick = false;

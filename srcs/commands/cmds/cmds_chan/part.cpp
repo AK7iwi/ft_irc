@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 16:37:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 19:02:22 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 	
 	std::vector<std::string> potential_channels = split(s_command[1], ',');
 	
+	//fct 
 	for (size_t i = 0; i < potential_channels.size(); ++i)
 	{	
 		reply_arg.push_back(potential_channels[i]);
