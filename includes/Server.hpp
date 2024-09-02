@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 13:45:02 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:05:42 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ class Server
 		/* Remove client method */
 		void		remove_client(int client_socket);
 		/* Handle commands */
-		void 		handle_commands(int client_socket, std::string &command);
+		bool 		handle_commands(int client_socket, std::string &command);
 		
 		/* Handle client method */
 		void		handle_clients(int client_cocket);

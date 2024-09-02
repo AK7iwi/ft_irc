@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 13:56:31 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:09:38 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Client::Client(int socket_fd) :
 	_socket_fd(socket_fd),
+	_buffer(""),
 	_nickname(DEFAULT),
 	_username(DEFAULT),
 	_hostname(DEFAULT),
@@ -51,6 +52,7 @@ std::string  			const&	Client::get_username()				const			{return (_username);}
 std::string  			const&	Client::get_nickname()				const			{return (_nickname);}
 std::string  			const&	Client::get_prefix()				const			{return (_prefix);}
 int 							Client::get_socket()				const			{return (_socket_fd);}
+std::string  			const&	Client::get_buffer()				const			{return (_buffer);}
 
 /* Setter method */
 void 							Client::set_register()								{_register = true;}
@@ -60,3 +62,5 @@ void							Client::set_username(std::string const &username)	{_username = userna
 void							Client::set_prefix()								{_prefix = ":" + _nickname + "!" + _username + "@" + _hostname;}
 void							Client::set_nickname(std::string const &nickname)	{_nickname = nickname;} 
 void 							Client::set_pass()									{_valid_pass = true;}
+void 							Client::erase_buffer()								{_buffer.erase(0, _buffer.length());}
+void 							Client::set_buffer(std::string const &buffer)		{_buffer += buffer;}

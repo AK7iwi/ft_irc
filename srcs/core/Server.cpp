@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 14:05:18 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:13:46 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,54 +76,54 @@ void	Server::remove_client(int client_socket)
 
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
-	
 }
 
-void	Server::handle_commands(int client_socket, std::string &command)
+bool	Server::handle_commands(int client_socket, std::string &command)
 {
 	command.erase(command.find_last_not_of(" \n\r\t") + 1);
 	const char* command_char = command.c_str();
 	std::vector<std::string> s_command = split(command_char, ' ');
 
 	if (s_command.empty())
-		return ;
+		return (0);
 	else if (s_command[0][0] == '/')
 		s_command[0].erase(0, 1);
 	
 	if (s_command[0] == "CAP")
 		std::cout << "CAP LS" << std::endl;
 	else if (s_command[0] == "PASS")
-		pass(client_socket, s_command);
+		return (pass(client_socket, s_command), 1);
 	else if (s_command[0] == "NICK")
-		nick(client_socket, s_command);
+		return (nick(client_socket, s_command), 1);
 	else if (s_command[0] == "USER")
-		user(client_socket, s_command);
+		return (user(client_socket, s_command), 1);
 	else if (s_command[0] == "JOIN")
-		join(client_socket, s_command);
+		return (join(client_socket, s_command), 1);
 	else if (s_command[0] == "PING")
-		ping(client_socket, s_command);
+		return (ping(client_socket, s_command), 1);
 	else if (s_command[0] == "PONG")
-		pong();
+		return (pong(), 1);
 	else if (s_command[0] == "PART")
-		part(client_socket, s_command);
+		return (part(client_socket, s_command), 1);
 	else if (s_command[0] == "TOPIC")
-		topic(client_socket, s_command);
+		return (topic(client_socket, s_command), 1);
 	else if (s_command[0] == "INVITE")
-		invite(client_socket, s_command);
+		return (invite(client_socket, s_command), 1);
 	else if (s_command[0] == "KICK")
-		kick(client_socket, s_command);
+		return (kick(client_socket, s_command), 1);
 	else if (s_command[0] == "PRIVMSG")
-		privmsg(client_socket, s_command);
+		return (privmsg(client_socket, s_command), 1);
 	else if (s_command[0] == "MODE")
-		mode(client_socket, s_command);
+		return (mode(client_socket, s_command), 1);
 	else
-		std::cout << "Unknow command" << std::endl; 
+		std::cout << "Unknow command" << std::endl;
+
+	return (0);
 }
 
 void	Server::handle_clients(int client_socket)
 {	
 	char buffer[BUFFER_MAX];
-	std::string	tmp_buffer;
 	
 	int valread = recv(client_socket, buffer, sizeof(buffer) - 1, 0);
     if (valread == -1)
@@ -138,14 +138,14 @@ void	Server::handle_clients(int client_socket)
 	
 	buffer[valread] = '\0';
 	
-	tmp_buffer += buffer;
+	_clients[client_socket]->set_buffer(buffer);
 
-	std::cout << "Buffer: \n" << buffer << std::endl;
+	std::cout << "Client Buffer: \n" << _clients[client_socket]->get_buffer() << std::endl;
 	
-    std::vector<std::string> commands = split(tmp_buffer, '\n');
-	uint8_t	len_command = commands.size();
-	for (uint8_t i = 0; i < len_command; i++)
-		handle_commands(client_socket, commands[i]);
+    std::vector<std::string> commands = split(_clients[client_socket]->get_buffer(), '\n');
+	for (uint8_t i = 0; i < commands.size(); i++)
+		if (handle_commands(client_socket, commands[i]))
+			_clients[client_socket]->erase_buffer();
 }
 
 void	Server::handle_new_connections()
@@ -169,7 +169,7 @@ void	Server::handle_new_connections()
 	_clients[client_socket] = new Client(client_socket);
 }
 
-/* Run method that loop */
+/* Run method that loop on clients */
 
 void	Server::run()
 {
@@ -184,7 +184,7 @@ void	Server::run()
 				handle_clients(_fds[i].fd);
 }
 
-/* Init Server method */
+/* Init Server */
 
 void	Server::init_server()
 {
@@ -210,6 +210,7 @@ void	Server::init_server()
 }
 
 /* Init struct address*/
+
 void 	Server::init_address_structures()
 {
     memset(&_server_addr, 0, sizeof(_server_addr));
