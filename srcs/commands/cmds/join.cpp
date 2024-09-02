@@ -6,11 +6,27 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:15:13 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:13:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+/* Leave all channel */
+
+void	Server::join_zero(int client_socket)
+{
+	std::vector<std::string> channels_name;
+	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
+	if (!cpy.size())
+		return ;
+	std::string channels_name_str = cpy[0]->get_channel_name();
+	for (size_t i = 1; i < cpy.size(); ++i)
+		channels_name_str += "," + cpy[i]->get_channel_name();
+	channels_name.push_back("PART");
+	channels_name.push_back(channels_name_str);
+	part(client_socket, channels_name);
+}
 
 /* Create a new channel */
 
@@ -140,19 +156,9 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 		if (!channel_found)
 			create_new_channel(client_socket, it->first, it->second, reply_arg);
 		
-		//fct 
 		if (it->first == "#0")
-		{
-			std::vector<std::string> channels_name;
-			std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
-			std::string channels_name_str = cpy[0]->get_channel_name();
-			for (size_t i = 1; i < cpy.size(); ++i)
-				channels_name_str += "," + cpy[i]->get_channel_name();
-			channels_name.push_back("PART");
-			channels_name.push_back(channels_name_str);
-			part(client_socket, channels_name);
-		}
+			join_zero(client_socket);
 		
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
-} 
+}

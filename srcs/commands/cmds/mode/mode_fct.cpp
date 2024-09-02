@@ -38,27 +38,29 @@ void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::stri
 		reply_arg.push_back("Client target is not in the channel");
 		return (send_reply(client_socket, 696, reply_arg));
 	}
+
+	bool is_operator = channel->is_client_in_operator_list(client_socket_operator);
 	
 	if (mode == 9)
 	{
-		if (!channel->is_client_in_operator_list(client_socket_operator))
+		if (!is_operator)
 		{
 			reply_arg.push_back("Targte is not opeator");
 			return (send_reply(client_socket, 696, reply_arg)); 
 		}
 		channel->remove_from_chan_operator(client_socket_operator);
+		channel->reset_mode((mode + 1) / 2);
 	}
 	else if (mode == 10)
 	{
-		if (channel->is_client_in_operator_list(client_socket_operator))
+		if (is_operator)
 		{
 			reply_arg.push_back("Target is already operator");
 			return (send_reply(client_socket, 696, reply_arg)); 
 		}
 		channel->add_operator_client_to_chan(_clients[client_socket_operator]);
+		channel->set_mode(mode / 2);
 	}
-	
-	channel->set_mode(mode / 2);
 }
 
 void Server::mode_T(Channel *channel, uint8_t mode)
@@ -80,7 +82,6 @@ void Server::mode_K(int client_socket, Channel *channel, uint8_t mode, std::stri
 		reply_arg.push_back("Put a key bro");
 		return (send_reply(client_socket, 696, reply_arg));
 	}
-	
 	if (param_mode == "x")
 	{
 		reply_arg.push_back("You cannot use 'x' as key");
@@ -107,10 +108,9 @@ void Server::mode_L(int client_socket, Channel *channel, uint8_t mode, std::stri
 	 
 	if (!param_mode.length())
 	{
-		reply_arg.push_back("Put a limit bro");
+		reply_arg.push_back("You have to put a limit");
 		return (send_reply(client_socket, 696, reply_arg));
 	}
-	//test with alpha parameter 
 	
     int nb_max_clients;
 	

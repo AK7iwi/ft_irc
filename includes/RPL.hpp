@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/20 01:54:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 13:34:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:05:36 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std
 /* 221 */
 std::string RPL_UMODEIS(Client const *client);
 /* 324 */
-std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params);
+std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes);
 /* 332 */
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic);
 /* 341 */

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 19:59:26 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 16:45:23 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:05:27 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ std::string	RPL_MYINFO(Client const *client, std::string const &server_name, std
 {return (":" + server_name + " 004 " + client->get_nickname() + " " + server_name + " " + version + "\n[ -k -i -o -t -l ] [ -k -o -l ]");}
 
 /* 324 */
-std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes, std::string const &mode_params)
-{return (":" + client->get_prefix() + " 324 " + client->get_nickname() + " " + channel_name + " " + modes + " " + mode_params);}
+std::string RPL_CHANNELMODEIS(Client const *client, std::string const &channel_name, std::string const &modes)
+{return (":" + client->get_prefix() + " 324 " + client->get_nickname() + " " + channel_name + " " + modes);}
 
 /* 332 */
 std::string RPL_TOPIC(Client const *client, std::string const &channel_name, std::string const &topic)
@@ -160,7 +160,7 @@ std::string Server::wich_rpl(Client *client, uint16_t rpl, std::vector<std::stri
         case   3: reply = RPL_CREATED(client, _server_name, _start_time);											break;
         case   4: reply = RPL_MYINFO(client, _server_name, _version);												break;
 		
-		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3], reply_arg[4]);						break;
+		case 324: reply = RPL_CHANNELMODEIS(client, reply_arg[2], reply_arg[3]);									break;
 		case 332: reply = RPL_TOPIC(client, reply_arg[2], reply_arg[3]);											break; 
 		case 341: reply = RPL_INVITING(client, reply_arg[3], reply_arg[2]);											break; 
 		

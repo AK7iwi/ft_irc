@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:35:20 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:45:02 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ class Server
 		/* Part */
 		void 								goodbye(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		/* Join */
+		void								join_zero(int client_socket);
 		void 								create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg);
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		bool 								check_client_access(int client_socket, Channel *channel, std::string const &key, std::vector<std::string> &reply_arg);

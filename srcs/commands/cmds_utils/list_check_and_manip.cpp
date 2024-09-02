@@ -6,11 +6,12 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:05:18 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 16:58:05 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:47:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
 /* Send mesage to all client of a channel */
 
 void	Server::send_rpl_to_channel(Channel *channel, int rpl, std::vector<std::string> &reply_arg)

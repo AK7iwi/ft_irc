@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:18:38 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:14:17 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int8_t	Server::parse_mode(std::string &mode)
 	uint8_t mode_int;
 
 	if (mode.length() != 2)
-		return (-1); //verif this error for RPL
+		return (-1);
 	else if (mode[0] != '+' && mode[0] != '-')
 		return (-2);
 	
@@ -61,25 +61,25 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	if (!channel->is_client_in_operator_list(client_socket))
 		return (send_reply(client_socket, 482, reply_arg)); 
 	
-	/* Return modes and parameters of channel */
+	/* Return modes of channel */
 	if (s_command.size() < 3)
 	{
 		reply_arg.push_back(channel->get_channel_modes());
-		reply_arg.push_back(channel->get_channel_params_modes());
 		return (send_reply(client_socket, 324, reply_arg));
 	}
-	
+
 	int8_t mode = parse_mode(s_command[2]);
 	if ((mode < 0))
 		return (send_reply(client_socket, 501, reply_arg));
 	else if (mode % 2 && mode != 9)
-		return (channel->reset_mode((mode + 1) / 2)); 
+		return (channel->reset_mode((mode + 1) / 2));
 	
 	std::string param_mode = "";
 	
 	if (s_command.size() == 4)
 		param_mode = s_command[3];
 	
+	//fct handle_mode
 	if (mode == 2)
 		mode_L(client_socket, channel, mode, param_mode, reply_arg);
 	else if (mode == 4)

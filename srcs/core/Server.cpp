@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 16:26:19 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:05:18 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void 	Server::remove_channel(Channel *channel)
 
 void	Server::remove_client(int client_socket)
 {
-	std::cout << "Move fast " << _clients[client_socket]->get_nickname() <<std::endl;
+	std::cout << "Get out of here " << _clients[client_socket]->get_nickname() << std::endl;
 	
+	join_zero(client_socket);
     close(client_socket);
 
 	for (std::vector<struct pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) 
@@ -75,8 +76,7 @@ void	Server::remove_client(int client_socket)
 
 	delete (_clients[client_socket]);
     _clients.erase(_clients.find(client_socket));
-
-	//PART from the chan also (leave_channels) to test
+	
 }
 
 void	Server::handle_commands(int client_socket, std::string &command)

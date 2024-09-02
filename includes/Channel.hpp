@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/30 17:26:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:06:53 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ class Channel
 		void							add_client_to_chan(Client *client);
 		
 		/* Checker */
-		bool							is_client_in_operator_list(int client_socket);
-		bool							is_client_in_invite_list(int client_socket);
+		bool							is_client_in_operator_list(int client_socket) const;
+		bool							is_client_in_invite_list(int client_socket) const;
 		
 		/* Getter methods */
 		int 						  	get_nb_max_clients()			const;
 		bool 							get_mode(int mode)				const;			
-		std::string				const	&get_channel_params_modes()		const;
 		std::string 			const	&get_channel_modes()			const;
 		std::string				const 	&get_topic()  					const;
 		std::string 			const	&get_key()						const;
@@ -63,7 +62,6 @@ class Channel
 		std::string 				_key;
 		std::string 				_topic;
 		std::string					_modes;
-		std::string 				_params_modes;
 		bool 						_mode_l;
 		bool 						_mode_i;
 		bool 						_mode_k;
