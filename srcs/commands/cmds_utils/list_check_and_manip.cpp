@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:05:18 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 13:47:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:49:03 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &chann
 			return (send_reply(client_socket, 442, reply_arg), null_chan);
 		}
 	}
-
+	
+	if (reply_arg[0] == "MODE")
+		return (null_chan);
+		
 	return (send_reply(client_socket, 403, reply_arg), null_chan);
 }

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 13:35:41 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 19:02:22 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 22:43:47 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,8 @@ void 	Server::goodbye(int client_socket, Channel *channel, std::vector<std::stri
 		remove_channel(channel);
 }
 
-void	Server::part(int client_socket, std::vector<std::string> &s_command)
+void	Server::handle_part(int client_socket, std::vector<std::string> potential_channels, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {
-	std::vector<std::string>    reply_arg;
-	
-	reply_arg.push_back(s_command[0]);
-	
-	if (!_clients[client_socket]->is_registered())
-		return (send_reply(client_socket, 451, reply_arg)); 
-	else if (s_command.size() < 2)
-		return (send_reply(client_socket, 461, reply_arg));
-	
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
-	
-	std::vector<std::string> potential_channels = split(s_command[1], ',');
-	
-	//fct 
 	for (size_t i = 0; i < potential_channels.size(); ++i)
 	{	
 		reply_arg.push_back(potential_channels[i]);
@@ -63,4 +49,22 @@ void	Server::part(int client_socket, std::vector<std::string> &s_command)
 		}
 		reply_arg.erase(reply_arg.begin() + 2);
 	}
+}
+
+void	Server::part(int client_socket, std::vector<std::string> &s_command)
+{
+	std::vector<std::string>    reply_arg;
+	
+	reply_arg.push_back(s_command[0]);
+	
+	if (!_clients[client_socket]->is_registered())
+		return (send_reply(client_socket, 451, reply_arg)); 
+	else if (s_command.size() < 2)
+		return (send_reply(client_socket, 461, reply_arg));
+	
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+	
+	std::vector<std::string> potential_channels = split(s_command[1], ',');
+	
+	handle_part(client_socket, potential_channels, s_command, reply_arg);
 }

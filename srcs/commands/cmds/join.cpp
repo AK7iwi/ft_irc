@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 18:48:14 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:41:31 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,39 @@ bool 	Server::check_client_access(int client_socket, Channel *channel, std::stri
 		return (send_reply(client_socket, 475, reply_arg), false);
 
 	return (true);
+}
+
+void	Server::handle_join(int client_socket, std::map<std::string, std::string> m_channel_key, std::vector<std::string> &reply_arg)
+{
+	for (std::map<std::string, std::string>::iterator it = m_channel_key.begin(); it != m_channel_key.end(); it++)
+	{
+		bool channel_found = false;
+		
+		reply_arg.push_back(it->first);
+		for (size_t i = 0; i < _channels.size(); ++i)
+		{
+			if (it->first == _channels[i]->get_channel_name())
+			{
+				std::cout << "Channel " << it->first << " found" << std::endl;
+				
+				channel_found = true;
+				
+				if (!check_client_access(client_socket, _channels[i], it->second, reply_arg))
+					return ;
+				
+				add_client(client_socket, _channels[i], reply_arg);
+				break ;
+			}
+		}
+		
+		if (!channel_found)
+			create_new_channel(client_socket, it->first, it->second, reply_arg);
+		
+		if (it->first == "#0")
+			join_zero(client_socket);
+		
+		reply_arg.erase(reply_arg.begin() + 2);
+	}
 }
 
 /* Create a map with channels and keys based on incoming commands from clients*/
@@ -132,34 +165,5 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	std::map<std::string, std::string> m_channel_key = create_channel_map(valid_channels, s_command);
 		
 	/* Check if the channel already exist and add client if exist */
-	//fct
-	for (std::map<std::string, std::string>::iterator it = m_channel_key.begin(); it != m_channel_key.end(); it++)
-	{
-		bool channel_found = false;
-		
-		reply_arg.push_back(it->first);
-		for (size_t i = 0; i < _channels.size(); ++i)
-		{
-			if (it->first == _channels[i]->get_channel_name())
-			{
-				std::cout << "Channel " << it->first << " found" << std::endl;
-				
-				channel_found = true;
-				
-				if (!check_client_access(client_socket, _channels[i], it->second, reply_arg))
-					return ;
-				
-				add_client(client_socket, _channels[i], reply_arg);
-				break ;
-			}
-		}
-		
-		if (!channel_found)
-			create_new_channel(client_socket, it->first, it->second, reply_arg);
-		
-		if (it->first == "#0")
-			join_zero(client_socket);
-		
-		reply_arg.erase(reply_arg.begin() + 2);
-	}
+	handle_join(client_socket, m_channel_key, reply_arg);
 }

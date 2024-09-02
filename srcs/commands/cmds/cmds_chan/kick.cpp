@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:03:19 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 19:02:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 23:00:04 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,14 @@ void 	Server::kicked(int client_socket_to_kick, Channel *channel, std::vector<st
 	_clients[client_socket_to_kick]->leave_channel(channel);
 }
 
-void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
-{	
-	std::vector<std::string>    reply_arg;
-	
-	reply_arg.push_back(s_command[0]);
-
-	if (!_clients[client_socket]->is_registered())
-		return (send_reply(client_socket, 451, reply_arg)); 
-	else if (s_command.size() < 3)
-		return (send_reply(client_socket, 461, reply_arg));
-
-	reply_arg.push_back(_clients[client_socket]->get_prefix());
-	reply_arg.push_back(s_command[1]);
-
-	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
-	if (!channel)
-		return ;
-	
+void	Server::handle_kick(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
+{
 	if (!channel->is_client_in_operator_list(client_socket))
 		return (send_reply(client_socket, 482, reply_arg)); 
 	
 	std::vector<std::string> clients_to_kick = split(s_command[2], ',');
 	std::vector <Client*> cpy = channel->get_clients_of_chan(); 
 	
-	//fct 
 	for (size_t i = 0; i < clients_to_kick.size(); ++i)
 	{
 		bool client_to_kick = false;
@@ -83,4 +66,25 @@ void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
 		
 		reply_arg.erase(reply_arg.begin() + 3);
 	}
+}
+
+void 	Server::kick(int client_socket, std::vector<std::string> &s_command)
+{	
+	std::vector<std::string>    reply_arg;
+	
+	reply_arg.push_back(s_command[0]);
+
+	if (!_clients[client_socket]->is_registered())
+		return (send_reply(client_socket, 451, reply_arg)); 
+	else if (s_command.size() < 3)
+		return (send_reply(client_socket, 461, reply_arg));
+
+	reply_arg.push_back(_clients[client_socket]->get_prefix());
+	reply_arg.push_back(s_command[1]);
+
+	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
+	if (!channel)
+		return ;
+	
+	handle_kick(client_socket, channel, s_command, reply_arg);
 }

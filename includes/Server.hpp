@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 18:05:42 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 23:09:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,17 +123,28 @@ class Server
 		void 								mode_I(Channel *channel, uint8_t mode);
 		void 								mode_L(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
 		int8_t								parse_mode(std::string &mode);
+		/* Invite */
+		void 								handle_invite(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Kick */
 		void 								kicked(int client_socket_to_kick, Channel *channel, std::vector<std::string> &reply_arg);
+		void								handle_kick(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 		/* Part */
 		void 								goodbye(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		void								handle_part(int client_socket, std::vector<std::string> potential_channels, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		/* Topic */
+		void 								set_new_topic(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+		void 								return_topic(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
+		/* Privsmsg */
+		void								send_message(int client_socket, std::string &target, std::vector<std::string> &reply_arg);
 		/* Join */
 		void								join_zero(int client_socket);
 		void 								create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg);
 		void 								add_client(int client_socket, Channel *channel, std::vector<std::string> &reply_arg);
 		bool 								check_client_access(int client_socket, Channel *channel, std::string const &key, std::vector<std::string> &reply_arg);
+		void								handle_join(int client_socket, std::map<std::string, std::string> m_channel_key, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(std::vector<std::string> const &valid_channels, std::vector<std::string> &s_command);
 		std::vector<std::string> 			get_valid_channels(int client_socket, std::string const &potential_new_channels, std::vector<std::string> &reply_arg);
+		
 		/* Init struct address */
 		void								init_address_structures();
 

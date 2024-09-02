@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:04:35 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 19:02:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/02 21:48:49 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 /* Basic check */
 
+// bool	Server::
 
 /* Create message, reason, topic, comment*/
 std::string	create_message(std::vector<std::string> &s_command, uint8_t s_command_size)
