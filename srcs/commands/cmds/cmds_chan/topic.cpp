@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 11:21:50 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 22:26:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:30:26 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ void	Server::topic(int client_socket, std::vector<std::string> &s_command)
 
 	reply_arg.push_back(s_command[0]);
 	
-	if (!_clients[client_socket]->is_registered())
-		return (send_reply(client_socket, 451, reply_arg)); 
-	else if (s_command.size() < 2)
-		return (send_reply(client_socket, 461, reply_arg));
+	if (check_prerequisites(client_socket, s_command, reply_arg))
+		return ;
 	
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	reply_arg.push_back(s_command[1]);

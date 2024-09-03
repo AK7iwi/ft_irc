@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 18:06:10 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:40:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Channel;
 class Client 
 {
 	public:
+		/* Constructors and destructors */
 		Client(int socket_fd);
 		~Client();
 		

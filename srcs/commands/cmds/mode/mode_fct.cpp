@@ -22,7 +22,7 @@ void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::stri
 	/* Check that the client target is already in the chan and not operator */
 
 	bool found_client = false;
-	int client_socket_operator;
+	int	client_socket_operator;
 	
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 	for (size_t j = 0; j < cpy.size(); ++j)

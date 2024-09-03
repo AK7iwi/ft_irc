@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 21:41:31 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:28:57 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,11 +154,9 @@ void	Server::join(int client_socket, std::vector<std::string> &s_command)
 	
 	reply_arg.push_back(s_command[0]);
 	
-	if (!_clients[client_socket]->is_registered())
-		return (send_reply(client_socket, 451, reply_arg)); 
-	else if (s_command.size() < 2)
-		return (send_reply(client_socket, 461, reply_arg));
-
+	if (check_prerequisites(client_socket, s_command, reply_arg))
+		return ;
+	
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
 	
 	std::vector<std::string> valid_channels = get_valid_channels(client_socket, s_command[1], reply_arg);

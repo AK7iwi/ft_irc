@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 18:09:38 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:19:58 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ void	Client::leave_channel(Channel *channel)
 void 							Client::add_chan_to_client(Channel *channel) 		{_channels_of_client.push_back(channel);}
 
 /* Checker */
+
 bool 							Client::is_registered()				const			{return (_register);}
 bool 							Client::is_pass_valid()				const			{return (_valid_pass);}
 
 /* Getter methods */
+
 std::vector<Channel*>	const&	Client::get_channels_of_client() 	const			{return (_channels_of_client);}
 std::string  			const&	Client::get_realname()				const			{return (_realname);}
 std::string  			const&	Client::get_hostname()				const			{return (_hostname);}
@@ -55,6 +57,7 @@ int 							Client::get_socket()				const			{return (_socket_fd);}
 std::string  			const&	Client::get_buffer()				const			{return (_buffer);}
 
 /* Setter method */
+
 void 							Client::set_register()								{_register = true;}
 void							Client::set_realname(std::string const &realname)	{_realname = realname;} 
 void							Client::set_hostname(std::string const &hostname)	{_hostname = hostname;} 

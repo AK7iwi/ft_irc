@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 18:13:46 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:42:43 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	Server::handle_clients(int client_socket)
 	
     std::vector<std::string> commands = split(_clients[client_socket]->get_buffer(), '\n');
 	for (uint8_t i = 0; i < commands.size(); i++)
-		if (handle_commands(client_socket, commands[i]))
+		if (handle_commands(client_socket, commands[i])) // || _clients[client_socket]->get_buffer() == 4096 protect buffer 
 			_clients[client_socket]->erase_buffer();
 }
 

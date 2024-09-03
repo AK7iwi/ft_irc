@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:30:03 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 16:06:53 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:40:34 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Client;
 class Channel 
 {
 	public:
+		/* Constructors and destructors */
 		Channel(std::string const &name, std::string const &key);
 		~Channel();
 

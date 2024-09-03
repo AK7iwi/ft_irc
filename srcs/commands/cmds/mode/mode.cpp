@@ -6,11 +6,25 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 17:44:54 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 16:14:17 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:30:19 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
+
+void	Server::handle_modes(int client_socket, Channel *channel, int8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg)
+{
+	if (mode == 2)
+		mode_L(client_socket, channel, mode, param_mode, reply_arg);
+	else if (mode == 4)
+		mode_I(channel, mode);
+	else if (mode == 6)
+		mode_K(client_socket, channel, mode, param_mode, reply_arg);
+	else if (mode == 8)
+		mode_T(channel, mode);
+	else if (mode == 9 || mode == 10)
+		mode_O(client_socket, channel, mode, param_mode, reply_arg);
+}
 
 int8_t	Server::parse_mode(std::string &mode)
 {
@@ -45,10 +59,8 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 
 	reply_arg.push_back(s_command[0]);
 	
-	if (!_clients[client_socket]->is_registered())
-		return (send_reply(client_socket, 451, reply_arg));
-	else if (s_command.size() < 2)
-		return (send_reply(client_socket, 461, reply_arg));
+	if (check_prerequisites(client_socket, s_command, reply_arg))
+		return ;
 
 	reply_arg.push_back(_clients[client_socket]->get_prefix());
     reply_arg.push_back(s_command[1]);
@@ -56,10 +68,7 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	/* Check is the client is in an existing channel */
 	Channel *channel = is_client_in_a_valid_chan(client_socket, s_command[1], reply_arg);
 	if (!channel)
-		return ;
-	
-	if (!channel->is_client_in_operator_list(client_socket))
-		return (send_reply(client_socket, 482, reply_arg)); 
+		return ; 
 	
 	/* Return modes of channel */
 	if (s_command.size() < 3)
@@ -67,7 +76,10 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 		reply_arg.push_back(channel->get_channel_modes());
 		return (send_reply(client_socket, 324, reply_arg));
 	}
-
+	
+	if (!channel->is_client_in_operator_list(client_socket))
+		return (send_reply(client_socket, 482, reply_arg));
+	
 	int8_t mode = parse_mode(s_command[2]);
 	if ((mode < 0))
 		return (send_reply(client_socket, 501, reply_arg));
@@ -79,15 +91,5 @@ void	Server::mode(int client_socket, std::vector<std::string> &s_command)
 	if (s_command.size() == 4)
 		param_mode = s_command[3];
 	
-	//fct handle_mode
-	if (mode == 2)
-		mode_L(client_socket, channel, mode, param_mode, reply_arg);
-	else if (mode == 4)
-		mode_I(channel, mode);
-	else if (mode == 6)
-		mode_K(client_socket, channel, mode, param_mode, reply_arg);
-	else if (mode == 8)
-		mode_T(channel, mode);
-	else if (mode == 9 || mode == 10)
-		mode_O(client_socket, channel, mode, param_mode, reply_arg);
+	handle_modes(client_socket, channel, mode, param_mode, reply_arg);
 }

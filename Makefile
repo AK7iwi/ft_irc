@@ -8,7 +8,7 @@ SRCS			:= main.cpp core/Server.cpp core/Client.cpp core/Channel.cpp \
 					commands/cmds/join.cpp commands/cmds/ping.cpp commands/cmds/pong.cpp commands/cmds/privmsg.cpp \
 					commands/cmds/cmds_chan/part.cpp commands/cmds/cmds_chan/topic.cpp commands/cmds/cmds_chan/invite.cpp \
 					commands/cmds/cmds_chan/kick.cpp commands/cmds/mode/mode.cpp commands/cmds/mode/mode_fct.cpp \
-					commands/cmds_utils/list_check_and_manip.cpp commands/cmds_utils/str_check_and_manip.cpp RPL/RPL.cpp
+					commands/cmds_utils/list_check_and_manip.cpp commands/cmds_utils/str_check_and_manip.cpp RPL/RPL_list.cpp RPL/RPL_handle.cpp
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 

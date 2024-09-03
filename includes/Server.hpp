@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 23:09:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:16:50 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include "cmds_utils.hpp"
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <cstring>
 #include <fcntl.h>
 #include <map>
@@ -32,7 +33,6 @@
 #include "Channel.hpp"
 
 #define BUFFER_MAX	4096
-#define CLIENT_MAX	3
 #define ERR_COLON 	"You should set the reason with a ""':'"""
 
 /* Modes */
@@ -48,6 +48,7 @@ class Channel;
 class Server 
 {
 	public:
+		/* Constructors and destructors */
 		Server(uint16_t port, std::string const &password);
 		~Server();
 		
@@ -67,54 +68,34 @@ class Server
 		std::string					_server_name;
 		std::string					_version;
 		std::string             	_start_time;
-
 		/* Struct for init server */
 		struct sockaddr_in6					_server_addr;
-		
 		/* Socket of the server */
 		int 								_server_socket;
-
 		/* Vector of fds */
 		std::vector<struct pollfd>			_fds;
-
 		/* Map of clients */
 		std::map<int, Client*> 				_clients;
-		
 		/* Map of channels */
 		std::vector<Channel*>				_channels;
 
 		//////////////////// Methods ////////////////////////////
+		
+		/* Utils methods for cmdds */
+		
 		/* Send rpl to the all channel */
 		void 		send_rpl_to_channel(Channel *channel, int rpl, std::vector<std::string> &reply_arg);
 		/* Check if the channel exist and the client is in method */
 		Channel*	is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg);
+		/* Check prerequisites*/
+		bool		check_prerequisites(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
+
+		/* RPL methods */
 		
-		/* Commands */
-		void		mode(int client_socket, std::vector<std::string> &s_command);
-		void 		privmsg(int client_socket, std::vector<std::string> &s_command);
-		void 		kick(int client_socket, std::vector<std::string> &s_command);
-		void 		invite(int client_socket, std::vector<std::string> &s_command);
-		void		topic(int client_socket, std::vector<std::string> &s_command);
-		void		part(int client_socket, std::vector<std::string> &s_command);
-		void		pong();
-		void		ping(int client_socket, std::vector<std::string> &s_command);
-		void		join(int client_socket, std::vector<std::string> &s_command);
-		void 		user(int client_socket, std::vector<std::string> &s_command);
-		void 		nick(int client_socket, std::vector<std::string> &s_command);
-		void		pass(int client_socket, std::vector<std::string> &s_command);
+		std::string	wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg);
+		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		
-		/* Remove channel*/
-		void 		remove_channel(Channel *channel);
-		/* Remove client method */
-		void		remove_client(int client_socket);
-		/* Handle commands */
-		bool 		handle_commands(int client_socket, std::string &command);
-		
-		/* Handle client method */
-		void		handle_clients(int client_cocket);
-		void		handle_new_connections();
-		
-		/////////////////// Methods for commands ///////////////
+		/* Commands methods*/
 		
 		/* Mode */
 		void 								mode_O(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
@@ -122,6 +103,7 @@ class Server
 		void 								mode_K(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
 		void 								mode_I(Channel *channel, uint8_t mode);
 		void 								mode_L(int client_socket, Channel *channel, uint8_t mode, std::string const &param_mode, std::vector<std::string> &reply_arg);
+		void								handle_modes(int client_socket, Channel *channel, int8_t mode, std::string &param_mode, std::vector<std::string> &reply_arg);
 		int8_t								parse_mode(std::string &mode);
 		/* Invite */
 		void 								handle_invite(int client_socket, Channel *channel, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
@@ -144,13 +126,35 @@ class Server
 		void								handle_join(int client_socket, std::map<std::string, std::string> m_channel_key, std::vector<std::string> &reply_arg);
 		std::map<std::string, std::string>	create_channel_map(std::vector<std::string> const &valid_channels, std::vector<std::string> &s_command);
 		std::vector<std::string> 			get_valid_channels(int client_socket, std::string const &potential_new_channels, std::vector<std::string> &reply_arg);
-		
-		/* Init struct address */
-		void								init_address_structures();
 
-		/////////////////// Methods for RPL ///////////////
-		std::string	wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg);
-		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
+		/* Commands */
+		
+		void 		kick(int client_socket, std::vector<std::string> &s_command);
+		void 		invite(int client_socket, std::vector<std::string> &s_command);
+		void		topic(int client_socket, std::vector<std::string> &s_command);
+		void		part(int client_socket, std::vector<std::string> &s_command);
+		void		mode(int client_socket, std::vector<std::string> &s_command);
+		void 		privmsg(int client_socket, std::vector<std::string> &s_command);
+		void		pong();
+		void		ping(int client_socket, std::vector<std::string> &s_command);
+		void		join(int client_socket, std::vector<std::string> &s_command);
+		void 		user(int client_socket, std::vector<std::string> &s_command);
+		void 		nick(int client_socket, std::vector<std::string> &s_command);
+		void		pass(int client_socket, std::vector<std::string> &s_command);
+
+		/* Server methods */
+
+		/* Remove channel*/
+		void 		remove_channel(Channel *channel);
+		/* Remove client method */
+		void		remove_client(int client_socket);
+		/* Handle commands */
+		bool 		handle_commands(int client_socket, std::string &command);
+		/* Handle client method */
+		void		handle_clients(int client_cocket);
+		void		handle_new_connections();
+		/* Init struct address */
+		void		init_address_structures();
 };
 
 #endif /* SERVER_HPP */
