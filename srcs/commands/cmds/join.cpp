@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:05 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/03 14:28:57 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:45:30 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,15 @@
 void	Server::join_zero(int client_socket)
 {
 	std::vector<std::string> channels_name;
+	
 	std::vector<Channel*> cpy = _clients[client_socket]->get_channels_of_client();
 	if (!cpy.size())
 		return ;
+	
 	std::string channels_name_str = cpy[0]->get_channel_name();
 	for (size_t i = 1; i < cpy.size(); ++i)
 		channels_name_str += "," + cpy[i]->get_channel_name();
+	
 	channels_name.push_back("PART");
 	channels_name.push_back(channels_name_str);
 	part(client_socket, channels_name);
@@ -33,6 +36,7 @@ void	Server::join_zero(int client_socket)
 void 	Server::create_new_channel(int client_socket, std::string const &channel_name, std::string const &key, std::vector<std::string> &reply_arg)
 {
 	std::cout << "A new hannel has been created: " << channel_name << std::endl;
+	
 	send_reply(client_socket, 403, reply_arg);
 	Channel *new_channel = new Channel(channel_name, key);
 	add_client(client_socket, new_channel, reply_arg);
@@ -135,7 +139,7 @@ std::vector<std::string> Server::get_valid_channels(int client_socket, std::stri
 
     for (std::vector<std::string>::const_iterator it = v_potential_new_channels.begin(); it != v_potential_new_channels.end(); ++it)
     {
-        if (is_valid_prefix(*it))
+        if (is_valid_prefix(*it) && (*it).size() >= 2)
             valid_channels.push_back(*it);
         else
         {

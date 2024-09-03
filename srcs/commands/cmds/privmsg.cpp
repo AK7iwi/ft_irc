@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:46:24 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/02 21:40:27 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/09/03 17:30:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	Server::send_message(int client_socket, std::string &target, std::vector<st
 		/* The client doesn't exist */
 		return (send_reply(client_socket, 401, reply_arg));
 	}
-	
 }
 
 void Server::privmsg(int client_socket, std::vector<std::string> &s_command)
