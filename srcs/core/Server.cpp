@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/03 14:42:43 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/24 17:36:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,6 @@ void	Server::handle_new_connections()
 	_clients[client_socket] = new Client(client_socket);
 }
 
-/* Run method that loop on clients */
-
 void	Server::run()
 {
 	if (poll(&_fds[0], _fds.size(), -1) == -1)
@@ -183,8 +181,6 @@ void	Server::run()
         	if (_fds[i].revents & POLLIN)
 				handle_clients(_fds[i].fd);
 }
-
-/* Init Server */
 
 void	Server::init_server()
 {
@@ -208,8 +204,6 @@ void	Server::init_server()
 	server_fd.revents = 0;
     _fds.push_back(server_fd);
 }
-
-/* Init struct address*/
 
 void 	Server::init_address_structures()
 {

@@ -6,15 +6,13 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/08/29 16:25:56 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/24 16:01:51 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 
 static bool is_running = true;
-
-/* Parse the argument */
 
 void	parse_arg(int argc, char **argv)
 {
@@ -29,8 +27,6 @@ void	parse_arg(int argc, char **argv)
     if (password.length() < 6)
 		throw (std::invalid_argument("Error: Password cannot have less than 6 char"));
 }
-
-/* Signal handler */
 
 void	signal_handler(int signal) 
 {

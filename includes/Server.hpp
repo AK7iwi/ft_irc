@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/03 17:31:15 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/24 16:51:44 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,19 @@ class Server
 		std::string					_version;
 		std::string             	_start_time;
 		/* Struct for init server */
-		struct sockaddr_in6					_server_addr;
+		struct sockaddr_in6			_server_addr;
 		/* Socket of the server */
-		int 								_server_socket;
+		int 						_server_socket;
 		/* Vector of fds */
-		std::vector<struct pollfd>			_fds;
+		std::vector<struct pollfd>	_fds;
 		/* Map of clients */
-		std::map<int, Client*> 				_clients;
+		std::map<int, Client*> 		_clients;
 		/* Map of channels */
-		std::vector<Channel*>				_channels;
+		std::vector<Channel*>		_channels;
 
 		//////////////////// Methods ////////////////////////////
 		
-		/* Utils methods for cmdds */
+		/* Utils methods for cmds */
 		
 		/* Send rpl to the all channel */
 		void 		send_rpl_to_channel(Channel *channel, int rpl, std::vector<std::string> &reply_arg);
@@ -91,7 +91,6 @@ class Server
 		bool		check_prerequisites(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg);
 
 		/* RPL methods */
-		
 		std::string	wich_rpl(Client *client, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		void		send_reply(int client_socket, uint16_t rpl, std::vector<std::string> const &reply_arg);
 		
