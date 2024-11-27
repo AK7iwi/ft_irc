@@ -6,13 +6,11 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:05:18 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/03 17:34:34 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:30:59 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
-
-/* Basic check */
 
 bool		Server::check_prerequisites(int client_socket, std::vector<std::string> &s_command, std::vector<std::string> &reply_arg)
 {
@@ -24,16 +22,12 @@ bool		Server::check_prerequisites(int client_socket, std::vector<std::string> &s
 	return (0);
 }
 
-/* Send mesage to all client of a channel */
-
 void		Server::send_rpl_to_channel(Channel *channel, int rpl, std::vector<std::string> &reply_arg)
 {
 	std::vector <Client*> cpy = channel->get_clients_of_chan();
 		for (size_t i = 0; i <  cpy.size(); ++i)
 			send_reply(cpy[i]->get_socket(), rpl, reply_arg);
 }
-
-/* Server */
 
 Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &channel, std::vector<std::string> &reply_arg)
 {
@@ -51,6 +45,7 @@ Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &chann
 			return (send_reply(client_socket, 442, reply_arg), null_chan);
 		}
 	}
-	
+	if (channel == _clients[client_socket]->get_nickname())
+		return (null_chan);
 	return (send_reply(client_socket, 403, reply_arg), null_chan);
 }

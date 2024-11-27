@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:16 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/09/03 14:40:30 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:30:23 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ class Client
 		bool 							is_pass_valid() const;
 		
 		/* Getter */
-
 		std::vector<Channel*>	const 	&get_channels_of_client()	const;
 		std::string 			const 	&get_realname() const;
 		std::string 			const 	&get_hostname() const;

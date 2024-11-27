@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/24 16:01:51 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/24 17:43:33 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void	signal_handler(int signal)
 {
     if (signal == SIGINT) 
 	{
-		is_running = false;
+		is_running = false; //not need
         std::cout << "\nCaught SIGINT (Ctrl+C), shutting down..." << std::endl;
 		std::cout << "Server closed..." << std::endl;
     } 
 	else if (signal == SIGQUIT) //doesn't work
 	{
-		is_running = false;
+		is_running = false; //not need
         std::cout << "\nCaught SIGQUIT (Ctrl+/), shutting down..." << std::endl;
 		std::cout << "Server closed..." << std::endl;
     }
