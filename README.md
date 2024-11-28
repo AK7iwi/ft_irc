@@ -8,8 +8,30 @@ ft_irc is a custom Internet Relay Chat (IRC) server. It is designed to handle mu
 
 ## Usage
 
+1) Launch the server: 
 
+```bash
+make
+./ircserv <port> <password> 
+```
+You can connect to the server with common IRC clients like irssi or with netcat command
 
+2) Connection with irssi
+
+/connect localhost <port> <password> 
+
+or : 
+
+/connect localhost <port> <pasword> <username>
+
+3) Connection with netcat
+
+```bash
+nc -C localhost <port> <password>
+/PASS <passsword>
+/NICK <nickname>
+/USER <username> <servername> <hostname> <realname>
+```
 ## How does it work?
 
 The ft_irc project consists of the following main components:
