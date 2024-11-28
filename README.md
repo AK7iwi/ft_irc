@@ -76,11 +76,12 @@ The server implements error handling to ensure proper communication between clie
 
 ### 1) Server Core
 
-I) First, the server sets up a port and a password. The port should be between 1024 and 65535 because ports below 1024 are reserved for system services, while ports above 1024 are available for user applications. The maximum port number is 65535 because ports are represented using a 16-bit unsigned integer in the TCP and UDP protocol headers. The password should be longer than 5 characters.
+#### I) Port and password
+First, the server sets up a port and a password. The port should be between 1024 and 65535 because ports below 1024 are reserved for system services, while ports above 1024 are available for user applications. The maximum port number is 65535 because ports are represented using a 16-bit unsigned integer in the TCP and UDP protocol headers. The password should be longer than 5 characters.
 
-II) Initialization of the server
+#### II) Initialization of the server
 
-	a) Initialization of the server address
+a) Initialization of the server address
 
 The initialized server_addr structure is used in the bind system call to bind the server socket to the specified address and port.
 
@@ -113,34 +114,31 @@ _server_addr.sin6_addr = in6addr_any;
 
 How it works: 
 
-```C
-memset(&server_addr, 0, sizeof(server_addr));
-```
+```memset(&server_addr, 0, sizeof(server_addr)); ```
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
-```C
-server_addr.sin_family = AF_INET6;
-```
+
+```server_addr.sin_family = AF_INET6; ```
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
-```C
-server_addr.sin_port = htons(_port);
-```
+
+```server_addr.sin_port = htons(_port); ```
 This sets the port number the server will listen on. 
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
-```C
-server_addr.sin_addr.s_addr = in6addr_any;
-```
+
+```server_addr.sin_addr.s_addr = in6addr_any;```
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
 
-	b) Initialization of the time
+
+b) Initialization of the time
 
 Time must be initialized for server info and RPL.
 
-	c) Initialization of the communication and connection for th server
 
-- ```C socket(int domain, int type, int protocol); ```
+c) Initialization of the communication and connection for th server
+
+```socket(int domain, int type, int protocol); ```
 
 - domain (or address family):
 
@@ -167,7 +165,7 @@ It return the server socket.
 
 - struct pollfd server_fd
 
-III) Handle connections and clients
+#### III) Handle connections and clients
 
 - poll
 - accept
