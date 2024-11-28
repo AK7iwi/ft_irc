@@ -81,7 +81,7 @@ First, the server sets up a port and a password. The port should be between 1024
 
 #### II) Initialization of the server
 
-a) Initialization of the server address
+##### a) Initialization of the server address
 
 The initialized server_addr structure is used in the bind system call to bind the server socket to the specified address and port.
 
@@ -115,44 +115,48 @@ _server_addr.sin6_addr = in6addr_any;
 How it works: 
 
 ```memset(&server_addr, 0, sizeof(server_addr)); ```
+
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
 
 ```server_addr.sin_family = AF_INET6; ```
+
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
 
 ```server_addr.sin_port = htons(_port); ```
+
 This sets the port number the server will listen on. 
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
 
-```server_addr.sin_addr.s_addr = in6addr_any;```
+```server_addr.sin_addr.s_addr = in6addr_any; ```
+
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
 
 
-b) Initialization of the time
+##### b) Initialization of the time
 
 Time must be initialized for server info and RPL.
 
 
-c) Initialization of the communication and connection for th server
+###### c) Initialization of the communication and connection for the server
 
 ```socket(int domain, int type, int protocol); ```
 
 - domain (or address family):
 
-AF_INET: Specifies the address family for the socket. AF_INET means the socket will use the IPv4 protocol.
+Specifies the address family for the socket. AF_INET means the socket will use the IPv4 protocol.
 For IPv6, you would use AF_INET6.
 
 - type:
 
-SOCK_STREAM: Specifies the socket type. SOCK_STREAM indicates that the socket will provide sequenced, reliable, two-way, connection-based byte streams. This is typically used for TCP connections.
+Specifies the socket type. SOCK_STREAM indicates that the socket will provide sequenced, reliable, two-way, connection-based byte streams. This is typically used for TCP connections.
 Other options include SOCK_DGRAM for datagram-based connections (UDP), SOCK_RAW for raw sockets, etc.
 
 - protocol:
 
-0: Specifies the protocol to be used with the socket. 0 means that the system should choose the default protocol for the given combination of domain and type. For AF_INET and SOCK_STREAM, this usually means the TCP protocol.
+Specifies the protocol to be used with the socket. 0 means that the system should choose the default protocol for the given combination of domain and type. For AF_INET and SOCK_STREAM, this usually means the TCP protocol.
 
 - Return Value
 The function returns a file descriptor (an integer) that represents the socket. If the socket creation fails, it returns -1.
