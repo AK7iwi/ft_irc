@@ -110,23 +110,23 @@ _server_addr.sin6_port = htons(_port);
 _server_addr.sin6_addr = in6addr_any;
 ```
 
-```C
+- ```C
 memset(&server_addr, 0, sizeof(server_addr));
 ```
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
-```C
+- ```C
 server_addr.sin_family = AF_INET6;
 ```
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
-```C
+- ```C
 server_addr.sin_port = htons(_port);
 ```
 This sets the port number the server will listen on. 
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
-```C
+- ```C
 server_addr.sin_addr.s_addr = in6addr_any;
 ```
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
