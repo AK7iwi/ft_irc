@@ -29,6 +29,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME)
+	@clear
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.cpp
 	$(DIR_DUP)

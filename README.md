@@ -156,20 +156,98 @@ Other options include SOCK_DGRAM for datagram-based connections (UDP), SOCK_RAW 
 
 - protocol
 
-
 Specifies the protocol to be used with the socket. 0 means that the system should choose the default protocol for the given combination of domain and type. For AF_INET and SOCK_STREAM, this usually means the TCP protocol.
 
 - Return Value
 
-The function returns a file descriptor (an integer) that represents the socket. If the socket creation fails, it returns -1.
+The function returns a file descriptor (an integer) that represents the socket of the server. If the socket creation fails, it returns -1.
 It return the server socket.
 
-- setsockopt
-- fcntl
-- bind
-- listen
+```setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen); ```
 
-- struct pollfd server_fd
+- sockfd
+The file descriptor of the socket on which to set the option.
+
+- level
+Specifies the protocol level at which the option resides.
+
+Common values:
+SOL_SOCKET: Set options at the socket level.
+IPPROTO_TCP: Set options at the TCP protocol level.
+
+- optname
+The name of the option to set. 
+
+Some common options include:
+SO_REUSEADDR: Allows the socket to be bound to an address that is already in use.
+SO_KEEPALIVE: Enables keepalive messages for the socket.
+
+- optval
+A pointer to the option value. For example, to enable SO_REUSEADDR, this would point to an integer set to 1.
+
+- optlen
+The size of the option value in bytes.
+
+- Return Value
+Returns 0 on success and -1 on failure.
+
+```fcntl(int fd, int cmd, ...); ```
+
+- fd
+The file descriptor on which to perform the operation (e.g., a socket or file descriptor).
+
+- cmd
+Specifies the command to perform. Common commands include:
+
+F_SETFL: Set file status flags.
+F_GETFL: Get file status flags.
+
+- Additional Arguments
+Depending on the command, additional arguments may be required, such as setting non-blocking mode (O_NONBLOCK).
+
+- Return Value
+Returns a new descriptor on success or -1 on failure
+
+```bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen); ```
+
+- sockfd
+The file descriptor of the socket to bind.
+
+- addr
+A pointer to a sockaddr structure (e.g., sockaddr_in for IPv4 or sockaddr_in6 for IPv6) that specifies the address to bind to.
+
+- addrlen
+The size of the address structure in bytes.
+
+- Return Value
+Returns 0 on success and -1 on failure.
+
+```listen(int sockfd, int backlog); ```
+
+- sockfd
+The file descriptor of the socket to mark as a passive socket (i.e., to listen for incoming connections).
+
+- backlog
+The maximum number of pending connections that can be queued for acceptance.
+
+- Return Value
+Returns 0 on success and -1 on failure.
+
+```struct pollfd server_fd ```
+
+struct pollfd
+{
+	int   fd;         /* file descriptor */
+    short events;     /* requested events */
+    short revents;    /* returned events */
+};
+
+
+What is a non-blocking socket ?
+
+Non-blocking I/O means that the I/O operations (such as reading from or writing to a socket) do not cause the program to wait if the operation cannot be completed immediately. 
+Instead, the function returns immediately with an indication that the operation could not be completed right now. 
+This is useful for high-performance servers that need to handle many connections simultaneously without being blocked by any single operation.
 
 #### III) Handle connections and clients
 
