@@ -80,11 +80,12 @@ I) First, the server sets up a port and a password. The port should be between 1
 
 II) Initialization of the server
 
-a) Initialization of the server address
+	a) Initialization of the server address
 
 The initialized server_addr structure is used in the bind system call to bind the server socket to the specified address and port.
 
 ```C
+#include <netinet/in.h>
 struct sockaddr_in6			_server_addr;
 ```
 
@@ -133,13 +134,32 @@ server_addr.sin_addr.s_addr = in6addr_any;
 ```
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
 
-b) Initialization of the time
+	b) Initialization of the time
 
 Time must be initialized for server info and RPL.
 
-c) Initialization of the connection
+	c) Initialization of the communication and connection for th server
 
-- socket
+- ```C socket(int domain, int type, int protocol); ```
+
+- domain (or address family):
+
+AF_INET: Specifies the address family for the socket. AF_INET means the socket will use the IPv4 protocol.
+For IPv6, you would use AF_INET6.
+
+- type:
+
+SOCK_STREAM: Specifies the socket type. SOCK_STREAM indicates that the socket will provide sequenced, reliable, two-way, connection-based byte streams. This is typically used for TCP connections.
+Other options include SOCK_DGRAM for datagram-based connections (UDP), SOCK_RAW for raw sockets, etc.
+
+- protocol:
+
+0: Specifies the protocol to be used with the socket. 0 means that the system should choose the default protocol for the given combination of domain and type. For AF_INET and SOCK_STREAM, this usually means the TCP protocol.
+
+- Return Value
+The function returns a file descriptor (an integer) that represents the socket. If the socket creation fails, it returns -1.
+It return the server socket.
+
 - setsockopt
 - fcntl
 - bind
@@ -148,6 +168,11 @@ c) Initialization of the connection
 - struct pollfd server_fd
 
 III) Handle connections and clients
+
+- poll
+- accept
+- recv 
+
 
 ### 2) Client management
 
