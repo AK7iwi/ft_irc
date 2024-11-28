@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 16:05:18 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/27 16:30:59 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:34:15 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ Channel*	Server::is_client_in_a_valid_chan(int client_socket, std::string &chann
 	}
 	if (channel == _clients[client_socket]->get_nickname())
 		return (null_chan);
+	
 	return (send_reply(client_socket, 403, reply_arg), null_chan);
 }
