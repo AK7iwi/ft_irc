@@ -18,11 +18,14 @@ You can connect to the server with common IRC clients like irssi or with netcat 
 
 2) Connection with irssi
 
+```irssi 
 /connect localhost <port> <password> 
+```
+or: 
 
-or : 
-
+```irssi
 /connect localhost <port> <pasword> <username>
+```
 
 3) Connection with netcat
 
