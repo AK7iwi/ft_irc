@@ -140,25 +140,27 @@ This allows the server to accept connections on any of the host’s IP addresses
 Time must be initialized for server info and RPL.
 
 
-###### c) Initialization of the communication and connection for the server
+##### c) Initialization of the communication and connection for the server
 
 ```socket(int domain, int type, int protocol); ```
 
-- domain (or address family):
+- domain (or address family)
 
 Specifies the address family for the socket. AF_INET means the socket will use the IPv4 protocol.
 For IPv6, you would use AF_INET6.
 
-- type:
+- type
 
 Specifies the socket type. SOCK_STREAM indicates that the socket will provide sequenced, reliable, two-way, connection-based byte streams. This is typically used for TCP connections.
 Other options include SOCK_DGRAM for datagram-based connections (UDP), SOCK_RAW for raw sockets, etc.
 
-- protocol:
+- protocol
+
 
 Specifies the protocol to be used with the socket. 0 means that the system should choose the default protocol for the given combination of domain and type. For AF_INET and SOCK_STREAM, this usually means the TCP protocol.
 
 - Return Value
+
 The function returns a file descriptor (an integer) that represents the socket. If the socket creation fails, it returns -1.
 It return the server socket.
 
