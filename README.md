@@ -4,7 +4,13 @@ An IRC server in C++ 98
 
 ## Overview 
 
-ft_irc is a custom Internet Relay Chat (IRC) server. It is designed to handle multiple client connections and facilitate real-time communication over the IRC protocol. The server is compatible with popular IRC clients like irssi, allowing users to interact with the server through a familiar interface.
+ft_irc is a custom Internet Relay Chat (IRC) server. It is designed to handle multiple client connections and facilitate real-time communication over the IRC protocol. It adheres to the IRC protocol specifications, making it compatible with common IRC clients like irssi, allowing users to interact with the server through a familiar interface.
+
+## Usage
+
+
+
+## How does it work?
 
 The ft_irc project consists of the following main components:
 
@@ -20,16 +26,30 @@ Users can create and join chat channels, which serve as virtual rooms where mult
 ### 4) Command Parsing and Execution
 The server parses and executes standard IRC commands such as:
 
-/NICK to set or change a user's nickname
-/JOIN to join a channel
-/PART to leave a channel
-/PRIVMSG to send private messages to other users
-/QUIT to disconnect from the server
+- /PASS : Used to provide a connection password if the server requires one
+- /NICK : Set or change a user's nickname
+- /USER : Registers a new user with the server, providing basic information like  username, hostname, and real name
+- /PING Sent by the server to check if the client is still connected
+- /PONG Response to a /PING command
+- /JOIN Join a channel
+- /INVITE Invites a user to join a specific channel
+- /KICK Removes a user from a channel
+- /TOPIC Sets or retrieves the topic of a channel
+- /PART Leave a channel
+- /PRIVMSG Send private messages to other users
+- /MODE Sets or queries the mode of a user or channel
 
-RPL (Error Handling)
+### 5) RPL (Error Handling)
 The server implements error handling to ensure proper communication between clients and to provide meaningful feedback when commands fail or users encounter issues.
 
-Protocol Compliance
-ft_irc adheres to the IRC protocol specifications, making it compatible with common IRC clients like irssi, enabling seamless interaction with users across different platforms.
+### 1) Server Core
+
+### 2) Client management
+
+### 3) Channel System
+
+### 4) Command Parsing and Execution
+
+### 5) RPL (Error handling)
 
 
