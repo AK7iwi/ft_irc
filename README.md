@@ -14,11 +14,16 @@ ft_irc is a custom Internet Relay Chat (IRC) server. It is designed to handle mu
 make
 ./ircserv <port> <password> 
 ```
-You can connect to the server with common IRC clients like irssi or with netcat command
+You can connect to the server with common IRC clients like irssi or with netcat command: 
 
 2) Connection with irssi
 
-```irssi 
+```irssi
+irssi
+```
+In irssi: 
+
+```irssi
 /connect localhost <port> <password> 
 ```
 or: 
@@ -54,20 +59,78 @@ The server parses and executes standard IRC commands such as:
 - /PASS : Used to provide a connection password if the server requires one
 - /NICK : Set or change a user's nickname
 - /USER : Registers a new user with the server, providing basic information like  username, hostname, and real name
-- /PING Sent by the server to check if the client is still connected
-- /PONG Response to a /PING command
-- /JOIN Join a channel
-- /INVITE Invites a user to join a specific channel
-- /KICK Removes a user from a channel
-- /TOPIC Sets or retrieves the topic of a channel
-- /PART Leave a channel
-- /PRIVMSG Send private messages to other users
-- /MODE Sets or queries the mode of a user or channel
+- /PING : Sent by the server to check if the client is still connected
+- /PONG : Response to a /PING command
+- /JOIN : Join a channel
+- /INVITE : Invites a user to join a specific channel
+- /KICK : Removes a user from a channel
+- /TOPIC : Sets or retrieves the topic of a channel
+- /PART : Leave a channel
+- /PRIVMSG : Send private messages to other users
+- /MODE : Sets or queries the mode of a user or channel
 
 ### 5) RPL (Error Handling)
 The server implements error handling to ensure proper communication between clients and to provide meaningful feedback when commands fail or users encounter issues.
 
+
 ### 1) Server Core
+
+I) First, the server sets up a port and a password. The port should be between 1024 and 65535 because ports below 1024 are reserved for system services, while ports above 1024 are available for user applications. The maximum port number is 65535 because ports are represented using a 16-bit unsigned integer in the TCP and UDP protocol headers. The password should be longer than 5 characters.
+
+II) Initialization of the server
+
+a) Initialization of the server adress
+
+```C
+struct sockaddr_in6			_server_addr;
+```
+
+```C
+struct sockaddr_in6 
+{
+    uint16_t        sin6_family;   /* AF_INET6 */
+    uint16_t        sin6_port;     /* numéro de port */
+    uint32_t        sin6_flowinfo; /* information de flux IPv6 */
+    struct in6_addr sin6_addr;     /* adresse IPv6 */
+    uint32_t        sin6_scope_id; /* Scope ID (nouveauté 2.4) */
+};
+```
+
+```C
+memset(&_server_addr, 0, sizeof(_server_addr));
+_server_addr.sin6_family = AF_INET6;
+_server_addr.sin6_port = htons(_port);
+_server_addr.sin6_addr = in6addr_any;
+```
+a) Clearing the Structure:
+
+memset(&server_addr, 0, sizeof(server_addr));
+This clears the server_addr structure to ensure there are no residual values from previous operations.
+
+b) Setting the Address Family:
+
+server_addr.sin_family = AF_INET6;
+This sets the address family to IPv6. For IPv4, you would use AF_INET.
+
+c) Setting the Port:
+
+server_addr.sin_port = htons(port);
+This sets the port number the server will listen on. 
+The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
+
+d) Setting the IP Address:
+
+server_addr.sin_addr.s_addr = in6addr_any;
+This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
+
+Goal: The initialized server_addr structure is then used in the bind system call to bind the server socket to the specified address and port.
+
+b) Initialization of the time
+
+Time must be initialized for server info and RPL.
+
+c) Initialization of the connection
+
 
 ### 2) Client management
 
@@ -76,5 +139,6 @@ The server implements error handling to ensure proper communication between clie
 ### 4) Command Parsing and Execution
 
 ### 5) RPL (Error handling)
+
 
 

@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/24 16:51:44 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/28 07:38:29 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,7 @@ class Server
 		/* Main loop */
 		void		run();
 
-		/* Init the Server */
-		void		init_server();
-
 	private:
-		/////////////////// Member variable ///////////////////
-		
 		/* Server infos */
 		uint16_t 					_port;
     	std::string					_password;
@@ -68,7 +63,7 @@ class Server
 		std::string					_server_name;
 		std::string					_version;
 		std::string             	_start_time;
-		/* Struct for init server */
+		/* Struct for server adress */
 		struct sockaddr_in6			_server_addr;
 		/* Socket of the server */
 		int 						_server_socket;
@@ -149,11 +144,13 @@ class Server
 		void		remove_client(int client_socket);
 		/* Handle commands */
 		bool 		handle_commands(int client_socket, std::string &command);
-		/* Handle client method */
+		/* Handle client */
 		void		handle_clients(int client_cocket);
 		void		handle_new_connections();
-		/* Init struct address */
-		void		init_address_structures();
+		/* Init server */
+		void 		init_time();
+		void		init_server_adress();
+		void		init_server();
 };
 
 #endif /* SERVER_HPP */
