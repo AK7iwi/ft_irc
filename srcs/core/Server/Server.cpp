@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:01 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/28 07:40:35 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/28 08:39:03 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void 	Server::init_time()
     _start_time = std::string(date);
 }
 
-void 	Server::init_server_adress()
+void 	Server::init_server_address()
 {
     memset(&_server_addr, 0, sizeof(_server_addr));
     _server_addr.sin6_family = AF_INET6;
@@ -69,7 +69,7 @@ void 	Server::init_server_adress()
 void	Server::init_server()
 {
 	std::cout << "Initialization of the server..." << std::endl;
-	init_server_adress();
+	init_server_address();
 	init_time();
 	_server_socket = socket(AF_INET6, SOCK_STREAM, 0);
     if (_server_socket == -1)

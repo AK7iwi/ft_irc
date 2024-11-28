@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:53:10 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/28 07:38:29 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/11/28 08:39:10 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ class Server
 		void		handle_new_connections();
 		/* Init server */
 		void 		init_time();
-		void		init_server_adress();
+		void		init_server_address();
 		void		init_server();
 };
 

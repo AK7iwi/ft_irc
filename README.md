@@ -72,6 +72,7 @@ The server parses and executes standard IRC commands such as:
 ### 5) RPL (Error Handling)
 The server implements error handling to ensure proper communication between clients and to provide meaningful feedback when commands fail or users encounter issues.
 
+----------------------------------------------------------------------------------------------------------------------------------
 
 ### 1) Server Core
 
@@ -79,22 +80,28 @@ I) First, the server sets up a port and a password. The port should be between 1
 
 II) Initialization of the server
 
-a) Initialization of the server adress
+a) Initialization of the server address
+
+The initialized server_addr structure is used in the bind system call to bind the server socket to the specified address and port.
 
 ```C
 struct sockaddr_in6			_server_addr;
 ```
 
+The struct sockaddr_in6: 
+
 ```C
 struct sockaddr_in6 
 {
     uint16_t        sin6_family;   /* AF_INET6 */
-    uint16_t        sin6_port;     /* numéro de port */
-    uint32_t        sin6_flowinfo; /* information de flux IPv6 */
-    struct in6_addr sin6_addr;     /* adresse IPv6 */
-    uint32_t        sin6_scope_id; /* Scope ID (nouveauté 2.4) */
+    uint16_t        sin6_port;     /* port number */
+    uint32_t        sin6_flowinfo; /* IPv6 flow information */
+    struct in6_addr sin6_addr;     /* IPv6 address */
+    uint32_t        sin6_scope_id; /* Scope ID (new in 2.4) */
 };
 ```
+
+How to initialize the struct: 
 
 ```C
 memset(&_server_addr, 0, sizeof(_server_addr));
@@ -102,34 +109,35 @@ _server_addr.sin6_family = AF_INET6;
 _server_addr.sin6_port = htons(_port);
 _server_addr.sin6_addr = in6addr_any;
 ```
-a) Clearing the Structure:
 
+```C
 memset(&server_addr, 0, sizeof(server_addr));
+```
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
-b) Setting the Address Family:
-
+```C
 server_addr.sin_family = AF_INET6;
+```
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
-c) Setting the Port:
-
-server_addr.sin_port = htons(port);
+```C
+server_addr.sin_port = htons(_port);
+```
 This sets the port number the server will listen on. 
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
-d) Setting the IP Address:
-
+```C
 server_addr.sin_addr.s_addr = in6addr_any;
+```
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
-
-Goal: The initialized server_addr structure is then used in the bind system call to bind the server socket to the specified address and port.
 
 b) Initialization of the time
 
 Time must be initialized for server info and RPL.
 
 c) Initialization of the connection
+
+
 
 
 ### 2) Client management
