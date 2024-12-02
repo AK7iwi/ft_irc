@@ -133,14 +133,14 @@ The maximum port number is 65535 because ports are represented using a 16-bit un
 
 The initialized server_addr structure is used in the bind system call to bind the server socket to the specified address and port.
 
-```C
+```C++
 #include <netinet/in.h>
 struct sockaddr_in6			_server_addr;
 ```
 
 The struct sockaddr_in6 (IPv6): 
 
-```C
+```C++
 struct sockaddr_in6 
 {
     uint16_t        sin6_family;   /* AF_INET6 */
@@ -153,7 +153,7 @@ struct sockaddr_in6
 
 How to initialize the struct: 
 
-```C
+```C++
 memset(&_server_addr, 0, sizeof(_server_addr));
 _server_addr.sin6_family = AF_INET6;
 _server_addr.sin6_port = htons(_port);
@@ -163,21 +163,21 @@ _server_addr.sin6_addr = in6addr_any;
 
 How it works: 
 
-```C
+```C++
 memset(&server_addr, 0, sizeof(server_addr));
 ```
 
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
 
-```C
+```C++
 server_addr.sin_family = AF_INET6;
 ```
 
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
 
-```C
+```C++
 server_addr.sin_port = htons(_port);
 ```
 
@@ -185,7 +185,7 @@ This sets the port number the server will listen on.
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
 
-```C
+```C++
 server_addr.sin_addr.s_addr = in6addr_any;
 ```
 
@@ -199,7 +199,7 @@ Time must be initialized for server info and RPL.
 
 ##### c) Initialization of communication and connection for the server
 
-```C
+```C++
 socket(int domain, int type, int protocol);
 ```
 
@@ -238,7 +238,7 @@ Specifies the protocol to be used with the socket. 0 means that the system shoul
 The function returns a file descriptor (an integer) that represents the socket of the server. If the socket creation fails, it returns -1.
 It return the server socket.
 
-```C
+```C++
 setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
 ```
 
@@ -284,7 +284,7 @@ The size of the option value in bytes.
 
 Returns 0 on success and -1 on failure.
 
-```C
+```C++
 fcntl(int fd, int cmd, ...);
 ```
 
@@ -322,7 +322,7 @@ This is useful for high-performance servers that need to handle many connections
 
 Returns a new descriptor on success or -1 on failure
 
-```C
+```C++
 bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
 
@@ -348,7 +348,7 @@ The size of the address structure in bytes.
 
 Returns 0 on success and -1 on failure.
 
-```C
+```C++
 listen(int sockfd, int backlog);
 ```
 
@@ -370,11 +370,11 @@ The maximum number of pending connections that can be queued for acceptance.
 
 Returns 0 on success and -1 on failure.
 
-```C
-struct pollfd server_fd
+```C++
+struct pollfd server_fd;
 ```
 
-```C
+```C++
 struct pollfd
 {
 	int   fd;         /* file descriptor */
@@ -425,7 +425,7 @@ POLLHUP: The connection was closed.
 
 #### III) Handle connections and clients
 
-```C
+```C++
 poll(struct pollfd *fds, nfds_t nfds, int timeout);
 ```
 
@@ -456,7 +456,7 @@ Positive value: Waits for the specified number of milliseconds.
 
 Returns the number of file descriptors with events, 0 if the timeout expires, or -1 on failure.
 
-```C
+```C++
 accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
 
@@ -482,7 +482,7 @@ A pointer to a variable containing the size of the addr structure. It will be up
 
 Returns a new file descriptor for the accepted connection on success or -1 on failure.
 
-```C
+```C++
 recv(int sockfd, void *buf, size_t len, int flags);
 ```
 
@@ -511,9 +511,7 @@ Specifies how the call is made.
 Common flags:
 
 0: Standard blocking receive.
-
 MSG_DONTWAIT: Non-blocking receive.
-
 MSG_PEEK: Peek at the incoming data without removing it from the queue.
 
 - Return Value
