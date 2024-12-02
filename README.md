@@ -374,6 +374,8 @@ Returns 0 on success and -1 on failure.
 struct pollfd server_fd;
 ```
 
+The struct pollfd: 
+
 ```C++
 struct pollfd
 {
@@ -381,6 +383,15 @@ struct pollfd
     short events;     /* requested events */
     short revents;    /* returned events */
 };
+```
+
+How to initialize the struct:
+
+```C++
+struct pollfd server_fd;
+server_fd.fd = _server_socket;
+server_fd.events = POLLIN;
+server_fd.revents = 0;
 ```
 
 a) Use:
@@ -462,10 +473,11 @@ Returns the number of file descriptors with events, 0 if the timeout expires, or
 
 ##### a) Initialization of the client address
 
-
+```C++
 struct sockaddr_in6 client_addr;
 memset(&client_addr, 0, sizeof(client_addr));
 socklen_t client_len = sizeof(client_addr);
+```
 
 ##### b) Create connection for clients
 
