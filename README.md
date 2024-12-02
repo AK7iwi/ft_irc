@@ -114,8 +114,11 @@ Establishes a stable connection before sending data.
 - Common TCP Socket Use Cases
 
 a) Web Browsing: Loading web pages (HTTP/HTTPS).
+
 b) File Transfer: Downloading or uploading files (FTP).
+
 c) Email: Sending and receiving emails (SMTP, IMAP).
+
 d) Remote Access: Securely connecting to another computer (SSH).
 
 In simple terms, TCP ensures data sent through a socket arrives safely and correctly.
