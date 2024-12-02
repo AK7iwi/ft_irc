@@ -76,7 +76,49 @@ The server implements error handling to ensure proper communication between clie
 
 ### 1) Server Core
 
-//TCP SOCKET
+TCP (Transmission Control Protocol) is a reliable communication protocol used to send data between devices over a network. It works with sockets, which are endpoints that allow applications to connect and exchange data.
+
+- How TCP Works? 
+
+a) Connection Setup (Three-Way Handshake):
+
+TCP first establishes a connection between two devices (client and server) using a socket.
+The client and server "shake hands" to agree on how to communicate.
+
+b) Data Transfer:
+
+TCP breaks the data into smaller pieces, called segments.
+Each segment is sent through the socket and arrives in order.
+If any data is lost, TCP automatically resends it.
+
+c) Connection Close (Four-Way Handshake):
+
+Once the data is sent, TCP closes the connection by ending the socket communication.
+
+- Why Use TCP?
+
+a) Reliable: 
+
+Ensures all data is received correctly and in order.
+
+b) Error Checking: 
+
+Detects and fixes any errors in data transmission.
+
+
+c) Connection-Based: 
+
+Establishes a stable connection before sending data.
+
+
+- Common TCP Socket Use Cases
+
+a) Web Browsing: Loading web pages (HTTP/HTTPS).
+b) File Transfer: Downloading or uploading files (FTP).
+c) Email: Sending and receiving emails (SMTP, IMAP).
+d) Remote Access: Securely connecting to another computer (SSH).
+
+In simple terms, TCP ensures data sent through a socket arrives safely and correctly.
 
 #### I) Port and password
 First, the server sets up a port and a password. The port should be between 1024 and 65535 because ports below 1024 are reserved for system services, while ports above 1024 are available for user applications. 
@@ -167,7 +209,9 @@ b) Parameters:
 - domain (or address family)
 
 Specifies the address family for the socket.
+
 AF_INET: The socket will use the IPv4 protocol.
+
 AF_INET6: The socket will use the IPv6 protocol.
 
 - type
@@ -177,7 +221,9 @@ Specifies the socket type.
 Common values:
 
 SOCK_STREAM: Provides sequenced, reliable, two-way, connection-based byte streams (typically used for TCP connections).
+
 SOCK_DGRAM: Provides connectionless, unreliable messages of a fixed maximum length (used for UDP).
+
 SOCK_RAW: Provides raw network protocol access.
 
 - protocol
@@ -210,6 +256,7 @@ Specifies the protocol level at which the option resides.
 Common values:
 
 SOL_SOCKET: Set options at the socket level.
+
 IPPROTO_TCP: Set options at the TCP protocol level.
 
 - optname
@@ -219,6 +266,7 @@ The name of the option to set.
 Common options:
 
 SO_REUSEADDR: Allows the socket to be bound to an address that is already in use.
+
 SO_KEEPALIVE: Enables keepalive messages for the socket.
 
 - optval
@@ -254,6 +302,7 @@ Specifies the command to perform.
 Common commands:
 
 F_SETFL: Set file status flags.
+
 F_GETFL: Get file status flags.
 
 - Additional Arguments
@@ -330,6 +379,45 @@ struct pollfd
     short revents;    /* returned events */
 };
 ```
+
+a) Use:
+
+The struct pollfd is used with the poll() system call in C to monitor multiple file descriptors (e.g., sockets, pipes, or files) for events such as readiness for reading or writing.
+
+b) Parameters: 
+
+- int fd (File Descriptor)
+
+The file descriptor you want to monitor.
+
+- short events (Requested Events)
+
+Specifies the events you want to monitor for this file descriptor.
+
+Common event flags:
+
+POLLIN: Data is available to read.
+
+POLLOUT: The file descriptor is ready for writing.
+
+POLLERR: An error occurred.
+
+POLLHUP: The connection was closed (hang-up).
+
+POLLPRI: There is urgent data to read (out-of-band data).
+
+
+- short revents (Returned Events)
+
+After calling poll(), this field contains the events that actually occurred on the file descriptor.
+
+The value in revents is a subset of the flags from events, plus additional flags such as:
+
+POLLNVAL: The file descriptor is invalid.
+
+POLLERR: An error occurred on the file descriptor.
+
+POLLHUP: The connection was closed.
 
 
 #### III) Handle connections and clients
@@ -420,7 +508,9 @@ Specifies how the call is made.
 Common flags:
 
 0: Standard blocking receive.
+
 MSG_DONTWAIT: Non-blocking receive.
+
 MSG_PEEK: Peek at the incoming data without removing it from the queue.
 
 - Return Value
