@@ -115,25 +115,34 @@ _server_addr.sin6_port = htons(_port);
 _server_addr.sin6_addr = in6addr_any;
 ```
 
+
 How it works: 
 
-```memset(&server_addr, 0, sizeof(server_addr));```
+```C
+memset(&server_addr, 0, sizeof(server_addr));
+```
 
 This clears the server_addr structure to ensure there are no residual values from previous operations.
 
 
-```server_addr.sin_family = AF_INET6;```
+```C
+server_addr.sin_family = AF_INET6;
+```
 
 This sets the address family to IPv6. For IPv4, you would use AF_INET.
 
 
-```server_addr.sin_port = htons(_port);```
+```C
+server_addr.sin_port = htons(_port);
+```
 
 This sets the port number the server will listen on. 
 The htons function converts the port number from host byte order to network byte order, which is required for correct communication over the network.
 
 
-```server_addr.sin_addr.s_addr = in6addr_any;```
+```C
+server_addr.sin_addr.s_addr = in6addr_any;
+```
 
 This allows the server to accept connections on any of the host’s IP addresses. in6addr_any is typically used in servers to listen on all available interfaces.
 
@@ -145,7 +154,9 @@ Time must be initialized for server info and RPL.
 
 ##### c) Initialization of communication and connection for the server
 
-```socket(int domain, int type, int protocol);```
+```C
+socket(int domain, int type, int protocol);
+```
 
 a) Use: 
 
@@ -178,7 +189,9 @@ Specifies the protocol to be used with the socket. 0 means that the system shoul
 The function returns a file descriptor (an integer) that represents the socket of the server. If the socket creation fails, it returns -1.
 It return the server socket.
 
-```setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);```
+```C
+setsockopt(int sockfd, int level, int optname, const void *optval, socklen_t optlen);
+```
 
 a) Use: 
 
@@ -220,7 +233,9 @@ The size of the option value in bytes.
 
 Returns 0 on success and -1 on failure.
 
-```fcntl(int fd, int cmd, ...);```
+```C
+fcntl(int fd, int cmd, ...);
+```
 
 a) Use: 
 
@@ -255,7 +270,9 @@ This is useful for high-performance servers that need to handle many connections
 
 Returns a new descriptor on success or -1 on failure
 
-```bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);```
+```C
+bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
+```
 
 a) Use: 
 
@@ -279,7 +296,9 @@ The size of the address structure in bytes.
 
 Returns 0 on success and -1 on failure.
 
-```listen(int sockfd, int backlog);```
+```C
+listen(int sockfd, int backlog);
+```
 
 a) Use:
 
@@ -299,19 +318,25 @@ The maximum number of pending connections that can be queued for acceptance.
 
 Returns 0 on success and -1 on failure.
 
-```struct pollfd server_fd```
+```C
+struct pollfd server_fd
+```
 
+```C
 struct pollfd
 {
 	int   fd;         /* file descriptor */
     short events;     /* requested events */
     short revents;    /* returned events */
 };
+```
 
 
 #### III) Handle connections and clients
 
-```poll(struct pollfd *fds, nfds_t nfds, int timeout);```
+```C
+poll(struct pollfd *fds, nfds_t nfds, int timeout);
+```
 
 a) Use:
 
@@ -340,7 +365,9 @@ Positive value: Waits for the specified number of milliseconds.
 
 Returns the number of file descriptors with events, 0 if the timeout expires, or -1 on failure.
 
-```accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);```
+```C
+accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+```
 
 a) Use:
 
@@ -364,7 +391,9 @@ A pointer to a variable containing the size of the addr structure. It will be up
 
 Returns a new file descriptor for the accepted connection on success or -1 on failure.
 
-```recv(int sockfd, void *buf, size_t len, int flags);```
+```C
+recv(int sockfd, void *buf, size_t len, int flags);
+```
 
 a) Use:
 
