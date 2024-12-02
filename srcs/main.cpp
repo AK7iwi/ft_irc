@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/11/28 07:13:30 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:44:01 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	main(int argc, char **argv)
 {
 	/* Catch the signals */
 	std::signal(SIGINT, signal_handler); //ctrl + c
-    // std::signal(SIGQUIT, signal_handler); //ctrl + / 
+    std::signal(SIGQUIT, signal_handler); //ctrl + / 
 	
 	try
 	{

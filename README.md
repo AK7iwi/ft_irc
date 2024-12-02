@@ -385,7 +385,7 @@ struct pollfd
 
 a) Use:
 
-The struct pollfd is used with the poll() system call in C to monitor multiple file descriptors (e.g., sockets, pipes, or files) for events such as readiness for reading or writing.
+The struct pollfd is used with the poll() system call in C++ to monitor multiple file descriptors (e.g., sockets, pipes, or files) for events such as readiness for reading or writing.
 
 b) Parameters: 
 
@@ -456,6 +456,19 @@ Positive value: Waits for the specified number of milliseconds.
 
 Returns the number of file descriptors with events, 0 if the timeout expires, or -1 on failure.
 
+### 2) Client Management 
+
+#### I) Handle new connection
+
+##### a) Initialization of the client address
+
+
+struct sockaddr_in6 client_addr;
+memset(&client_addr, 0, sizeof(client_addr));
+socklen_t client_len = sizeof(client_addr);
+
+##### b) Create connection for clients
+
 ```C++
 accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
@@ -481,6 +494,8 @@ A pointer to a variable containing the size of the addr structure. It will be up
 - Return Value
 
 Returns a new file descriptor for the accepted connection on success or -1 on failure.
+
+#### II) Handle client requests
 
 ```C++
 recv(int sockfd, void *buf, size_t len, int flags);
@@ -511,14 +526,15 @@ Specifies how the call is made.
 Common flags:
 
 0: Standard blocking receive.
+
 MSG_DONTWAIT: Non-blocking receive.
+
 MSG_PEEK: Peek at the incoming data without removing it from the queue.
 
 - Return Value
 
 Returns the number of bytes received on success, 0 if the connection is closed, or -1 on failure.
 
-### 2) Client management
 
 ### 3) Channel System
 
