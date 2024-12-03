@@ -45,7 +45,7 @@ void Server::mode_O(int client_socket, Channel *channel, uint8_t mode, std::stri
 	{
 		if (!is_operator)
 		{
-			reply_arg.push_back("Targte is not opeator");
+			reply_arg.push_back("Target is not operator");
 			return (send_reply(client_socket, 696, reply_arg)); 
 		}
 		channel->remove_from_chan_operator(client_socket_operator);

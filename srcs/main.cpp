@@ -6,7 +6,7 @@
 /*   By: mfeldman <mfeldman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 11:52:27 by mfeldman          #+#    #+#             */
-/*   Updated: 2024/12/02 11:44:01 by mfeldman         ###   ########.fr       */
+/*   Updated: 2024/12/02 22:58:11 by mfeldman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static	void	parse_arg(int argc, char **argv)
 
 	int32_t port = std::atoi(argv[1]);
     if (port < 1024 || port >  65535)
-		throw (std::out_of_range("Error: Invalid port number. Please provide a port number between 1 and 65535"));
+		throw (std::out_of_range("Error: Invalid port number. Please provide a port number between 1024 and 65535"));
 
 	std::string password = argv[2];
     if (password.length() < 6)
